@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{250FDCFA-28E9-4671-B508-072B88D66A0E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Gruntfile.js" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\assets.xml" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\css.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\tabbar_horizontal_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\tabbar_vertical_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\toolbar_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\toolbar_button.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\css\absolute_animations.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\css\relative_animations.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\css\samples.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\composite_input_output.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\decorator.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\input.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\label.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\loading_container.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\stack_container.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\tab_button.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\tab_container_horizontal.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\tab_container_vertical.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\toolbar_button_back.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\toolbar_button_normal.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\handlebars\toolbar.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\index.html" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w\tabbar_horizontal_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w\tabbar_vertical_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w\toolbar_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w\toolbar_button_back.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\1536w\toolbar_button_normal.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w\tabbar_horizontal_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w\tabbar_vertical_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w\toolbar_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w\toolbar_button_back.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\320w\toolbar_button_normal.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w.css" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\tabbar_horizontal_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\tabbar_vertical_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\toolbar_background.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\toolbar_button_back.png" />
+    <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\toolbar_button_normal.png" />
+    <Content Include="mvp-jquery-handlebars.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery-xslt.ts\Gruntfile.js" />
+    <Content Include="mvp.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery.ts\lib\jquery-1.11.1.js" />
+    <Content Include="mvp-jquery.ts\lib\jquery-1.11.1.min.js" />
+    <Content Include="mvp-jquery-handlebars.ts\lib\handlebars-v1.3.0.js" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mvp.ts\package.json" />
+    <Content Include="mvp-jquery.ts\package.json" />
+    <Content Include="mvp-jquery-xslt.ts\package.json" />
+    <Content Include="mvp-jquery-handlebars.ts\package.json" />
+    <Content Include="mvp-jquery-handlebars-example.ts\package.json" />
+    <Content Include="package.json" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\CompositeCommandModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\SimpleCommandModel.ts" />
+    <TypeScriptCompile Include="reference.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\reference.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\basicStackPresenterFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\BasicStack\BasicStackModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\Label\ILabelModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\Label\ImmutableLabelModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\Label\LabelPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\TextInput\ITextInputModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\TextInput\TextInputPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\Toolbar\ToolbarDecoratorModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\decoratedStackPresenterFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\DecoratedStack\DecoratedStackModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\helloWorldPresenterFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\HelloWorld\HelloWorldModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\helloYouPresenterFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\HelloYou\HelloYouModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\main.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\tabIndexPresenterFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars.ts\reference.ts" />
+    <TypeScriptCompile Include="mvp-jquery-xslt.ts\reference.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\lib\jquery-1.11.1.d.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars.ts\lib\handlebars-v1.3.0.d.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars.ts\src\main\ts\handlebarsJQueryStringTemplateFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery-handlebars.ts\src\main\ts\handlebarsSelectorHelper.ts" />
+    <TypeScriptCompile Include="mvp-jquery-xslt.ts\lib\msxml.d.ts" />
+    <TypeScriptCompile Include="mvp-jquery-xslt.ts\lib\xsltProcessor.d.ts" />
+    <TypeScriptCompile Include="mvp-jquery-xslt.ts\src\main\ts\xsltJQueryStringTemplateFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\reference.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Animation\JQueryCSSAnimation.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Animation\IJQueryAnimationFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\jquery.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\AbstracJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\BorrowedJQueryView.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Command\CommandJQueryViewDescription.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Command\ICommandJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Command\ToolbarCommandJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Composite\AbstractCompositeJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Composite\JQueryPromiseSwitcherModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Composite\KeyedCompositeJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Composite\Stack\StackJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Composite\Stack\StackJQueryPresenterAnimationFactoryBundle.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\IJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\IJQueryView.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\IJQueryViewFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\JQueryViewDescription.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\List\AbstractListJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\List\AbstractListJQueryPresenterItem.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Loading\JQueryPromiseLoadingModel.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\SimpleJQueryView.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Stateful\TemplatingStatefulJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Table\AbstractTableJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Table\AbstractTableJQueryPresenterCell.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Tab\ITabBarTabJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Tab\TabBarJQueryPresenter.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\MVP\Tab\TabBarTabJQueryViewDescription.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Template\jqueryTemplateFactoryProxy.ts" />
+    <TypeScriptCompile Include="mvp.ts\reference.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\Animation\AbstractAnimation.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\Animation\AnimationState.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\Animation\AnimationStateChangeEvent.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\Animation\IAnimation.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\Animation\IAnimationStateChangeListener.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\array.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\class.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\element.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\AbstractModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\AbstractModelProxy.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\AbstractPresenter.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\Command.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\CommandType.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\ICommandModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\AbstractCompositePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\ICompositePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\IKeyedCompositePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\MappedKeyedCompositePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractDescriptiveStackPresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterModelEntry.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPopModelStateChange.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPushModelStateChange.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\IStackPresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\StackPresenterModelChangeDescription.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Error\ErrorModelState.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Error\IErrorModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Error\IRetryErrorModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelChangeListener.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelStateChange.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelStateChangeListener.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IPresenter.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IPresenterChangeListener.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IPresenterWithModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IView.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\List\IListPresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Loading\ILoadingModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Loading\LoadingModelState.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\ModelChangeDescription.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\ModelChangeEvent.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\PresenterChangeEvent.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\PresenterState.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Stateful\ImmutableStatefulModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Stateful\IStatefulModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Table\AbstractTablePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Table\ITablePresenterModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Table\TableHeader.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Table\TableHeaderTree.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Tab\ITabBarModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Tab\MappedKeyedCompositePresenterTabBarModel.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\string.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Template\IJQueryAsyncPathTemplateFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Template\IJQueryStringTemplateFactory.ts" />
+    <TypeScriptCompile Include="mvp-jquery.ts\src\main\ts\Template\IJQueryTemplate.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\xml.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="mvp-jquery-handlebars-example.ts\lib\" />
+    <Folder Include="mvp.ts\src\main\ts\Loading\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>mvp.ts</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54916</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:54916/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptOutFile>build/mvp-all.js</TypeScriptOutFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>

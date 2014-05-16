@@ -1,0 +1,150 @@
+﻿/** animations take into account the absolute position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
+
+.animation-absolute-push-add {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-absolute-push-add-keyframes;
+    -moz-animation-name: animation-absolute-push-add-keyframes;
+    animation-name: animation-absolute-push-add-keyframes;
+}
+
+@-webkit-keyframes animation-absolute-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-absolute-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-absolute-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+
+.animation-absolute-push-remove {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-absolute-push-remove-keyframes;    
+    -moz-animation-name: animation-absolute-push-remove-keyframes;    
+    animation-name: animation-absolute-push-remove-keyframes;    
+}
+
+
+@-webkit-keyframes animation-absolute-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+@-moz-keyframes animation-absolute-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+@keyframes animation-absolute-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+
+.animation-absolute-pop-add {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-absolute-pop-add-keyframes;    
+    -moz-animation-name: animation-absolute-pop-add-keyframes;    
+    animation-name: animation-absolute-pop-add-keyframes;    
+}
+
+@-webkit-keyframes animation-absolute-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-absolute-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-absolute-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+
+.animation-absolute-pop-remove {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-absolute-pop-remove-keyframes;    
+    -moz-animation-name: animation-absolute-pop-remove-keyframes;    
+    animation-name: animation-absolute-pop-remove-keyframes;    
+}
+
+@-webkit-keyframes animation-absolute-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}
+
+@-moz-keyframes animation-absolute-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}
+
+
+@keyframes animation-absolute-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}

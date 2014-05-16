@@ -1,0 +1,80 @@
+.decorated_toolbar {
+    background:url('640w/toolbar_background.png');
+}
+
+.tab_bar_horizontal {
+    background:url('640w/tabbar_horizontal_background.png');
+}
+
+.tab_bar_vertical {
+    background:url('640w/tabbar_vertical_background.png');
+}
+
+.toolbar_button_normal {
+    -ms-border-image:url('640w/toolbar_button_normal.png') 6 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -moz-border-image:url('640w/toolbar_button_normal.png') 6 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -webkit-border-image:url('640w/toolbar_button_normal.png') 6 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -o-border-image:url('640w/toolbar_button_normal.png') 6 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    border-image:url('640w/toolbar_button_normal.png') 6 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+}
+
+.toolbar_button_back {
+    -ms-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -moz-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -webkit-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -o-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+}
+
+.tab_bar_horizontal {
+    height:60px;
+}
+
+.decorated_toolbar {
+    height:50px;
+}
+
+.toolbar_buttons_container {
+    padding-bottom:11px;
+}
+
+.toolbar_buttons_container {
+    padding-left:12px;
+}
+
+.toolbar_buttons_container {
+    padding-right:12px;
+}
+
+.toolbar_button_normal {
+    border-width:6px 6px 6px 6px;
+}
+
+.toolbar_button_back {
+    border-width:6px 6px 6px 12px;
+}
+
+.decorated_body {
+    padding-right:12px;
+}
+
+.decorated_body {
+    padding-left:12px;
+}
+
+.decorated_body {
+    padding-top:50px;
+}
+
+.decorated_body {
+    padding-bottom:60px;
+}
+
+.tab_pane_vertical div.content_slider div.decorated_toolbar_container div.decorated_toolbar, .tab_pane_vertical div.content_slider div.content_pane div.decorated_body, .tab_pane_vertical div.decorated_toolbar_container div.decorated_toolbar, .tab_pane_vertical div.content_pane div.decorated_body {
+    margin-left:100px;
+}
+
+.tab_bar_vertical {
+    width:100px;
+}
+

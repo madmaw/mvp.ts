@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "ht`tp://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width"/>
+
+    <title>MVP.TS JQuery/Handlebars Example</title>
+
+    <script type="text/javascript" src="../mvp-jquery-handlebars.ts/lib/handlebars-v1.3.0.js" language="javascript"></script>
+    <script type="text/javascript" src="../mvp-jquery.ts/lib/jquery-1.11.1.js" language="javascript"></script>
+    <script type="text/javascript" src="lib/rison-0.9.2.js" language="javascript"></script>
+    <script type="text/javascript" src="../build/mvp-all.js" language="javascript"></script>
+    <link rel="stylesheet" href="css/absolute_animations.css">
+    <link rel="stylesheet" href="css/relative_animations.css">
+    <link rel="stylesheet" href="css/samples.css">
+    <!-- sizes chosen so portrait/landscape will use the same set of assets on most iphones/ipads -->
+    <link rel='stylesheet' media='screen and (max-width: 480px)' href='res/ios/320w.css' />
+    <link rel='stylesheet' media='screen and (min-width: 481px) and (max-width: 1136px)' href='res/ios/640w.css' />
+    <link rel='stylesheet' media='screen and (min-width: 1137px)' href='res/ios/1536w.css' />
+
+
+    <script id="loading" type="text/x-handlebars-template">
+        <span>{{progress}}/{{maxProgress}}</span>
+    </script>
+
+    <script id="error" type="text/x-handlebars-template">
+        <span>{{message}}</span>
+    </script>
+
+</head>
+<body>
+
+<div id="tab"></div>
+</body>
+
+</html>

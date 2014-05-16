@@ -1,0 +1,80 @@
+.decorated_toolbar {
+    background:url('320w/toolbar_background.png');
+}
+
+.tab_bar_horizontal {
+    background:url('320w/tabbar_horizontal_background.png');
+}
+
+.tab_bar_vertical {
+    background:url('320w/tabbar_vertical_background.png');
+}
+
+.toolbar_button_normal {
+    -ms-border-image:url('320w/toolbar_button_normal.png') 4 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -moz-border-image:url('320w/toolbar_button_normal.png') 4 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -webkit-border-image:url('320w/toolbar_button_normal.png') 4 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -o-border-image:url('320w/toolbar_button_normal.png') 4 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    border-image:url('320w/toolbar_button_normal.png') 4 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+}
+
+.toolbar_button_back {
+    -ms-border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
+    -moz-border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
+    -webkit-border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
+    -o-border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
+    border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
+}
+
+.tab_bar_horizontal {
+    height:50px;
+}
+
+.decorated_toolbar {
+    height:40px;
+}
+
+.toolbar_buttons_container {
+    padding-bottom:8px;
+}
+
+.toolbar_buttons_container {
+    padding-left:8px;
+}
+
+.toolbar_buttons_container {
+    padding-right:8px;
+}
+
+.toolbar_button_normal {
+    border-width:4px 4px 4px 4px;
+}
+
+.toolbar_button_back {
+    border-width:4px 4px 4px 8px;
+}
+
+.decorated_body {
+    padding-right:8px;
+}
+
+.decorated_body {
+    padding-left:8px;
+}
+
+.decorated_body {
+    padding-top:40px;
+}
+
+.decorated_body {
+    padding-bottom:50px;
+}
+
+.tab_pane_vertical div.content_slider div.decorated_toolbar_container div.decorated_toolbar, .tab_pane_vertical div.content_slider div.content_pane div.decorated_body, .tab_pane_vertical div.decorated_toolbar_container div.decorated_toolbar, .tab_pane_vertical div.content_pane div.decorated_body {
+    margin-left:80px;
+}
+
+.tab_bar_vertical {
+    width:80px;
+}
+

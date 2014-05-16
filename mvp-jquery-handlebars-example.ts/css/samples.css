@@ -1,0 +1,97 @@
+﻿* {
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif;
+}
+
+html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body {
+}
+
+html, body, #tab, .loading_container {
+    height: 100%
+}
+
+.selected {
+    font-weight: bold;
+}
+
+.decorated_toolbar_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab_bar_horizontal {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab_bar_vertical {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 1000;
+}
+
+.tab_bar_container {
+    display: block;
+}
+
+.tab_bar_button {
+    color: #ffffff;
+}
+
+.toolbar_button_normal, .toolbar_button_back {
+    color: #dddddd;
+    font-size: small;
+}
+
+.tab_bar_horizontal div {
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+}
+
+.tab_pane {
+    overflow-x: hidden;
+}
+
+.content_slider {
+    white-space: nowrap;
+}
+
+.content_pane {
+    display: inline-block;
+    white-space:  normal;
+    vertical-align: top;
+    width: 100%;
+}
+
+.decorated_body {
+    /* set the vertical alignment back to baseline */
+    vertical-align: baseline;
+    z-index:1;
+
+}
+
+.decorated_toolbar {
+    display:table;
+    width: 100%;
+}
+.toolbar_buttons_container {
+    display:table-cell;
+    vertical-align:middle;
+}
+
+body {
+    margin:0;
+    padding:0;
+    /* not sure about this one - might ruin compatibility somewhere */
+    /*overflow-y: hidden; */
+    /* ios gets 'sticky' if this isn't in here (it also looks better anyway)*/
+    -webkit-overflow-scrolling: touch;
+
+}

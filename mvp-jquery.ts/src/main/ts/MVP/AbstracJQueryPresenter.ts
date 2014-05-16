@@ -1,0 +1,56 @@
+
+// Module
+module TS.JQuery.MVP {
+
+    
+    export class AbstractJQueryPresenter<ModelType extends TS.MVP.IModel> extends TS.MVP.AbstractPresenter<ModelType> implements IJQueryPresenter {
+
+        public _view: IJQueryView;
+        public _viewContainer: JQuery;
+        private _viewPrepend: boolean;
+
+
+        constructor(public _viewFactory: IJQueryViewFactory) {
+            super();
+        }
+
+        public getView(): TS.MVP.IView {
+            return this._view;
+        }
+
+        public $(selector?: string): JQuery {
+            return jquerySelectFromRoot(this._view.$, selector);
+        }
+
+        public init(container: JQuery, prepend?: boolean): boolean {
+            this._viewContainer = container;
+            this._viewPrepend = prepend;
+            var viewFactoryParams = this._getViewFactoryParams();
+            this._view = this._viewFactory(container, viewFactoryParams, prepend);
+            this._view.attach();
+            return this._init();
+        }
+
+        public _getViewFactoryParams(): any {
+            return null;
+        }
+
+        public _reinitialize() {
+            this.init(this._viewContainer, this._viewPrepend);
+        }
+
+        public load() {
+            super.load();
+            this.layout();
+        }
+
+
+        public _doDestroy(detachView:boolean): boolean {
+            if (detachView) {
+                this._view.detach();
+            }
+            this._view = null;
+            return true;
+        }
+    }
+}
