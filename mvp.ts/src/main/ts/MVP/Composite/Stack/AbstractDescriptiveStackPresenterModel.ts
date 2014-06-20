@@ -2,9 +2,9 @@
 module TS.MVP.Composite.Stack {
 
     // Class
-    export class AbstractDescriptiveStackPresenterModel extends AbstractStackPresenterModel {
+    export class AbstractDescriptiveStackPresenterModel<PresenterType extends IPresenter> extends AbstractStackPresenterModel<PresenterType> {
 
-        private _presenterFactories: { [_:string]: (data: any) => IPresenter; };
+        private _presenterFactories: { [_: string]: (data: any, callback:IModelImportStateCallback) => PresenterType; };
 
         // Constructor
         constructor(allowEmptyStack?:boolean, presentersToDisplay?:number) {
@@ -12,30 +12,31 @@ module TS.MVP.Composite.Stack {
             this._presenterFactories = {};
         }
 
-        public setControllerFactory(key: string, factory:(data: any) => IPresenter) {
+        public setControllerFactory(key: string, factory: (data: any) => PresenterType) {
             this._presenterFactories[key] = factory;
         }
 
-        public _entryToDescription(entry: AbstractStackPresenterModelEntry, models?: IModel[]): any {
+        public _exportEntry(entry: AbstractStackPresenterModelEntry<PresenterType>, models?: IModel[]): any {
             var controllerFactoryKey = entry.data;
-            var modelData = entry.presenter.getModel().createStateDescription(models);
+            var modelData = entry.presenter.getModel().exportState(models);
             return {
                 controllerFactoryKey: controllerFactoryKey,
                 modelData: modelData
             };
         }
 
-        public _createEntryFromDescription(description: any): AbstractStackPresenterModelEntry {
+        public _importEntry(description: any, callback:IModelImportStateCallback): AbstractStackPresenterModelEntry<PresenterType> {
             var presenterFactoryKey = description["presenterFactoryKey"];
             var modelData = description["modelData"];
             var presenterFactory = this._presenterFactories[presenterFactoryKey];
-            var result: AbstractStackPresenterModelEntry;
+            var result: AbstractStackPresenterModelEntry<PresenterType>;
             if (presenterFactoryKey != null) {
-                var presenter = presenterFactory(modelData);
+                var presenter = presenterFactory(modelData, callback);
                 result = new AbstractStackPresenterModelEntry(presenter, presenterFactoryKey);
             } else {
                 result = null;
             }
+
             return result;
         }
     }

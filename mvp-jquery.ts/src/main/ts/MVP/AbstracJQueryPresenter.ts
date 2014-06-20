@@ -12,6 +12,9 @@ module TS.JQuery.MVP {
 
         constructor(public _viewFactory: IJQueryViewFactory) {
             super();
+            if (this._viewFactory == null) {
+                throw "view factory required";
+            }
         }
 
         public getView(): TS.MVP.IView {
@@ -26,6 +29,9 @@ module TS.JQuery.MVP {
             this._viewContainer = container;
             this._viewPrepend = prepend;
             var viewFactoryParams = this._getViewFactoryParams();
+            if (!this._viewFactory) {
+                throw "no view factory!";
+            }
             this._view = this._viewFactory(container, viewFactoryParams, prepend);
             this._view.attach();
             return this._init();

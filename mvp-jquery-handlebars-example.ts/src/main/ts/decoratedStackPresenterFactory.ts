@@ -29,15 +29,16 @@ module TS.JQuery.MVP.HB.Example {
             [{
                popAnimationFactory: relativePopAddAnimationFactory,
                pushAnimationFactory: relativePushRemoveAnimationFactory,
-               selector: ".content_pane:nth-of-type(2)"
-           }, {
+               selector: ".decorator_content_container:nth-of-type(2)"
+            }, {
+
                popAnimationFactory: absolutePopAddAnimationFactory,
                pushAnimationFactory: absolutePushRemoveAnimationFactory,
-               selector: ".decorated_toolbar_container:nth-of-type(1)"
+                selector: ".toolbar_decorator_toolbar:nth-of-type(1)"
            }, {
                popAnimationFactory: absolutePopRemoveAnimationFactory,
                pushAnimationFactory: absolutePushAddAnimationFactory,
-               selector: ".decorated_toolbar_container:nth-of-type(3)"
+               selector: ".toolbar_decorator_toolbar:nth-of-type(3)"
            }]
         );
 

@@ -137,19 +137,19 @@ module TS.JQuery.MVP.Composite.Stack {
             var count = 0;
             var completionCount = 0;
 
-            var jquery = this._view.$;
             for (var i in this._animationFactoryBundles) {
                 var animationFactoryBundle: StackJQueryPresenterAnimationFactoryBundle = this._animationFactoryBundles[i];
                 var animationFactory = <TS.JQuery.Animation.IJQueryAnimationFactory>animationFactoryBundle[animationFactoryName];
                 if (animationFactory != null) {
                     var selector = animationFactoryBundle.selector;
+                    var jquery = this._view.$;
                     if (selector != null) {
                         var self: JQuery = jquery.filter(selector);
                         jquery = jquery.find(selector).add(self);
                     }
-                    // TODO work out which element has a root
-                    var containerRoot = this._view.$;
-                    for (var j = 0; j < jquery.length; j++) {
+                    if(jquery.length) {
+                        // TODO work out which element has a root
+                        var containerRoot = this._view.$;
                         var animation = animationFactory(containerRoot, jquery);
                         count++;
                         result = true;

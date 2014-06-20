@@ -1,7 +1,7 @@
 module TS.MVP.Composite.Stack {
 
-    export class AbstractStackPresenterPushModelStateChange implements IModelStateChange {
-        constructor(private _model: AbstractStackPresenterModel, private _entry: AbstractStackPresenterModelEntry) {
+    export class AbstractStackPresenterPushModelStateChangeOperation<PresenterType extends TS.MVP.IPresenter> implements IModelStateChangeOperation {
+        constructor(private _model: AbstractStackPresenterModel<PresenterType>, private _entry: AbstractStackPresenterModelEntry<PresenterType>) {
         }
 
         public undo() {

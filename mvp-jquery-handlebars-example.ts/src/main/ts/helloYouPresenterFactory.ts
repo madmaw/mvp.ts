@@ -31,7 +31,7 @@ module TS.JQuery.MVP.HB.Example {
         keyMaps[idInput] = ".helloyou_input";
         keyMaps[idOutput] = ".helloyou_output";
         var controller = new TS.JQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
-            this._compositePresenterViewFactory,
+            compositePresenterViewFactory,
             keyMaps
         );
         controller.setModel(model);

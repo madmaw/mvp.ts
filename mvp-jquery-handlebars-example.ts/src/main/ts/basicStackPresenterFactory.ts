@@ -14,8 +14,6 @@ module TS.JQuery.MVP.HB.Example {
         var stackController = new TS.JQuery.MVP.Composite.Stack.StackJQueryPresenter<TS.MVP.Composite.Stack.IStackPresenterModel>(stackViewFactory);
         stackController.setModel(basicStackModel);
 
-        var inputElementKey = "input_element";
-        var inputButtonKey = "input_button";
         //.DocumentFragmentElementViewFactory("<input key='" + inputElementKey + "'></input><br/><input type='button' key='" + inputButtonKey + "' value='Submit'></input>");
         var inputViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/input.html", loadingPromises); 
         var inputController = new TS.JQuery.MVP.HB.Example.TextInput.TextInputPresenter(inputViewFactory);

@@ -20,6 +20,8 @@ module TS.JQuery.MVP {
             }
         }
 
+        public ownsSelf = false;
+
         constructor(public $: JQuery) {
         }
 

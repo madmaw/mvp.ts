@@ -10,13 +10,20 @@ module TS.JQuery.MVP.Command {
         constructor(
             _viewFactory: IJQueryViewFactory,
             private _commandViewDescriptionFactory:ICommandJQueryViewDescriptionFactory,
-            private _backContainerSelector: string = ".back",
-            private _generalContainerSelector: string = ".general"
+            private _backContainerSelector: string = ".toolbar_command_jquery_presenter_back_container",
+            private _generalContainerSelector: string = ".toolbar_command_jquery_presenter_general_container"
         ) {
             super(_viewFactory);
 
             this._backViews = [];
             this._generalViews = [];
+        }
+
+        public _getViewFactoryParams() {
+            return {
+                backContainerSelector: this._backContainerSelector,
+                generalContainerSelector: this._generalContainerSelector
+            }
         }
 
         public _doDestroy(detachView?: boolean) {

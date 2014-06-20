@@ -1,7 +1,7 @@
 // Module  
 module TS.JQuery.MVP.HB.Example.DecoratedStack {
     // Class
-    export class DecoratedStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel implements TS.JQuery.MVP.HB.Example.TextInput.ITextInputModel {
+    export class DecoratedStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel<TS.MVP.IPresenter> implements TS.JQuery.MVP.HB.Example.TextInput.ITextInputModel {
         
         // Constructor
         constructor(
@@ -36,8 +36,9 @@ module TS.JQuery.MVP.HB.Example.DecoratedStack {
             inputController.setModel(this);
 
             var presenters: TS.MVP.IPresenter[] = [labelController, inputController];
-            // TODO pass in the command model (back button)
-            return this._toolbarDecoratorFactory(presenters, null);
+            var commandModel = new TS.MVP.Command.SimpleCommandModel();
+            // TODO back button handling
+            return this._toolbarDecoratorFactory(presenters, commandModel);
         }
 
         /*

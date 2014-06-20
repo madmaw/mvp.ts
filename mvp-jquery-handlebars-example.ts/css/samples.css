@@ -13,7 +13,7 @@ html, body, #tab, .loading_container {
     font-weight: bold;
 }
 
-.decorated_toolbar_container {
+.toolbar_decorator_toolbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -57,17 +57,17 @@ html, body, #tab, .loading_container {
 
 .tab_pane {
     overflow-x: hidden;
-}
-
-.content_slider {
     white-space: nowrap;
 }
 
-.content_pane {
-    display: inline-block;
+.toolbar_decorator_content {
     white-space:  normal;
     vertical-align: top;
+}
+
+.decorator_content_container {
     width: 100%;
+    display: inline-block;
 }
 
 .decorated_body {

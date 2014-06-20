@@ -2,7 +2,7 @@ module TS.MVP {
 
     export interface IModelStateChangeListener {
 
-        (source: IModel, change: IModelStateChange): void
+        (source: IModel, change: ModelStateChangeEvent): void
     }
 
 } 

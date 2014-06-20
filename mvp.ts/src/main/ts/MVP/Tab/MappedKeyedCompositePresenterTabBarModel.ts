@@ -51,17 +51,19 @@ module TS.MVP.Tab {
             }
         }
 
-        public createStateDescription(models?: IModel[]): any {
-            var result = super.createStateDescription(models);
+        public exportState(models?: IModel[]): any {
+            var result = super.exportState(models);
             // hack it into existing structure?!
             result["_selectedTabId"] = this._selectedTabId;
 
             return result;
         }
 
-        public loadStateDescription(description: any) {
-            super.loadStateDescription(description);
-            this._setSelectedTabId(description["_selectedTabId"], true);
+        public importState(description: any, importCompletionCallback: IModelImportStateCallback) {
+            if (description != null) {
+                this._setSelectedTabId(description["_selectedTabId"], true);
+            }
+            super.importState(description, importCompletionCallback);
         }
 
         public _getDescribedPresenters(): IPresenter[] {

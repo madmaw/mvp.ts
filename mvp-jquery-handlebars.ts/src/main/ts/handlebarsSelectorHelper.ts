@@ -1,15 +1,18 @@
 module TS.JQuery.Template.HB {
 
-    export function handlbarsSelectorHelper(selector: string, extraClasses:string = ""): string {
+    export function handlbarsSelectorHelper(selector: string, extraClasses?:any): string {
         var result;
         var classesHandled;
+        if (!(extraClasses instanceof String)) {
+            extraClasses = null;
+        }
         if (selector) {
             selector = selector.trim();
             if (selector.length > 0) {
                 var first = selector.charAt(0);
                 switch (first) {
                     case '.':
-                        result = "class='" + selector.substring(1) + " " + extraClasses + "'";
+                        result = "class='" + selector.substring(1) + (extraClasses?(" " + extraClasses):"") + "'";
                         classesHandled = true;
                         break;
                     case '#':
@@ -17,23 +20,26 @@ module TS.JQuery.Template.HB {
                         classesHandled = false;
                         break;
                     default:
-                        // ignore, we assume that it's selecting on the tag and there's nothing we can do either way
-                        result = null;
+                        // should ignore, we assume that it's selecting on the tag and there's nothing we can do either way
+                        result = "name='"+selector+"'";
                         classesHandled = false;
                         break;
                 }
             } else {
-                result = null;
+                result = "";
                 classesHandled = false;
             }
         } else {
-            result = null;
+            result = "";
             classesHandled = false;
         }
         if (!classesHandled && extraClasses != null && extraClasses.length > 0) {
             var classString = "class = '" + extraClasses + "'";
             if (result != null) {
-                result += " " + classString;
+                if (result.length > 0) {
+                    result += " ";
+                }
+                result += classString;
             } else {
                 result = classString;
             }

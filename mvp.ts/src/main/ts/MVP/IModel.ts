@@ -1,16 +1,16 @@
 module TS.MVP {
     export interface IModel {
 
-        addChangeListener(listener: IModelChangeListener);
+        addChangeListener(listener: IModelChangeListener): void;
 
-        removeChangeListener(listener: IModelChangeListener );
+        removeChangeListener(listener: IModelChangeListener ): void;
 
-        addStateChangeListener(listener: IModelStateChangeListener );
+        addStateChangeListener(listener: IModelStateChangeListener ): void;
 
-        removeStateChangeListener(listener: IModelStateChangeListener );
+        removeStateChangeListener(listener: IModelStateChangeListener ): void;
 
-        createStateDescription(models?:IModel[]):any;
+        exportState(models?:IModel[]):any;
 
-        loadStateDescription(description: any);
+        importState(description: any, importCompletionCallback: IModelImportStateCallback): void;
     }
 }

@@ -88,6 +88,9 @@ module TS.MVP {
                     this._modelOnChangeListener = (model: IModel, event: ModelChangeEvent) => {
                         this._handleModelChangeEvent(event);
                     };
+                    if (!this._model) {
+                        throw "no model!";
+                    }
                     this._model.addChangeListener(this._modelOnChangeListener);
                     // then load (sometimes the models will initialise/refresh themselves upon having a listener added, so it has to be done first)
                     this.load();

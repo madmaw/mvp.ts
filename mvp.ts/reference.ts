@@ -5,10 +5,12 @@
 
 /// <reference path="src/main/ts/MVP/IModel.ts" />
 /// <reference path="src/main/ts/MVP/AbstractModel.ts" />
-/// <reference path="src/main/ts/MVP/Composite/AbstractCompositePresenterModel.ts" />
 
+/// <reference path="src/main/ts/MVP/Composite/AbstractCompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/MappedKeyedCompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Tab/MappedKeyedCompositePresenterTabBarModel.ts" />
+/// <reference path="src/main/ts/MVP/Command/CompositeCommandModel.ts"/>
+/// <reference path="src/main/ts/MVP/Command/SimpleCommandModel.ts"/>
 
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractDescriptiveStackPresenterModel.ts" />
@@ -28,15 +30,16 @@
 /// <reference path="src/main/ts/MVP/Composite/ICompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/IKeyedCompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterModelEntry.ts" />
-/// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPopModelStateChange.ts" />
-/// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPushModelStateChange.ts" />
+/// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPopModelStateChangeOperation.ts" />
+/// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPushModelStateChangeOperation.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/IStackPresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/StackPresenterModelChangeDescription.ts" />
 /// <reference path="src/main/ts/MVP/Error/ErrorModelState.ts" />
 /// <reference path="src/main/ts/MVP/Error/IErrorModel.ts" />
 /// <reference path="src/main/ts/MVP/Error/IRetryErrorModel.ts" />
 /// <reference path="src/main/ts/MVP/IModelChangeListener.ts" />
-/// <reference path="src/main/ts/MVP/IModelStateChange.ts" />
+/// <reference path="src/main/ts/MVP/IModelStateChangeOperation.ts" />
+/// <reference path="src/main/ts/MVP/ModelStateChangeEvent.ts" />
 /// <reference path="src/main/ts/MVP/IModelStateChangeListener.ts" />
 /// <reference path="src/main/ts/MVP/IPresenter.ts" />
 /// <reference path="src/main/ts/MVP/IPresenterChangeListener.ts" />

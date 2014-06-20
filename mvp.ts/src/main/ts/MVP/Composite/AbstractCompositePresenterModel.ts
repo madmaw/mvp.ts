@@ -12,7 +12,7 @@ module TS.MVP.Composite {
 
         constructor() {
             super();
-            this._stateChangeListener = (source: IModel, change: IModelStateChange) => {
+            this._stateChangeListener = (source: IModel, change: ModelStateChangeEvent) => {
                 if (source != this) {
                     // models can be shared between controllers so we need to be careful we don't propogate our own events 
                     this._fireStateChangeEvent(source, change);
@@ -97,7 +97,7 @@ module TS.MVP.Composite {
             this._startListeningForStateDescriptionChanges();
         }
 
-        public createStateDescription(models?: IModel[]): any {
+        public exportState(models?: IModel[]): any {
             models = this._checkModels(models);
             var presenters = this._getDescribedPresenters();
             var result = [];
@@ -107,7 +107,7 @@ module TS.MVP.Composite {
                     var model = presenter.getModel();
                     var entry;
                     if (model != null) {
-                        entry = model.createStateDescription(models);
+                        entry = model.exportState(models);
                     } else {
                         entry = null;
                     }
@@ -117,15 +117,32 @@ module TS.MVP.Composite {
             return result;
         }
 
-        public loadStateDescription(description: any) {
+        public importState(description: any, importCompletionCallback: IModelImportStateCallback){
             var presenters = this._getDescribedPresenters();
             var descriptions = <any[]>description;
-            for (var i in descriptions) {
-                var entry = descriptions[i];
-                var presenter = presenters[i];
-                var model = presenter.getModel();
-                if (model != null) {
-                    model.loadStateDescription(entry);
+            var count = descriptions.length;
+            var result = [];
+            if( count == 0 ) {
+                if( importCompletionCallback ) {
+                    importCompletionCallback(result);
+                }
+            } else {
+                for (var i in descriptions) {
+                    var entry = descriptions[i];
+                    var presenter = presenters[i];
+                    var model = presenter.getModel();
+                    if (model != null) {
+                        var modelResult = model.importState(entry, function(changes:ModelStateChangeEvent[]) {
+                            // TODO not sure if this is right? (assumes only one "stateful" child)
+                            arrayPushAll(result, changes);
+                            count--;
+                            if( count == 0 ) {
+                                if( importCompletionCallback ) {
+                                    importCompletionCallback(result);
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }

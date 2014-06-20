@@ -17,12 +17,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Gruntfile.js" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\assets.xml" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\css.xslt" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\tabbar_horizontal_background.xslt" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\tabbar_vertical_background.xslt" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\toolbar_background.xslt" />
-    <Content Include="mvp-jquery-handlebars-example.ts\assetbatch\toolbar_button.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\lib\rison-0.9.2.js" />
+    <Content Include="mvp-jquery-handlebars-example.ts\pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\assets.xml" />
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\css.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\tabbar_horizontal_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\tabbar_vertical_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\toolbar_background.xslt" />
+    <Content Include="mvp-jquery-handlebars-example.ts\src\main\assets\toolbar_button.xslt" />
     <Content Include="mvp-jquery-handlebars-example.ts\css\absolute_animations.css" />
     <Content Include="mvp-jquery-handlebars-example.ts\css\relative_animations.css" />
     <Content Include="mvp-jquery-handlebars-example.ts\css\samples.css" />
@@ -59,12 +63,24 @@
     <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\toolbar_button_back.png" />
     <Content Include="mvp-jquery-handlebars-example.ts\res\ios\640w\toolbar_button_normal.png" />
     <Content Include="mvp-jquery-handlebars.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery-handlebars.ts\pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="mvp-jquery-xslt.ts\Gruntfile.js" />
+    <Content Include="mvp-jquery-xslt.ts\pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="mvp-jquery.ts\pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="mvp.ts\Gruntfile.js" />
     <Content Include="mvp-jquery.ts\Gruntfile.js" />
     <Content Include="mvp-jquery.ts\lib\jquery-1.11.1.js" />
     <Content Include="mvp-jquery.ts\lib\jquery-1.11.1.min.js" />
     <Content Include="mvp-jquery-handlebars.ts\lib\handlebars-v1.3.0.js" />
+    <Content Include="mvp.ts\pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +98,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="pom.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\lib\rison-0.9.2.d.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\History\HashHistoryManager.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\History\HashHistoryItem.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelImportStateCallback.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\ModelStateChangeEvent.ts" />
+    <TypeScriptCompile Include="reference.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\CompositeCommandModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Command\SimpleCommandModel.ts" />
-    <TypeScriptCompile Include="reference.ts" />
     <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\reference.ts" />
     <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\basicStackPresenterFactory.ts" />
     <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\src\main\ts\BasicStack\BasicStackModel.ts" />
@@ -164,8 +190,8 @@
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractDescriptiveStackPresenterModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterModelEntry.ts" />
-    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPopModelStateChange.ts" />
-    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPushModelStateChange.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPopModelStateChangeOperation.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\AbstractStackPresenterPushModelStateChangeOperation.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\IStackPresenterModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Composite\Stack\StackPresenterModelChangeDescription.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Error\ErrorModelState.ts" />
@@ -173,7 +199,7 @@
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\Error\IRetryErrorModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModel.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelChangeListener.ts" />
-    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelStateChange.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelStateChangeOperation.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelStateChangeListener.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IPresenter.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IPresenterChangeListener.ts" />
@@ -201,7 +227,6 @@
     <TypeScriptCompile Include="mvp.ts\src\main\ts\xml.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="mvp-jquery-handlebars-example.ts\lib\" />
     <Folder Include="mvp.ts\src\main\ts\Loading\" />
   </ItemGroup>
   <PropertyGroup>

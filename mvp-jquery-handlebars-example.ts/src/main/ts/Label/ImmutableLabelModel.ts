@@ -12,6 +12,14 @@ module TS.JQuery.MVP.HB.Example.Label {
             return this._label;
         }
 
+        public exportState(models?: TS.MVP.IModel[]): any {
+            return this._label;
+        }
+
+        public _importState(description: any): TS.MVP.ModelStateChangeEvent[] {
+            this._label = <string>description;
+            return null;
+        }
         
     }
 

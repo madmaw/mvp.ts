@@ -31,7 +31,7 @@ module TS.JQuery.MVP.Composite {
                         if (state >= TS.MVP.PresenterState.Started) {
                             presenter.stop();
                         }
-                        presenter.destroy();
+                        presenter.destroy(true);
                     }
                 }
                 this._presenters = [];
@@ -66,13 +66,15 @@ module TS.JQuery.MVP.Composite {
             return result;
         }
 
-        public _doDestroy(detachView?: boolean): boolean {
+        public _doDestroy(detachView: boolean): boolean {
             var result = false;
+            var ownsView = (<IJQueryView>this.getView()).ownsSelf;
             for (var i in this._presenters) {
                 var presenter = this._presenters[i];
                 // NOTE setting detach view to false will yield some performance benefits since we will just trim the entire tree in one hit (at the parent)
                 // TODO are there cases where the view heirarchy does not reflect the controller heirarchy? (I hope not)
-                result = presenter.destroy(false) || result;
+                // NOTE, it only works if we actually own the underlying view, hence the check here
+                result = presenter.destroy(!ownsView && detachView) || result;
             }
             // destroy our view at the end, otherwise the children cannot remove themselves from an empty view
             result = super._doDestroy(detachView) || result;

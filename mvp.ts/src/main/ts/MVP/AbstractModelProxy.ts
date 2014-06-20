@@ -3,8 +3,8 @@ module TS.MVP {
     // Class
     export class AbstractModelProxy extends AbstractModel implements IModel {
 
-        private _onChangeListener: (source: IModel, event: ModelChangeEvent) => void;
-        private _onStateChangeListener: (source: IModel, event: IModelStateChange) => void;
+        private _onChangeListener: IModelChangeListener;
+        private _onStateChangeListener: IModelStateChangeListener;
 
         // Constructor
         constructor(private _model: IModel) {
@@ -14,7 +14,7 @@ module TS.MVP {
                 this._fireModelChangeEvent(event, true);
             };
 
-            this._onStateChangeListener = (source: IModel, event: IModelStateChange) => {
+            this._onStateChangeListener = (source: IModel, event: ModelStateChangeEvent) => {
                 this._fireStateChangeEvent(source, event);
             };
         }
@@ -35,13 +35,13 @@ module TS.MVP {
             this._model.removeStateChangeListener(this._onStateChangeListener);
         }
 
-        public createStateDescription(models?: IModel[]): any {
+        public exportState(models?: IModel[]): any {
             this._checkModels(models);
-            return this._model.createStateDescription(models);
+            return this._model.exportState(models);
         }
 
-        public loadStateDescription(description: any) {
-            this._model.loadStateDescription(description);
+        public importState(description: any, importCompletionCallback: IModelImportStateCallback) {
+            this._model.importState(description, importCompletionCallback);
         }
 
     }

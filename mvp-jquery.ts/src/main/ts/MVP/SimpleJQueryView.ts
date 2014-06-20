@@ -62,6 +62,7 @@ module TS.JQuery.MVP {
         }
 
         private _attached: boolean;
+        public ownsSelf = true;
 
         constructor(public $: JQuery, private _container: JQuery, private _prepend: boolean) {
             this._attached = false;

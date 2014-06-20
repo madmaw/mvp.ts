@@ -6,6 +6,10 @@ module TS.JQuery.Template.HB {
             var handlebarsTemplate = Handlebars.compile(template, compileOptions);
             return function (t: T): JQuery {
                 var out = handlebarsTemplate(t, processOptions);
+//                console.log("----");
+//                console.log(t);
+//                console.log(template);
+//                console.log(out);
                 return $($.parseHTML(out));
             }
         }

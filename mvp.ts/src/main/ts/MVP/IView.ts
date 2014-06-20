@@ -2,7 +2,8 @@
 module TS.MVP {
 
     export interface IView {
-        attach():void;
+
+        attach(): void;
 
         detach(): void;
 

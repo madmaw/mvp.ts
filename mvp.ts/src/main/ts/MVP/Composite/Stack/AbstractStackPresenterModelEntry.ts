@@ -1,8 +1,8 @@
 module TS.MVP.Composite.Stack {
 
-    export class AbstractStackPresenterModelEntry {
+    export class AbstractStackPresenterModelEntry<PresenterType extends IPresenter> {
 
-        constructor(public presenter: IPresenter, public data?: any) {
+        constructor(public presenter: PresenterType, public data?: any) {
         }
     }
 

@@ -52,18 +52,18 @@ module TS.MVP {
             }
             if (suppressFireStateTokenChange != true) {
                 // fire state token change event
-                this._fireStateChangeEvent(this);
+                this._fireStateChangeOperation(this);
             }
         }
 
-        public addStateChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
+        public addStateChangeListener(listener: IModelStateChangeListener ) {
             this._stateChangeListeners.push(listener);
             if (this._stateChangeListeners.length == 1) {
                 this._startedListeningForStateChanges();
             }
         }
 
-        public removeStateChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
+        public removeStateChangeListener(listener: IModelStateChangeListener ) {
             if (arrayRemoveElement(this._stateChangeListeners, listener)) {
                 if (this._stateChangeListeners.length == 0) {
                     this._stoppedListeningForStateChanges();
@@ -78,12 +78,17 @@ module TS.MVP {
         public _stoppedListeningForStateChanges() {
         }
 
-        public _fireStateChangeEvent(source: IModel, change?: IModelStateChange) {
+        public _fireStateChangeOperation(source: IModel, operation?: IModelStateChangeOperation) {
+            var event = new ModelStateChangeEvent(operation);
+            this._fireStateChangeEvent(source, event);
+        } 
+
+        public _fireStateChangeEvent(source: IModel, event: ModelStateChangeEvent) {
             var fired = [];
             for (var i in this._stateChangeListeners) {
                 var stateTokenChangeListener = this._stateChangeListeners[i];
                 if (fired.indexOf(stateTokenChangeListener) < 0) {
-                    stateTokenChangeListener(source, change);
+                    stateTokenChangeListener(source, event);
                     // can end up with legitimate duplicates, don't want to fire them multiple times though
                     fired.push(stateTokenChangeListener);
                 }
@@ -91,13 +96,20 @@ module TS.MVP {
         }
 
 
-        public createStateDescription(models?: IModel[]): any {
+        public exportState(models?: IModel[]): any {
             this._checkModels(models);
             return null;
         }
 
-        public loadStateDescription(description: any) {
-            // ignore
+        public importState(description: any, importCompletionCallback: IModelImportStateCallback): void {
+            var changes = this._importState(description);
+            if (importCompletionCallback != null) {
+                importCompletionCallback(changes);
+            }
+        }
+
+        public _importState(description: any): ModelStateChangeEvent[]{
+            return null;
         }
 
         public _checkModels(models: IModel[]) {

@@ -6,9 +6,9 @@ module TS.MVP.Composite.Stack {
 
 
     // Class
-    export class AbstractStackPresenterModel extends AbstractCompositePresenterModel implements IStackPresenterModel {
+    export class AbstractStackPresenterModel<PresenterType extends IPresenter> extends AbstractCompositePresenterModel implements IStackPresenterModel {
 
-        public _stack: AbstractStackPresenterModelEntry[];
+        public _stack: AbstractStackPresenterModelEntry<PresenterType>[];
         
 
         // Constructor
@@ -58,7 +58,7 @@ module TS.MVP.Composite.Stack {
             }
         }
 
-        public _ensureVisible(presenter: IPresenter, suppressFireDescriptionChangeEvent?:boolean): boolean {
+        public _ensureVisible(presenter: PresenterType, suppressFireDescriptionChangeEvent?:boolean): boolean {
             // pop back to this presenter
             var result;
             var index = this._indexOf(presenter);
@@ -73,7 +73,7 @@ module TS.MVP.Composite.Stack {
             return result;
         }
 
-        public _popTo(presenter: IPresenter, suppressFireDescriptionChangeEvent?: boolean): void {
+        public _popTo(presenter: PresenterType, suppressFireDescriptionChangeEvent?: boolean): void {
 
             while (true) {
                 var peeked = this.peek();
@@ -85,7 +85,7 @@ module TS.MVP.Composite.Stack {
             }
         }
 
-        public _deStack(presenter: IPresenter, suppressFireModelChangeEvent?:boolean, suppressFireDescriptionChangeEvent?:boolean): void {
+        public _deStack(presenter: PresenterType, suppressFireModelChangeEvent?:boolean, suppressFireDescriptionChangeEvent?:boolean): void {
             // pop or just silently remove as required
             if (this.peek() == presenter) {
                 this._pop(suppressFireModelChangeEvent, suppressFireDescriptionChangeEvent);
@@ -103,7 +103,7 @@ module TS.MVP.Composite.Stack {
             }
         }
 
-        public _pop(suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): AbstractStackPresenterModelEntry {
+        public _pop(suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): AbstractStackPresenterModelEntry<PresenterType> {
             var result;
             if (this._stack.length > 0) {
                 var previousEntry = this._stack[this._stack.length - 1];
@@ -114,7 +114,7 @@ module TS.MVP.Composite.Stack {
                     this._fireModelChangeEvent(changeDescription, true);
                 }
                 if (suppressFireDescriptionChangeEvent != true) {
-                    this._fireStateChangeEvent(this, new AbstractStackPresenterPopModelStateChange(this, entries[0]));
+                    this._fireStateChangeOperation(this, new AbstractStackPresenterPopModelStateChangeOperation(this, entries[0]));
                 }
                 result = previousEntry;
                 this._updateListeningForStateDescriptionChanges();
@@ -124,7 +124,7 @@ module TS.MVP.Composite.Stack {
             return result;
         }
 
-        public _push(presenter: IPresenter, data?: any, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): void {
+        public _push(presenter: PresenterType, data?: any, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): void {
             this._pushEntry(
                 new AbstractStackPresenterModelEntry(presenter, data),
                 suppressFireModelChangeEvent,
@@ -132,11 +132,11 @@ module TS.MVP.Composite.Stack {
             );
         }
 
-        public _contains(presenter: IPresenter): boolean {
+        public _contains(presenter: PresenterType): boolean {
             return this._indexOf(presenter) != null;
         }
 
-        public _indexOf(presenter: IPresenter): number {
+        public _indexOf(presenter: PresenterType): number {
             var result: number = null;
             for (var i = this._stack.length; i > 0;) {
                 i--;
@@ -149,7 +149,7 @@ module TS.MVP.Composite.Stack {
             return result;
         }
 
-        public _pushEntryGetChange(entry: AbstractStackPresenterModelEntry, suppressFireModelChangeEvent?: boolean): IModelStateChange {
+        public _pushEntryGetChange(entry: AbstractStackPresenterModelEntry<PresenterType>, suppressFireModelChangeEvent?: boolean): IModelStateChangeOperation {
             var previousPresenter = this.peek();
             this._stack.push(entry);
             if (suppressFireModelChangeEvent != true) {
@@ -157,18 +157,18 @@ module TS.MVP.Composite.Stack {
                 this._fireModelChangeEvent(description, true);
             }
             this._updateListeningForStateDescriptionChanges();
-            return new AbstractStackPresenterPushModelStateChange(this, entry);
+            return new AbstractStackPresenterPushModelStateChangeOperation(this, entry);
         }
 
-        public _pushEntry(entry: AbstractStackPresenterModelEntry, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean) {
+        public _pushEntry(entry: AbstractStackPresenterModelEntry<PresenterType>, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean) {
             var change = this._pushEntryGetChange(entry, suppressFireModelChangeEvent);
             if (suppressFireDescriptionChangeEvent != true) {
-                this._fireStateChangeEvent(this, change);
+                this._fireStateChangeOperation(this, change);
             }
         }
 
-        public peek(): IPresenter {
-            var result: IPresenter;
+        public peek(): PresenterType {
+            var result: PresenterType;
             if (this._stack.length > 0) {
                 result = this._stack[this._stack.length - 1].presenter;
             } else {
@@ -177,39 +177,53 @@ module TS.MVP.Composite.Stack {
             return result;
         }
 
-        public createStateDescription(models?: IModel[]): any {
+        public exportState(models?: IModel[]): any {
             models = this._checkModels(models);
             var result = [];
             for (var i in this._stack) {
                 var entry = this._stack[i];
-                var description: any = this._entryToDescription(entry, models);
+                var description: any = this._exportEntry(entry, models);
                 result.push(description);
             }
             return result;
         }
 
-        public loadStateDescription(description: any) {
+        public importState(description: any, importCompletionCallback: IModelImportStateCallback) {
+            var result: ModelStateChangeEvent[] = [];
             var descriptions: any[] = description;
             // remove everything (TODO would be nice if we tried to reuse the presenter instead)
             while (!this.isStackEmpty()) {
-                this._pop(true);
+                this._pop(true, true);
             }
             for (var i in descriptions) {
                 var presenterDescription = descriptions[i];
-                var entry = this._createEntryFromDescription(presenterDescription);
+                var entry = this._importEntry(presenterDescription, function(changes: ModelStateChangeEvent[]) {
+                    // TODO implement sensibly
+                });
                 if (entry != null) {
-                    this._pushEntry(entry, true);
+                    var change = this._pushEntryGetChange(entry, true);
+                    if (change) {
+                        var event = new ModelStateChangeEvent(change);
+                        result.push(event);
+                    }
                 }
+            }
+            if( importCompletionCallback ) {
+                importCompletionCallback(result);
             }
         }
 
-        public _entryToDescription(entry: AbstractStackPresenterModelEntry, models: IModel[]): any {
+        public _exportEntry(entry: AbstractStackPresenterModelEntry<PresenterType>, models: IModel[]): any {
             return null;
         }
 
-        public _createEntryFromDescription(description: any): AbstractStackPresenterModelEntry {
+        public _importEntry(description: any, importCompletionCallback: IModelImportStateCallback): AbstractStackPresenterModelEntry<PresenterType> {
+            if( importCompletionCallback ) {
+                importCompletionCallback([]);
+            }
             return null;
         }
+
     }
 
 }

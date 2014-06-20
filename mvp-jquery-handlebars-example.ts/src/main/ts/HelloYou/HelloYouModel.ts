@@ -18,13 +18,14 @@ module TS.JQuery.MVP.HB.Example.HelloYou {
             this._fireModelChangeEvent();
         }
 
-        public createStateDescription(models?: TS.MVP.IModel[]): any {
+        public exportState(models?: TS.MVP.IModel[]): any {
             models = this._checkModels(models);
             return this._name;
         }
 
-        public loadStateDescription(description: any) {
+        public importState(description: any, callback:TS.MVP.IModelImportStateCallback) {
             this._name = description;
+            callback([]);
         }
 
 

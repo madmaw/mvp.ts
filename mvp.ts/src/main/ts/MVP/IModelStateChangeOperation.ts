@@ -2,7 +2,7 @@
 module TS.MVP {
 
     // Class
-    export interface IModelStateChange {
+    export interface IModelStateChangeOperation {
 
         undo(): void;
 
