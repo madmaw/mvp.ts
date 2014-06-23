@@ -1,9 +1,9 @@
-﻿module TS.MVP.History {
+﻿module TS.History {
 
     export class HashHistoryItem {
 
 
-        public constructor(private _modelStateData: any, private _modelStateDataEncoded: string, private _modelStateChange: IModelStateChangeOperation) {
+        public constructor(private _modelStateData: any, private _modelStateDataEncoded: string, private _modelStateChange: TS.MVP.IModelStateChangeOperation) {
         }
 
         public getModelStateData() {

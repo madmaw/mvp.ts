@@ -1,13 +1,13 @@
 // Module
-module TS.MVP.History {
+module TS.History {
 
     // Class
     export class HashHistoryManager {
 
-        private _stateDescriptionChangeListener: IModelStateChangeListener;
+        private _stateDescriptionChangeListener: TS.MVP.IModelStateChangeListener;
         private _historyChangeListener: EventListener;
 
-        private _model: IModel;
+        private _model: TS.MVP.IModel;
         private _historyItems: HashHistoryItem[];
         private _historyItemIndex: number;
         
@@ -15,10 +15,9 @@ module TS.MVP.History {
         // Constructor
         constructor(private _presenter: TS.MVP.IPresenter, private _encoder:(data:any)=>string, private _decoder:(encoded:string)=>any) {
             this._historyItems = [];
-            // TODO listen for changes to the model
             this._model = this._presenter.getModel();
 
-            this._stateDescriptionChangeListener = (model: IModel, modelStateChange: ModelStateChangeEvent) => {
+            this._stateDescriptionChangeListener = (model: TS.MVP.IModel, modelStateChange: TS.MVP.ModelStateChangeEvent) => {
                 this.push(modelStateChange);
             };
 
@@ -46,7 +45,7 @@ module TS.MVP.History {
                     description = state;
                 }
                 var back;
-                var change: IModelStateChangeOperation;
+                var change: TS.MVP.IModelStateChangeOperation;
                 var historyItemIndex: number;
                 if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == dataString) {
                     back = true;
@@ -59,7 +58,7 @@ module TS.MVP.History {
                 } else {
                     // we've probably backed off the end of the local history into the browser history (the user refreshed), add this value to the start of our history
                     historyItemIndex = 0;
-                    this._historyItems.splice(0, 0, new TS.MVP.History.HashHistoryItem(description, dataString, null));
+                    this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null));
                     back = true;
                     change = null;
                 }
@@ -77,7 +76,7 @@ module TS.MVP.History {
 
         }
 
-        public push(modelStateChange: ModelStateChangeEvent) {
+        public push(modelStateChange: TS.MVP.ModelStateChangeEvent) {
             // TODO : check that the state isn't identical to the back state, if it is, then assume this is actually a back event and adjust the history accordingly
             // always replace the first entry as it will occur on loading the model
             var replace = this._historyItemIndex == null;
@@ -142,8 +141,12 @@ module TS.MVP.History {
         }
 
         public init(location: Location, onInitialized?:()=>void): void {
-            // TODO 
+
+            var previousHash = cookieGet("previousHash");
+
             var hash = location.hash;
+            var populateHistory = (previousHash != hash);
+
             var dataString: string;
             if (hash != null && hash.length > 0) {
                 if (hash.charAt(0) == '#') {
@@ -154,22 +157,24 @@ module TS.MVP.History {
                 dataString = null;
             }
             var data = this._decode(dataString);
-            this._init(data, (changes: ModelStateChangeEvent[]) => {
+            this._init(data, (changes: TS.MVP.ModelStateChangeEvent[]) => {
+                // pre-populating history may not be a good idea anyway
                 /*
-                this._historyItems = [];
-                for (var i in changes) {
-                    var change = changes[i];
-                    // issue here is data isn't actually currently valid
-                    var data = change.getDescription();
-                    var s = this._encode(data);
-                    var historyItem = new HashHistoryItem(data, s, change.getOperation());
-                    this._historyItems.push(historyItem);
-                }
-                var historyItemIndex = this._historyItems.length - 1;
-                if (historyItemIndex >= 0) {
-                    this._historyItemIndex = historyItemIndex;
-                } else {
-                    this._historyItemIndex = null;
+                if (populateHistory) {
+                    this._historyItems = [];
+                    for (var i in changes) {
+                        var change = changes[i];
+                        
+                        var historyItem = new HashHistoryItem(null, null, change.getOperation());
+                        this._historyItems.push(historyItem);
+                        //window.history.pushState();
+                    }
+                    var historyItemIndex = this._historyItems.length - 1;
+                    if (historyItemIndex >= 0) {
+                        this._historyItemIndex = historyItemIndex;
+                    } else {
+                        this._historyItemIndex = null;
+                    }
                 }
                 */
                 if (onInitialized) {
@@ -179,7 +184,7 @@ module TS.MVP.History {
         }
 
         private _init(description: any, onInitialized?: TS.MVP.IModelImportStateCallback): void {
-            var started = this._presenter.getState() == PresenterState.Started;
+            var started = this._presenter.getState() == TS.MVP.PresenterState.Started;
             if (started) {
                 this._presenter.stop();
             }

@@ -63,6 +63,7 @@ module TS.MVP.Tab {
             if (description != null) {
                 this._setSelectedTabId(description["_selectedTabId"], true);
             }
+            // TODO ensure you import the selected tab id last!
             super.importState(description, importCompletionCallback);
         }
 

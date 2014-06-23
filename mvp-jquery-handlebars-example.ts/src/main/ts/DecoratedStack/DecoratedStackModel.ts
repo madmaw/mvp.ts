@@ -41,6 +41,15 @@ module TS.JQuery.MVP.HB.Example.DecoratedStack {
             return this._toolbarDecoratorFactory(presenters, commandModel);
         }
 
+        public _importEntry(description: any, importCompletionCallback: TS.MVP.IModelImportStateCallback): TS.MVP.Composite.Stack.AbstractStackPresenterModelEntry<TS.MVP.IPresenter> {
+            var presenter = this._createPresenter(description);
+            return new TS.MVP.Composite.Stack.AbstractStackPresenterModelEntry(presenter, description);
+        }
+
+        public _exportEntry(entry: TS.MVP.Composite.Stack.AbstractStackPresenterModelEntry<TS.MVP.IPresenter>, models: TS.MVP.IModel[]): any {
+            return entry.data;
+        }
+
         /*
         public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry): any {
             return entry.data;

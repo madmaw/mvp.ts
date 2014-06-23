@@ -9,7 +9,7 @@ module TS.MVP {
 
         removeStateChangeListener(listener: IModelStateChangeListener ): void;
 
-        exportState(models?:IModel[]):any;
+        exportState(models?:IModel[]): any;
 
         importState(description: any, importCompletionCallback: IModelImportStateCallback): void;
     }

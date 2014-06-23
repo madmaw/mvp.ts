@@ -102,6 +102,7 @@
       <SubType>Designer</SubType>
     </Content>
     <TypeScriptCompile Include="mvp-jquery-handlebars-example.ts\lib\rison-0.9.2.d.ts" />
+    <TypeScriptCompile Include="mvp.ts\src\main\ts\cookie.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\History\HashHistoryManager.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\History\HashHistoryItem.ts" />
     <TypeScriptCompile Include="mvp.ts\src\main\ts\MVP\IModelImportStateCallback.ts" />
