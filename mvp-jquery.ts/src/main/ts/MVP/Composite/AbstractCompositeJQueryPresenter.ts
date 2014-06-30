@@ -1,10 +1,10 @@
-module TS.JQuery.MVP.Composite {
+module TS.IJQuery.MVP.Composite {
 
     export class AbstractCompositeJQueryPresenter<ModelType extends TS.MVP.Composite.ICompositePresenterModel> extends AbstractJQueryPresenter<ModelType> {
 
         public _presenters: TS.MVP.IPresenter[];
 
-        constructor(viewFactory: TS.JQuery.MVP.IJQueryViewFactory) {
+        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory) {
             super(viewFactory);
             this._presenters = [];
         }
@@ -14,7 +14,7 @@ module TS.JQuery.MVP.Composite {
             this.clear();
             var presenters = model.getPresenters();
             for (var i in presenters) {
-                var presenter = <TS.JQuery.MVP.IJQueryPresenter>presenters[i];
+                var presenter = <TS.IJQuery.MVP.IJQueryPresenter>presenters[i];
                 this._add(presenter, false, false);
             }
             this.layout();
@@ -59,7 +59,7 @@ module TS.JQuery.MVP.Composite {
         public _doInit(): boolean {
             var result = super._doInit();
             for (var i in this._presenters) {
-                var presenter = <TS.JQuery.MVP.IJQueryPresenter>this._presenters[i];
+                var presenter = <TS.IJQuery.MVP.IJQueryPresenter>this._presenters[i];
                 var presenterContainer = this._getPresenterContainer(presenter);
                 result = presenter.init(presenterContainer, false) || result;
             }
@@ -81,7 +81,7 @@ module TS.JQuery.MVP.Composite {
             return result;
         }
 
-        public _add(presenter: TS.JQuery.MVP.IJQueryPresenter, layout?: boolean, prepend?: boolean) {
+        public _add(presenter: TS.IJQuery.MVP.IJQueryPresenter, layout?: boolean, prepend?: boolean) {
             this._presenters.push(presenter);
 
             var container = this._getPresenterContainer(presenter);

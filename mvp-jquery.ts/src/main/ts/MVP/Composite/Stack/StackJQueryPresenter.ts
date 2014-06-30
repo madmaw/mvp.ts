@@ -1,12 +1,12 @@
 // Module
-module TS.JQuery.MVP.Composite.Stack {
+module TS.IJQuery.MVP.Composite.Stack {
 
     export class StackJQueryPresenter<ModelType extends TS.MVP.Composite.Stack.IStackPresenterModel> extends AbstractCompositeJQueryPresenter<ModelType> {
 
         private removedAnimatedChildren: TS.MVP.IPresenter[];
 
         constructor(
-            viewFactory: TS.JQuery.MVP.IJQueryViewFactory,
+            viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             private _animationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[]=[]
         ) {
             super(viewFactory);
@@ -139,7 +139,7 @@ module TS.JQuery.MVP.Composite.Stack {
 
             for (var i in this._animationFactoryBundles) {
                 var animationFactoryBundle: StackJQueryPresenterAnimationFactoryBundle = this._animationFactoryBundles[i];
-                var animationFactory = <TS.JQuery.Animation.IJQueryAnimationFactory>animationFactoryBundle[animationFactoryName];
+                var animationFactory = <TS.IJQuery.Animation.IJQueryAnimationFactory>animationFactoryBundle[animationFactoryName];
                 if (animationFactory != null) {
                     var selector = animationFactoryBundle.selector;
                     var jquery = this._view.$;

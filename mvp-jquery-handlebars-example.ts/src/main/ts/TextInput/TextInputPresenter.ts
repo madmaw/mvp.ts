@@ -1,10 +1,10 @@
-module TS.JQuery.MVP.HB.Example.TextInput {
+module TS.IJQuery.MVP.HB.Example.TextInput {
 
     // Class
-    export class TextInputPresenter extends TS.JQuery.MVP.AbstractJQueryPresenter<ITextInputModel> {
+    export class TextInputPresenter extends TS.IJQuery.MVP.AbstractJQueryPresenter<ITextInputModel> {
         // Constructor
         constructor(
-            viewFactory: TS.JQuery.MVP.IJQueryViewFactory,
+            viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             private _inputElementSelector: string = ".text_input_presenter_input",
             private _buttonElementSelector: string = ".text_input_presenter_button"
         ) {

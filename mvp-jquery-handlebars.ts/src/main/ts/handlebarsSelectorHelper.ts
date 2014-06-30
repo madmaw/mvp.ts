@@ -1,4 +1,4 @@
-module TS.JQuery.Template.HB {
+module TS.IJQuery.Template.HB {
 
     export function handlbarsSelectorHelper(selector: string, extraClasses?:any): string {
         var result;

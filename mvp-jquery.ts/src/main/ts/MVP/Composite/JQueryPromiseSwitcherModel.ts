@@ -1,4 +1,4 @@
-module TS.JQuery.MVP.Composite {
+module TS.IJQuery.MVP.Composite {
 
     export class JQueryPromiseSwitcherModel extends TS.MVP.Composite.AbstractCompositePresenterModel {
 
@@ -32,7 +32,7 @@ module TS.JQuery.MVP.Composite {
             var promise = promiseDescription.promise;
             var maxProgress = promiseDescription.maxProgress;
             // initialize the loading model
-            var loadingModel = new TS.JQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
+            var loadingModel = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
             this._loadingPresenter.setModel(loadingModel);
 
             this._currentPresenter = this._loadingPresenter;

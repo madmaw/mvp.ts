@@ -1,4 +1,4 @@
-module TS.JQuery.Template.XSLT {
+module TS.IJQuery.Template.XSLT {
 
     export function xsltJQueryStringTemplateFactory(): IJQueryStringTemplateFactory {
         // check for MS oddities

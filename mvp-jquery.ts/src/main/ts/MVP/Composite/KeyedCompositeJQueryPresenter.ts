@@ -1,4 +1,4 @@
-module TS.JQuery.MVP.Composite {
+module TS.IJQuery.MVP.Composite {
 
     export class KeyedCompositeJQueryPresenter<ModelType extends TS.MVP.Composite.IKeyedCompositePresenterModel> extends AbstractCompositeJQueryPresenter<ModelType> {
 

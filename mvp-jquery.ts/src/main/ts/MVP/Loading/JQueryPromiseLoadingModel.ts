@@ -1,4 +1,4 @@
-module TS.JQuery.MVP.Loading {
+module TS.IJQuery.MVP.Loading {
 
     export class JQueryPromiseLoadingModel<T> extends TS.MVP.AbstractModel implements TS.MVP.Loading.ILoadingModel {
 

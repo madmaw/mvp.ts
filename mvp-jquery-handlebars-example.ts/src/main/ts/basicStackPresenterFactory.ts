@@ -1,22 +1,22 @@
 
 // Module
-module TS.JQuery.MVP.HB.Example {
+module TS.IJQuery.MVP.HB.Example {
 
-    export function basicStackPresenterFactoryCreate(asyncTemplateFactory: TS.JQuery.Template.IJQueryAsyncPathTemplateFactory, loadingPromises: JQueryPromise<any>[]): TS.MVP.IPresenter {
+    export function basicStackPresenterFactoryCreate(asyncTemplateFactory: TS.IJQuery.Template.IJQueryAsyncPathTemplateFactory, loadingPromises: JQueryPromise<any>[]): TS.MVP.IPresenter {
 
-        var labelViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/label.html", loadingPromises);  
+        var labelViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/label.html", loadingPromises);
 
-        var basicStackModel = new TS.JQuery.MVP.HB.Example.BasicStack.BasicStackModel(labelViewFactory);
+        var basicStackModel = new TS.IJQuery.MVP.HB.Example.BasicStack.BasicStackModel(labelViewFactory);
 
         //var stackViewFactory = new templa.dom.mvc.DocumentFragmentElementViewFactory("<div key='stack'></div>");
-        //var stackViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/stack.html", loadingPromises);
-        var stackViewFactory = TS.JQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
-        var stackController = new TS.JQuery.MVP.Composite.Stack.StackJQueryPresenter<TS.MVP.Composite.Stack.IStackPresenterModel>(stackViewFactory);
+        //var stackViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/stack.html", loadingPromises);
+        var stackViewFactory = TS.IJQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
+        var stackController = new TS.IJQuery.MVP.Composite.Stack.StackJQueryPresenter<TS.MVP.Composite.Stack.IStackPresenterModel>(stackViewFactory);
         stackController.setModel(basicStackModel);
 
         //.DocumentFragmentElementViewFactory("<input key='" + inputElementKey + "'></input><br/><input type='button' key='" + inputButtonKey + "' value='Submit'></input>");
-        var inputViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/input.html", loadingPromises); 
-        var inputController = new TS.JQuery.MVP.HB.Example.TextInput.TextInputPresenter(inputViewFactory);
+        var inputViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/input.html", loadingPromises);
+        var inputController = new TS.IJQuery.MVP.HB.Example.TextInput.TextInputPresenter(inputViewFactory);
         inputController.setModel(basicStackModel);
 
 
@@ -29,9 +29,9 @@ module TS.JQuery.MVP.HB.Example {
             presenters
         );
 
-        var viewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/stack_container.html", loadingPromises);
+        var viewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(asyncTemplateFactory, "handlebars/stack_container.html", loadingPromises);
 //            "<div class = '" + idInput + "' > </div><div class = '" + idStack + "' > </div>"
-        var presenter = new TS.JQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
+        var presenter = new TS.IJQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
             viewFactory
         );
         presenter.setModel(model);

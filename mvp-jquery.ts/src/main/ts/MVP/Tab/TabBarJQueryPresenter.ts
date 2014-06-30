@@ -1,5 +1,5 @@
 // Module
-module TS.JQuery.MVP.Tab {
+module TS.IJQuery.MVP.Tab {
 
     // Class 
     export class TabBarJQueryPresenter<ModelType extends TS.MVP.Tab.ITabBarModel> extends AbstractJQueryPresenter<ModelType> {

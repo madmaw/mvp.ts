@@ -1,10 +1,10 @@
 // Module
-module TS.JQuery.MVP.HB.Example.Label {
+module TS.IJQuery.MVP.HB.Example.Label {
 
     // Class
-    export class LabelPresenter extends TS.JQuery.MVP.AbstractJQueryPresenter<ILabelModel> {
+    export class LabelPresenter extends TS.IJQuery.MVP.AbstractJQueryPresenter<ILabelModel> {
         
-        constructor(viewFactory: TS.JQuery.MVP.IJQueryViewFactory, private _labelElementSelector:string = ".label_presenter_label") {
+        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory, private _labelElementSelector:string = ".label_presenter_label") {
             super(viewFactory);
         }
 

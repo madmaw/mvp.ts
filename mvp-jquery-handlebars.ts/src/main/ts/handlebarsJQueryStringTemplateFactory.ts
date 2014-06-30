@@ -1,4 +1,4 @@
-module TS.JQuery.Template.HB {
+module TS.IJQuery.Template.HB {
 
     export function handlebarsJQueryStringTemplateFactory(compileOptions?:any, processOptions?:any): IJQueryStringTemplateFactory {
         // check for MS oddities

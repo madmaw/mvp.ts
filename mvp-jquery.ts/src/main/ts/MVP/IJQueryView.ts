@@ -1,6 +1,6 @@
 
 // Module
-module TS.JQuery.MVP {
+module TS.IJQuery.MVP {
     export interface IJQueryView extends TS.MVP.IView {
 
         $: JQuery

@@ -1,5 +1,5 @@
 // Module
-module TS.JQuery.MVP {
+module TS.IJQuery.MVP {
     export interface IJQueryViewFactory {
         (container: JQuery, params: any, prepend?: boolean):IJQueryView;
     }

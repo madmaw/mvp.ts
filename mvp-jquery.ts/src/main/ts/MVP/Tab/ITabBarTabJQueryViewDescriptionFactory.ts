@@ -1,6 +1,6 @@
 
 // Module
-module TS.JQuery.MVP.Tab {
+module TS.IJQuery.MVP.Tab {
 
     // Class
     export interface ITabBarTabJQueryViewDescriptionFactory {

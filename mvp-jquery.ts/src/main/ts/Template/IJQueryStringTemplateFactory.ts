@@ -1,4 +1,4 @@
-module TS.JQuery.Template {
+module TS.IJQuery.Template {
 
     export interface IJQueryStringTemplateFactory {
 

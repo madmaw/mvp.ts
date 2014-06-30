@@ -1,10 +1,10 @@
-module TS.JQuery.MVP.List {
+module TS.IJQuery.MVP.List {
 
     export class AbstractListJQueryPresenterItem {
-        constructor(private _presenter: TS.JQuery.MVP.IJQueryPresenter, private _presenterType: string, private _containerView?: TS.JQuery.MVP.IJQueryView) {
+        constructor(private _presenter: TS.IJQuery.MVP.IJQueryPresenter, private _presenterType: string, private _containerView?: TS.IJQuery.MVP.IJQueryView) {
         }
 
-        public getPresenter(): TS.JQuery.MVP.IJQueryPresenter {
+        public getPresenter(): TS.IJQuery.MVP.IJQueryPresenter {
             return this._presenter;
         }
 
@@ -12,7 +12,7 @@ module TS.JQuery.MVP.List {
             return this._presenterType;
         }
 
-        public getContainerView(): TS.JQuery.MVP.IJQueryView {
+        public getContainerView(): TS.IJQuery.MVP.IJQueryView {
             return this._containerView;
         }
     }

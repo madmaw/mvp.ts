@@ -1,4 +1,4 @@
-module TS.JQuery.MVP.Command {
+module TS.IJQuery.MVP.Command {
 
     // Class
     export class ToolbarCommandJQueryPresenter<ModelType extends TS.MVP.Command.ICommandModel> extends AbstractJQueryPresenter<ModelType> {

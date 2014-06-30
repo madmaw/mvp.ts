@@ -1,5 +1,3 @@
-///<reference path="ICompositePresenterModel.ts"/>
-
 // Module
 module TS.MVP.Composite {
 

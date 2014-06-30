@@ -1,5 +1,5 @@
 // Module
-module TS.JQuery.MVP.HB.Example.Toolbar {
+module TS.IJQuery.MVP.HB.Example.Toolbar {
 
     export class ToolbarDecoratorModel extends TS.MVP.Composite.AbstractCompositePresenterModel implements TS.MVP.Composite.IKeyedCompositePresenterModel {
 

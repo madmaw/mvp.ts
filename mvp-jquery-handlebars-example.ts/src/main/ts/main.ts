@@ -3,29 +3,29 @@ window.onload = function () {
 
 
         // attach the handlebars helper
-        Handlebars.registerHelper("selector", TS.JQuery.Template.HB.handlbarsSelectorHelper);
+        Handlebars.registerHelper("selector", TS.IJQuery.Template.HB.handlbarsSelectorHelper);
 
-        var stringTemplateFactory = TS.JQuery.Template.HB.handlebarsJQueryStringTemplateFactory();
+        var stringTemplateFactory = TS.IJQuery.Template.HB.handlebarsJQueryStringTemplateFactory();
 
-        var loadingSwitcherViewFactory = TS.JQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
-        var loadingSwitcherPresenter = new TS.JQuery.MVP.Composite.AbstractCompositeJQueryPresenter<TS.MVP.Composite.ICompositePresenterModel>(
+        var loadingSwitcherViewFactory = TS.IJQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
+        var loadingSwitcherPresenter = new TS.IJQuery.MVP.Composite.AbstractCompositeJQueryPresenter<TS.MVP.Composite.ICompositePresenterModel>(
             loadingSwitcherViewFactory
             );
-        var loadingViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplateSelector(stringTemplateFactory, "#loading");
-        var loadingPresenter = new TS.JQuery.MVP.Stateful.TemplatingStatefulJQueryPresenter<TS.MVP.Loading.LoadingModelState>(
+        var loadingViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplateSelector(stringTemplateFactory, "#loading");
+        var loadingPresenter = new TS.IJQuery.MVP.Stateful.TemplatingStatefulJQueryPresenter<TS.MVP.Loading.LoadingModelState>(
             loadingViewFactory
             );
 
-        var failureViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplateSelector(stringTemplateFactory, "#error");
-        var failurePresenter = new TS.JQuery.MVP.Stateful.TemplatingStatefulJQueryPresenter<TS.MVP.Error.ErrorModelState>(
+        var failureViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplateSelector(stringTemplateFactory, "#error");
+        var failurePresenter = new TS.IJQuery.MVP.Stateful.TemplatingStatefulJQueryPresenter<TS.MVP.Error.ErrorModelState>(
             failureViewFactory
             );
 
 
-        var loadingSwitcherModel = new TS.JQuery.MVP.Composite.JQueryPromiseSwitcherModel(
+        var loadingSwitcherModel = new TS.IJQuery.MVP.Composite.JQueryPromiseSwitcherModel(
             loadingPresenter,
             failurePresenter,
-            TS.JQuery.MVP.HB.Example.tabIndexPresenterCreateAsync,
+            TS.IJQuery.MVP.HB.Example.tabIndexPresenterCreateAsync,
             function (args: IArguments) {
                 var xhr = args[0];
                 var msg = <string>args[2];

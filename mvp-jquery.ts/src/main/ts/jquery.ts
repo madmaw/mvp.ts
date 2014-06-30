@@ -1,4 +1,4 @@
-module TS.JQuery {
+module TS.IJQuery {
 
     // additional jQuery functions
     export function jquerySelectFromRoot(jquery:JQuery, selector?:string, childFilter?:(index:number)=>boolean) {

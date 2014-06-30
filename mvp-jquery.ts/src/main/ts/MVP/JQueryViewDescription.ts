@@ -1,4 +1,4 @@
-module TS.JQuery.MVP {
+module TS.IJQuery.MVP {
 
     export class JQueryViewDescription {
 

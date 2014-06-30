@@ -1,4 +1,4 @@
-module TS.JQuery.Template {
+module TS.IJQuery.Template {
 
     export function jqueryAsyncPathTemplateFactoryProxy(stringTemplateFactory:IJQueryStringTemplateFactory): IJQueryAsyncPathTemplateFactory {
         return function <T>(path: string): JQueryPromise<IJQueryTemplate<T>> {

@@ -1,4 +1,4 @@
-module TS.JQuery.MVP {
+module TS.IJQuery.MVP {
 
     export class SimpleJQueryView implements IJQueryView {
 
@@ -22,16 +22,16 @@ module TS.JQuery.MVP {
             return SimpleJQueryView.viewFactoryFromHTML(html);
         }
 
-        public static viewFactoryFromTemplate<T>(template: TS.JQuery.Template.IJQueryTemplate<T>) {
+        public static viewFactoryFromTemplate<T>(template: TS.IJQuery.Template.IJQueryTemplate<T>) {
             return function (container: JQuery, params: any, prepend?: boolean): IJQueryView {
                 var html = template(params);
                 return new SimpleJQueryView(html, container, prepend);
             };
         }
 
-        public static viewFactoryFromTemplatePromise<T>(templatePromise: JQueryPromise<TS.JQuery.Template.IJQueryTemplate<T>>, loadingPromises?: JQueryPromise<any>[]) {
-            var myTemplate: TS.JQuery.Template.IJQueryTemplate<T> = null;
-            templatePromise.done(function (template: TS.JQuery.Template.IJQueryTemplate<T>) {
+        public static viewFactoryFromTemplatePromise<T>(templatePromise: JQueryPromise<TS.IJQuery.Template.IJQueryTemplate<T>>, loadingPromises?: JQueryPromise<any>[]) {
+            var myTemplate: TS.IJQuery.Template.IJQueryTemplate<T> = null;
+            templatePromise.done(function (template: TS.IJQuery.Template.IJQueryTemplate<T>) {
                 myTemplate = template;
             });
             if (loadingPromises) {
@@ -47,7 +47,7 @@ module TS.JQuery.MVP {
             };
         }
 
-        public static viewFactoryFromTemplateSelector(stringTemplateFactory: TS.JQuery.Template.IJQueryStringTemplateFactory, selector: string) {
+        public static viewFactoryFromTemplateSelector(stringTemplateFactory: TS.IJQuery.Template.IJQueryStringTemplateFactory, selector: string) {
             var templateString = $(selector).html();
             var template = stringTemplateFactory(templateString);
             return function(container: JQuery, params: any, prepend?: boolean): IJQueryView {
@@ -56,7 +56,7 @@ module TS.JQuery.MVP {
             };
         }
 
-        public static viewFactoryFromTemplatePath(asyncPathTemplateFactory:TS.JQuery.Template.IJQueryAsyncPathTemplateFactory, asyncPath:string, promises?:JQueryPromise<any>[]) {
+        public static viewFactoryFromTemplatePath(asyncPathTemplateFactory:TS.IJQuery.Template.IJQueryAsyncPathTemplateFactory, asyncPath:string, promises?:JQueryPromise<any>[]) {
             var templatePromise = asyncPathTemplateFactory(asyncPath);
             return SimpleJQueryView.viewFactoryFromTemplatePromise(templatePromise, promises);
         }

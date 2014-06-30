@@ -1,9 +1,9 @@
-module TS.JQuery.MVP.Composite.Stack {
+module TS.IJQuery.MVP.Composite.Stack {
 
     export class StackJQueryPresenterAnimationFactoryBundle {
         constructor(
-            public popAnimationFactory?: TS.JQuery.Animation.IJQueryAnimationFactory,
-            public pushAnimationFactory?: TS.JQuery.Animation.IJQueryAnimationFactory,
+            public popAnimationFactory?: TS.IJQuery.Animation.IJQueryAnimationFactory,
+            public pushAnimationFactory?: TS.IJQuery.Animation.IJQueryAnimationFactory,
             public selector?: string
         ) {
         }

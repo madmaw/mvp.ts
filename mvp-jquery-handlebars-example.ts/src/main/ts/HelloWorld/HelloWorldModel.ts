@@ -1,6 +1,6 @@
 // Module  
-module TS.JQuery.MVP.HB.Example.HelloWorld {
-    export class HelloWorldModel extends TS.MVP.AbstractModel implements TS.JQuery.MVP.HB.Example.Label.ILabelModel {
+module TS.IJQuery.MVP.HB.Example.HelloWorld {
+    export class HelloWorldModel extends TS.MVP.AbstractModel implements TS.IJQuery.MVP.HB.Example.Label.ILabelModel {
         private _name: string;
 
         constructor(_name: string) {

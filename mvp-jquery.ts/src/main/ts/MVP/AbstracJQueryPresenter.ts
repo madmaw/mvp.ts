@@ -1,6 +1,6 @@
 
 // Module
-module TS.JQuery.MVP {
+module TS.IJQuery.MVP {
 
     
     export class AbstractJQueryPresenter<ModelType extends TS.MVP.IModel> extends TS.MVP.AbstractPresenter<ModelType> implements IJQueryPresenter {

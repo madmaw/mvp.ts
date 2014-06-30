@@ -1,7 +1,7 @@
-﻿module TS.JQuery.MVP.Table {
+﻿module TS.IJQuery.MVP.Table {
 
 
-    export class AbstractTableJQueryPresenter<ModelType extends TS.MVP.Table.ITablePresenterModel> extends TS.JQuery.MVP.AbstractJQueryPresenter<ModelType> {
+    export class AbstractTableJQueryPresenter<ModelType extends TS.MVP.Table.ITablePresenterModel> extends TS.IJQuery.MVP.AbstractJQueryPresenter<ModelType> {
 
         private _rowHeaders: AbstractTableJQueryPresenterCell[];
         private _leafRowHeaders: AbstractTableJQueryPresenterCell[];

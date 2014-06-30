@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="assets">
+
+    <property key="css_prefixes_all">-moz- -webkit- -ms- -o-</property>
+
+    <diversifier key="size">
+        <configuration name="320w">
+
+            <property key="page_margin_left">8</property>
+            <property key="page_margin_right">8</property>
+
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">40</property>
+            <property key="toolbar_shadow_width">3</property>
+            <property key="toolbar_dark_width">5</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">20</property>
+            <property key="toolbar_button_height">20</property>
+            <property key="toolbar_button_rounding">4</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- tabbar -->
+            <property key="tabbar_horizontal_width">12</property>
+            <property key="tabbar_horizontal_height">50</property>
+            <property key="tabbar_horizontal_etch_width">1</property>
+            <!-- tabbar -->
+            <property key="tabbar_vertical_width">80</property>
+            <property key="tabbar_vertical_height">12</property>
+        </configuration>
+        <configuration name="640w">
+
+            <property key="page_margin_left">12</property>
+            <property key="page_margin_right">12</property>
+
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">50</property>
+            <property key="toolbar_shadow_width">4</property>
+            <property key="toolbar_dark_width">7</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">30</property>
+            <property key="toolbar_button_height">30</property>
+            <property key="toolbar_button_rounding">6</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- tabbar -->
+            <property key="tabbar_horizontal_width">12</property>
+            <property key="tabbar_horizontal_height">60</property>
+            <property key="tabbar_horizontal_etch_width">1</property>
+            <property key="tabbar_vertical_width">100</property>
+            <property key="tabbar_vertical_height">12</property>
+        </configuration>
+        <configuration name="1536w">
+            <property key="page_margin_left">16</property>
+            <property key="page_margin_right">16</property>
+
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">60</property>
+            <property key="toolbar_shadow_width">4</property>
+            <property key="toolbar_dark_width">8</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">40</property>
+            <property key="toolbar_button_height">40</property>
+            <property key="toolbar_button_rounding">8</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- tabbar -->
+            <property key="tabbar_horizontal_width">12</property>
+            <property key="tabbar_horizontal_height">80</property>
+            <property key="tabbar_horizontal_etch_width">1</property>
+            <property key="tabbar_vertical_width">130</property>
+            <property key="tabbar_vertical_height">20</property>
+
+        </configuration>
+    </diversifier>
+
+    <property key="toolbar_button_rounding_times_2">#set($value = $math.mul($toolbar_button_rounding, 2))$value</property>
+
+
+    <diversifier key="style">
+        <configuration name="ios">
+            <property key="background_color">#ffffff</property>
+            <property key="foreground_color">#222222</property>
+            <property key="panel_color">#6666DD</property>
+            <property key="panel_dark_color">#222299</property>
+            <property key="panel_light_color">#9999FF</property>
+            <property key="shadow_color">#000000</property>
+
+            <property key="toolbar_button_upper_min">$panel_color</property>
+            <property key="toolbar_button_upper_max">$panel_light_color</property>
+            <property key="toolbar_button_lower_min">$panel_dark_color</property>
+            <property key="toolbar_button_lower_max">$panel_color</property>
+            <property key="toolbar_button_back">false</property>
+            <property key="toolbar_button_forward">false</property>
+            <property key="toolbar_button_etch_highlight">$panel_light_color</property>
+            <property key="toolbar_button_etch_shadow">$panel_dark_color</property>
+            <property key="toolbar_button_etch_stroke">$panel_color</property>
+
+        </configuration>
+    </diversifier>
+
+    <diversifier key="asset-type">
+
+        <configuration name="image">
+            <diversifier key="asset">
+                <configuration name="toolbar_background">
+                    <property key="image_xsl">toolbar_background.xslt</property>
+                    <property key="toolbar_background_color">$panel_color</property>
+                    <property key="toolbar_dark_color">$panel_dark_color</property>
+                    <property key="toolbar_shadow_color">$shadow_color</property>
+
+                    <property key="css_selector">.decorated_toolbar</property>
+                    <property key="css_attribute">background</property>
+                </configuration>
+                <configuration name="tabbar_horizontal_background">
+                    <property key="image_xsl">tabbar_horizontal_background.xslt</property>
+                    <property key="tabbar_horizontal_upper_color">#444444</property>
+                    <property key="tabbar_horizontal_middle_color">#222222</property>
+                    <property key="tabbar_horizontal_lower_color">#111111</property>
+                    <property key="tabbar_horizontal_etch_color">#888888</property>
+
+                    <property key="css_selector">.tab_bar_horizontal</property>
+                    <property key="css_attribute">background</property>
+                    <property key="css_value_is_url">true</property>
+                </configuration>
+                <configuration name="tabbar_vertical_background">
+                    <property key="image_xsl">tabbar_vertical_background.xslt</property>
+                    <property key="tabbar_vertical_color">#222222</property>
+
+                    <property key="css_selector">.tab_bar_vertical</property>
+                    <property key="css_attribute">background</property>
+                    <property key="css_value_is_url">true</property>
+                </configuration>
+                <configuration name="toolbar_button_normal">
+                    <property key="image_xsl">toolbar_button.xslt</property>
+
+                    <property key="css_selector">.toolbar_button_normal</property>
+                    <property key="css_attribute">border-image</property>
+                    <!-- TODO FF will reject the entire line because of the fill parameter! -->
+                    <property key="css_value_postfix">$toolbar_button_rounding $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch</property>
+                    <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
+
+                </configuration>
+
+                <configuration name="toolbar_button_back">
+                    <property key="image_xsl">toolbar_button.xslt</property>
+                    <property key="toolbar_button_back">true</property>
+
+                    <property key="css_selector">.toolbar_button_back</property>
+                    <property key="css_attribute">border-image</property>
+                    <!-- TODO FF will reject the entire line because of the fill parameter! -->
+                    <property key="css_value_postfix">$toolbar_button_rounding $toolbar_button_rounding $toolbar_button_rounding $toolbar_button_rounding_times_2 fill stretch stretch</property>
+                    <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
+
+                </configuration>
+            </diversifier>
+
+            <diversifier key="output">
+                <configuration name="png">
+                    <property key="lab_output_extension">png</property>
+                    <property key="lab_output_name">$style/$size/$asset</property>
+                    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+                    <property key="lab_template_xsl">$image_xsl</property>
+                    <!-- just outputs the asset as normal -->
+                </configuration>
+                <configuration name="css">
+                    <!-- outputs CSS about the asset -->
+                    <property key="lab_template_xsl">css.xslt</property>
+                    <property key="css_value">$size/${asset}.png</property>
+                    <property key="css_value_is_url">true</property>
+                    <property key="lab_output_name">$style/$size</property>
+                    <property key="lab_output_extension">css</property>
+                    <property key="lab_output_type_mime">text/css</property>
+                    <property key="lab_template_xsl_output_mime_type">text/css</property>
+                    <!-- trick it into finishing off this selector -->
+                    <property key="lab_sequence_number_css_attribute">0</property>
+                    <property key="lab_max_sequence_number_css_attribute">0</property>
+
+                </configuration>
+
+            </diversifier>
+
+        </configuration>
+        <!-- second configuration for general CSS entries -->
+        <configuration name="css">
+            <property key="lab_template_xsl">css.xslt</property>
+            <property key="lab_output_name">$style/$size</property>
+            <property key="lab_output_extension">css</property>
+            <property key="lab_output_type_mime">text/css</property>
+            <property key="lab_template_xsl_output_mime_type">text/css</property>
+
+            <diversifier key="css_selector">
+                <configuration name=".tab_bar_horizontal">
+                    <diversifier key="css_attribute">
+                        <configuration name="height">
+                            <property key="css_value">${tabbar_horizontal_height}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+                <configuration name=".decorated_toolbar">
+                    <diversifier key="css_attribute">
+                        <configuration name="height">
+                            <property key="css_value">${toolbar_height}px</property>
+
+                        </configuration>
+                    </diversifier>
+                </configuration>
+                <configuration name=".toolbar_buttons_container">
+                    <diversifier key="css_attribute">
+                        <configuration name="padding-bottom">
+                            <property key="css_value">
+                                #set($padding = $math.toInteger($math.add($toolbar_shadow_width, $toolbar_dark_width)))
+                                ${padding}px
+                            </property>
+                        </configuration>
+                        <configuration name="padding-left">
+                            <property key="css_value">${page_margin_left}px</property>
+                        </configuration>
+                        <configuration name="padding-right">
+                            <property key="css_value">${page_margin_right}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+                <configuration name=".toolbar_button_normal">
+                    <diversifier key="css_attribute">
+                        <configuration name="border-width">
+                            <property key="css_value">${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+                <configuration name=".toolbar_button_back">
+                    <diversifier key="css_attribute">
+                        <configuration name="border-width">
+                            <property key="css_value">${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding_times_2}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+                <configuration name=".decorator_content_container">
+                    <diversifier key="css_attribute">
+                        <configuration name="padding-top">
+                            <property key="css_value">${toolbar_height}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+                <configuration name=".tab_pane_horizontal">
+                    <diversifier key="css_attribute">
+                        <configuration name="padding-right">
+                            <property key="css_value">${page_margin_right}px</property>
+                        </configuration>
+                        <configuration name="padding-left">
+                            <property key="css_value">${page_margin_left}px</property>
+                        </configuration>
+                        <configuration name="padding-bottom">
+                            <property key="css_value">${tabbar_horizontal_height}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+                <!--
+                <configuration name=".tab_pane_vertical">
+                    <diversifier key="css_attribute">
+                    </diversifier>
+                </configuration>
+                -->
+
+                <configuration name=".toolbar_decorator_toolbar">
+                    <diversifier key="css_attribute">
+                        <configuration name="padding-left">
+                            <property key="css_value">${tabbar_vertical_width}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+                <configuration name=".toolbar_decorator_content">
+                    <diversifier key="css_attribute">
+                        <configuration name="padding-right">
+                            <property key="css_value">${page_margin_right}px</property>
+                        </configuration>
+                        <configuration name="padding-left">
+                            <property key="css_value">
+                                #set($padding = $math.toInteger($math.add($page_margin_left, $tabbar_vertical_width)))
+                                ${padding}px
+                            </property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+                <configuration name=".tab_bar_vertical">
+                    <diversifier key="css_attribute">
+                        <configuration name="width">
+                            <property key="css_value">${tabbar_vertical_width}px</property>
+                        </configuration>
+                    </diversifier>
+                </configuration>
+
+            </diversifier>
+        </configuration>
+
+    </diversifier>
+
+
+</configuration>

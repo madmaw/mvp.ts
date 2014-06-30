@@ -1,5 +1,5 @@
-module TS.JQuery.MVP.HB.Example.HelloYou {
-    export class HelloYouModel extends TS.MVP.AbstractModel implements TS.JQuery.MVP.HB.Example.Label.ILabelModel, TS.JQuery.MVP.HB.Example.TextInput.ITextInputModel {
+module TS.IJQuery.MVP.HB.Example.HelloYou {
+    export class HelloYouModel extends TS.MVP.AbstractModel implements TS.IJQuery.MVP.HB.Example.Label.ILabelModel, TS.IJQuery.MVP.HB.Example.TextInput.ITextInputModel {
 
         constructor(private _name: string) {
             super();

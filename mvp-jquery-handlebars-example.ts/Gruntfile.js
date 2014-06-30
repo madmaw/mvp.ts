@@ -115,7 +115,8 @@
     // Default task(s).
     grunt.registerTask('reset', ['clean']);
     grunt.registerTask('init', ['auto_install', 'run_grunt:init', 'copy:init']);
-    grunt.registerTask('dist', ['init', 'ts', 'replace', 'uglify', 'copy:dist', 'zip']);
-    grunt.registerTask('default', ['init', 'ts']);
+    grunt.registerTask('dist', ['build', 'uglify', 'copy:dist', 'zip']);
+    grunt.registerTask('build', ['init', 'ts', 'replace']);
+    grunt.registerTask('default', ['build']);
 
 };

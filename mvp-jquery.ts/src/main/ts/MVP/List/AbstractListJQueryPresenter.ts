@@ -1,18 +1,18 @@
-module TS.JQuery.MVP.List {
+module TS.IJQuery.MVP.List {
 
-    export class AbstractListJQueryPresenter<ModelType extends TS.MVP.List.IListPresenterModel> extends TS.JQuery.MVP.AbstractJQueryPresenter<ModelType> {
+    export class AbstractListJQueryPresenter<ModelType extends TS.MVP.List.IListPresenterModel> extends TS.IJQuery.MVP.AbstractJQueryPresenter<ModelType> {
 
         private _positionsToListItems: { [_:number]: AbstractListJQueryPresenterItem; };
         private _typesToReusableControllers: { [_: string]: TS.MVP.IPresenter[]; };
 
         // Constructor
-        constructor(viewFactory: TS.JQuery.MVP.IJQueryViewFactory, private _listItemContainerViewFactory: TS.JQuery.MVP.IJQueryViewFactory) {
+        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory, private _listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory) {
             super(viewFactory);
             this._positionsToListItems = {};
             this._typesToReusableControllers = {};
         }
 
-        public _initAndStart(presenter: TS.JQuery.MVP.IJQueryPresenter, container: JQuery) {
+        public _initAndStart(presenter: TS.IJQuery.MVP.IJQueryPresenter, container: JQuery) {
             var state = presenter.getState();
             if (state == TS.MVP.PresenterState.Uninitialized) {
                 // initialize it
@@ -63,7 +63,7 @@ module TS.JQuery.MVP.List {
                     } else {
                         reusablePresenter = null;
                     }
-                    var presenter = <TS.JQuery.MVP.IJQueryPresenter>model.getPresenter(i, reusablePresenter);
+                    var presenter = <TS.IJQuery.MVP.IJQueryPresenter>model.getPresenter(i, reusablePresenter);
                     // TODO parameters to the view factory based on the controller might be useful
                     var listItemContainer = this._listItemContainerViewFactory(container, null);
                     listItemContainer.attach();

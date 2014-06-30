@@ -1,13 +1,13 @@
 // Module  
-module TS.JQuery.MVP.HB.Example.DecoratedStack {
+module TS.IJQuery.MVP.HB.Example.DecoratedStack {
     // Class
-    export class DecoratedStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel<TS.MVP.IPresenter> implements TS.JQuery.MVP.HB.Example.TextInput.ITextInputModel {
+    export class DecoratedStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel<TS.MVP.IPresenter> implements TS.IJQuery.MVP.HB.Example.TextInput.ITextInputModel {
         
         // Constructor
         constructor(
             private _topLevelController: TS.MVP.IPresenter,
-            private _labelViewFactory: TS.JQuery.MVP.IJQueryViewFactory,
-            private _inputViewFactory: TS.JQuery.MVP.IJQueryViewFactory,
+            private _labelViewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
+            private _inputViewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             private _toolbarDecoratorFactory: (presenters: TS.MVP.IPresenter[], commandModel: TS.MVP.Command.ICommandModel) => TS.MVP.IPresenter
         ) {
             super(false);
@@ -28,11 +28,11 @@ module TS.JQuery.MVP.HB.Example.DecoratedStack {
 
         public _createPresenter(value: string): TS.MVP.IPresenter {
             
-            var labelController = new TS.JQuery.MVP.HB.Example.Label.LabelPresenter(this._labelViewFactory);
-            labelController.setModel(new TS.JQuery.MVP.HB.Example.Label.ImmutableLabelModel(value));
+            var labelController = new TS.IJQuery.MVP.HB.Example.Label.LabelPresenter(this._labelViewFactory);
+            labelController.setModel(new TS.IJQuery.MVP.HB.Example.Label.ImmutableLabelModel(value));
 
             // create an input controller
-            var inputController = new TS.JQuery.MVP.HB.Example.TextInput.TextInputPresenter(this._inputViewFactory);
+            var inputController = new TS.IJQuery.MVP.HB.Example.TextInput.TextInputPresenter(this._inputViewFactory);
             inputController.setModel(this);
 
             var presenters: TS.MVP.IPresenter[] = [labelController, inputController];

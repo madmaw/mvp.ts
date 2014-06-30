@@ -1,5 +1,5 @@
 // Module
-module TS.JQuery.MVP.Command {
+module TS.IJQuery.MVP.Command {
 
     // Class
     export class CommandJQueryViewDescription {
@@ -19,7 +19,7 @@ module TS.JQuery.MVP.Command {
         }
 
         public static commandJQueryViewDescriptionFactoryFromTemplate(
-            template: TS.JQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>, 
+            template: TS.IJQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>,
             actionSelectorFactory: (command:TS.MVP.Command.Command)=>string
         ): ICommandJQueryViewDescriptionFactory {
             return function(container: JQuery, command: TS.MVP.Command.Command): CommandJQueryViewDescription {
@@ -34,12 +34,12 @@ module TS.JQuery.MVP.Command {
         }
 
         public static commandJQueryViewDescriptionFactoryFromTemplatePromise<T>(
-            templatePromise: JQueryPromise<TS.JQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>>,
+            templatePromise: JQueryPromise<TS.IJQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>>,
             actionSelectorFactory: (command: TS.MVP.Command.Command) => string,
             loadingPromises?: JQueryPromise<any>[]
         ): ICommandJQueryViewDescriptionFactory {
-            var myTemplate: TS.JQuery.Template.IJQueryTemplate<TS.MVP.Command.Command> = null;
-            templatePromise.done(function (template: TS.JQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>) {
+            var myTemplate: TS.IJQuery.Template.IJQueryTemplate<TS.MVP.Command.Command> = null;
+            templatePromise.done(function (template: TS.IJQuery.Template.IJQueryTemplate<TS.MVP.Command.Command>) {
                 myTemplate = template;
             });
             if (loadingPromises) {
@@ -55,7 +55,7 @@ module TS.JQuery.MVP.Command {
         }
 
         public static commandJQueryViewDescriptionFactoryFromTemplatePath(
-            asyncPathTemplateFactory: TS.JQuery.Template.IJQueryAsyncPathTemplateFactory,
+            asyncPathTemplateFactory: TS.IJQuery.Template.IJQueryAsyncPathTemplateFactory,
             asyncPath: string,
             actionSelectorFactory: (command: TS.MVP.Command.Command) => string,
             promises?: JQueryPromise<any>[]

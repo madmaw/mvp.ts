@@ -21,6 +21,12 @@
                     task: 'clean'
                 },
                 src: ['mvp.ts/Gruntfile.js', 'mvp-jquery.ts/Gruntfile.js', 'mvp-jquery-handlebars.ts/Gruntfile.js', 'mvp-jquery-xslt.ts/Gruntfile.js', 'mvp-jquery-handlebars-example.ts/Gruntfile.js']
+            },
+            libs: {
+                options: {
+                    task: 'dist'
+                },
+                src:['mvp.ts/Gruntfile.js', 'mvp-jquery.ts/Gruntfile.js', 'mvp-jquery-handlebars.ts/Gruntfile.js', 'mvp-jquery-xslt.ts/Gruntfile.js']
             }
         },
         clean: {
@@ -98,5 +104,6 @@
     grunt.registerTask('init', ['auto_install']);
     grunt.registerTask('dist', ['init', 'ts', 'replace', 'uglify', 'copy:dist', 'zip']);
     grunt.registerTask('default', ['init', 'ts']);
+    grunt.registerTask('libs', ['run_grunt:libs']);
 
 };

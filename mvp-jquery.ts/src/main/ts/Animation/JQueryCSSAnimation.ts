@@ -1,6 +1,6 @@
 
 // Module
-module TS.JQuery.Animation {
+module TS.IJQuery.Animation {
 
      
     // Class

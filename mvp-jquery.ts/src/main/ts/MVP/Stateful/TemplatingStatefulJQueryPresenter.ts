@@ -1,4 +1,4 @@
-module TS.JQuery.MVP.Stateful {
+module TS.IJQuery.MVP.Stateful {
 
     export class TemplatingStatefulJQueryPresenter<T> extends AbstractJQueryPresenter<TS.MVP.Stateful.IStatefulModel<T>> {
 

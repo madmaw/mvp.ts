@@ -1,12 +1,12 @@
 // Module
-module TS.JQuery.MVP.HB.Example.BasicStack {
+module TS.IJQuery.MVP.HB.Example.BasicStack {
 
 
     // Class
-    export class BasicStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel<TS.MVP.IPresenter> implements TS.JQuery.MVP.HB.Example.TextInput.ITextInputModel {
+    export class BasicStackModel extends TS.MVP.Composite.Stack.AbstractStackPresenterModel<TS.MVP.IPresenter> implements TS.IJQuery.MVP.HB.Example.TextInput.ITextInputModel {
 
         // Constructor
-        constructor(private _labelViewFactory: TS.JQuery.MVP.IJQueryViewFactory) {
+        constructor(private _labelViewFactory: TS.IJQuery.MVP.IJQueryViewFactory) {
             super(true);
         }
 
@@ -22,8 +22,8 @@ module TS.JQuery.MVP.HB.Example.BasicStack {
         }
 
         private _createPresenter(value:string): TS.MVP.IPresenter {
-            var labelPresenter = new TS.JQuery.MVP.HB.Example.Label.LabelPresenter(this._labelViewFactory);
-            labelPresenter.setModel(new TS.JQuery.MVP.HB.Example.Label.ImmutableLabelModel(value));
+            var labelPresenter = new TS.IJQuery.MVP.HB.Example.Label.LabelPresenter(this._labelViewFactory);
+            labelPresenter.setModel(new TS.IJQuery.MVP.HB.Example.Label.ImmutableLabelModel(value));
             
             return labelPresenter;
         }
@@ -38,7 +38,7 @@ module TS.JQuery.MVP.HB.Example.BasicStack {
         }
 
         public _exportEntry(entry: TS.MVP.Composite.Stack.AbstractStackPresenterModelEntry<TS.MVP.IPresenter>, models: TS.MVP.IModel[]): any {
-            var model = <TS.JQuery.MVP.HB.Example.Label.ILabelModel>entry.presenter.getModel();
+            var model = <TS.IJQuery.MVP.HB.Example.Label.ILabelModel>entry.presenter.getModel();
             return model.getLabel();
         }
 

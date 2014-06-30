@@ -1,6 +1,3 @@
-///<reference path="AbstractCompositePresenterModel.ts"/>
-///<reference path="IKeyedCompositePresenterModel.ts"/>
-
 // Module
 module TS.MVP.Composite {
 

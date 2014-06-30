@@ -1,17 +1,17 @@
 
 // Module  
-module TS.JQuery.MVP.HB.Example {
+module TS.IJQuery.MVP.HB.Example {
 
     // Class
     export function tabIndexPresenterCreateAsync(data: any, callback: TS.MVP.IModelImportStateCallback) {
 
-        var asyncTemplateFactory = TS.JQuery.Template.HB.handlebarsJQueryAsyncPathTemplateFactory();
+        var asyncTemplateFactory = TS.IJQuery.Template.HB.handlebarsJQueryAsyncPathTemplateFactory();
 
         var loadingPromises: JQueryPromise<any>[] = [];
 
         // create toolbar decorator
 
-        var decoratorViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
+        var decoratorViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
             asyncTemplateFactory, "handlebars/decorator.html", loadingPromises
         );
         //var localFixedHeightSelectors = ["." + decoratorToolbarContainerKey, "." + tabBarKey];
@@ -20,43 +20,43 @@ module TS.JQuery.MVP.HB.Example {
         // for the width
         //decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, null, [], null);
 
-        var toolbarViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
+        var toolbarViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
             asyncTemplateFactory, "handlebars/toolbar.html", loadingPromises
             );
 
         var actionSelectorFactory = function (command: TS.MVP.Command.Command) {
             return ".toolbar_button";
         };
-        var toolbarNormalCommandJQueryViewDescriptionFactory = TS.JQuery.MVP.Command.CommandJQueryViewDescription.commandJQueryViewDescriptionFactoryFromTemplatePath(
+        var toolbarNormalCommandJQueryViewDescriptionFactory = TS.IJQuery.MVP.Command.CommandJQueryViewDescription.commandJQueryViewDescriptionFactoryFromTemplatePath(
             asyncTemplateFactory,
             "handlebars/toolbar_button_normal.html",
             actionSelectorFactory,
             loadingPromises
             );
-        var toolbarBackCommandJQueryViewDescriptionFactory = TS.JQuery.MVP.Command.CommandJQueryViewDescription.commandJQueryViewDescriptionFactoryFromTemplatePath(
+        var toolbarBackCommandJQueryViewDescriptionFactory = TS.IJQuery.MVP.Command.CommandJQueryViewDescription.commandJQueryViewDescriptionFactoryFromTemplatePath(
             asyncTemplateFactory,
             "handlebars/toolbar_button_back.html",
             actionSelectorFactory,
             loadingPromises
             );
 
-        var toolbarCommandViewDescriptionFactory = TS.JQuery.MVP.Command.CommandJQueryViewDescription.delegatingCommandJQueryViewDescriptionFactoryFromMap(
+        var toolbarCommandViewDescriptionFactory = TS.IJQuery.MVP.Command.CommandJQueryViewDescription.delegatingCommandJQueryViewDescriptionFactoryFromMap(
             toolbarNormalCommandJQueryViewDescriptionFactory,
             { back: toolbarBackCommandJQueryViewDescriptionFactory }
             );
 
         var decoratorFactory = function (presenters: TS.MVP.IPresenter[], commandModel: TS.MVP.Command.ICommandModel = new TS.MVP.Command.SimpleCommandModel()): TS.MVP.IPresenter {
-            var toolbarPresenter = new TS.JQuery.MVP.Command.ToolbarCommandJQueryPresenter<TS.MVP.Command.ICommandModel>(
+            var toolbarPresenter = new TS.IJQuery.MVP.Command.ToolbarCommandJQueryPresenter<TS.MVP.Command.ICommandModel>(
                 toolbarViewFactory,
                 toolbarCommandViewDescriptionFactory
                 );
             toolbarPresenter.setModel(commandModel);
 
-            var decoratorPresenter = new TS.JQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
+            var decoratorPresenter = new TS.IJQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
                 decoratorViewFactory
             );
             decoratorPresenter.setModel(
-                new TS.JQuery.MVP.HB.Example.Toolbar.ToolbarDecoratorModel(
+                new TS.IJQuery.MVP.HB.Example.Toolbar.ToolbarDecoratorModel(
                     toolbarPresenter,
                     "toolbar_decorator_toolbar",
                     presenters,
@@ -91,23 +91,23 @@ module TS.JQuery.MVP.HB.Example {
         tabbedPresenters[basicStackPresenterId] = basicStackPresenter;
         tabbedPresenters[decoratedStackPresenterId] = decoratedStackPresenter;
 
-        var tabBarButtonViewFactory = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
+        var tabBarButtonViewFactory = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
             asyncTemplateFactory, "handlebars/tab_button.html", loadingPromises
             );
 
-        var tabBarIdsToViewDescriptions: { [_: string]: TS.JQuery.MVP.JQueryViewDescription; } = {};
-        tabBarIdsToViewDescriptions[helloWorldPresenterId] = new TS.JQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Hello World" });
-        tabBarIdsToViewDescriptions[helloYouPresenterId] = new TS.JQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Hello You" });
-        tabBarIdsToViewDescriptions[basicStackPresenterId] = new TS.JQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Basic Stack" });
-        tabBarIdsToViewDescriptions[decoratedStackPresenterId] = new TS.JQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Decorated Stack" });
+        var tabBarIdsToViewDescriptions: { [_: string]: TS.IJQuery.MVP.JQueryViewDescription; } = {};
+        tabBarIdsToViewDescriptions[helloWorldPresenterId] = new TS.IJQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Hello World" });
+        tabBarIdsToViewDescriptions[helloYouPresenterId] = new TS.IJQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Hello You" });
+        tabBarIdsToViewDescriptions[basicStackPresenterId] = new TS.IJQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Basic Stack" });
+        tabBarIdsToViewDescriptions[decoratedStackPresenterId] = new TS.IJQuery.MVP.JQueryViewDescription(tabBarButtonViewFactory, { title: "Decorated Stack" });
 
-        var tabBarViewDescriptionFactory = TS.JQuery.MVP.Tab.TabBarTabJQueryViewDescription.tabBarTabJQueryViewDescriptionFactoryFromMap(
+        var tabBarViewDescriptionFactory = TS.IJQuery.MVP.Tab.TabBarTabJQueryViewDescription.tabBarTabJQueryViewDescriptionFactoryFromMap(
             tabBarIdsToViewDescriptions,
             ".tab_bar_button",
             ".tab_bar_button_root"
             );
-        var tabBarViewFactory = TS.JQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
-        var tabBarPresenter = new TS.JQuery.MVP.Tab.TabBarJQueryPresenter<TS.MVP.Tab.ITabBarModel>(
+        var tabBarViewFactory = TS.IJQuery.MVP.BorrowedJQueryView.viewFactoryEmpty();
+        var tabBarPresenter = new TS.IJQuery.MVP.Tab.TabBarJQueryPresenter<TS.MVP.Tab.ITabBarModel>(
             tabBarViewFactory,
             tabBarViewDescriptionFactory,
             null,
@@ -126,10 +126,10 @@ module TS.JQuery.MVP.HB.Example {
             tabPresenters
         );
 
-        var tabViewFactoryHorizontal = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
+        var tabViewFactoryHorizontal = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
             asyncTemplateFactory, "handlebars/tab_container_horizontal.html", loadingPromises
             );
-        var tabViewFactoryVertical = TS.JQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
+        var tabViewFactoryVertical = TS.IJQuery.MVP.SimpleJQueryView.viewFactoryFromTemplatePath(
             asyncTemplateFactory, "handlebars/tab_container_vertical.html", loadingPromises
             );
         /*
@@ -150,7 +150,7 @@ module TS.JQuery.MVP.HB.Example {
             );
         */
         var tabViewFactory = tabViewFactoryVertical;
-        var tabPresenter = new TS.JQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
+        var tabPresenter = new TS.IJQuery.MVP.Composite.KeyedCompositeJQueryPresenter<TS.MVP.Composite.IKeyedCompositePresenterModel>(
             tabViewFactory
             );
 
