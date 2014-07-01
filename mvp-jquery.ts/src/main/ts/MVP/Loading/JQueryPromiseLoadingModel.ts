@@ -7,7 +7,20 @@ module TS.IJQuery.MVP.Loading {
         constructor(private _promise:JQueryPromise<T>, private _maxProgress:number) {
             super();
             this._progress = 0;
+            _promise.progress((progress:number)=> {
+                this._progress = progress;
+                this._fireModelChangeEvent(null, true);
+            });
         }
+
+        // causes infinite loop? think due to repeatedly adding listener
+//        public _startedListening():void {
+//            super._startedListening();
+//            this._promise.progress((progress:number)=> {
+//                this._progress = progress;
+//                this._fireModelChangeEvent(null, true);
+//            });
+//        }
 
         public getState(): TS.MVP.Loading.LoadingModelState {
 

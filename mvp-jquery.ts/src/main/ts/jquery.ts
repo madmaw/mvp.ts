@@ -19,4 +19,24 @@ module TS.IJQuery {
         return result;
     }
 
+    export function jqueryDeferredProgressWhen(promises: JQueryPromise<any>[]): JQueryPromise<any> {
+        var deferred: JQueryDeferred<any> = new jQuery.Deferred();
+        var newPromises: JQueryPromise<any>[] = [deferred];
+        var progress = 0;
+        for (var i in promises) {
+            var promise = promises[i];
+            var newPromise = promise.then(function () {
+                progress++;
+                deferred.notify(progress);
+                if (progress == promises.length) {
+                    // we finish when everything else does
+                    deferred.resolve();
+                }
+            });
+            newPromises.push(newPromise);
+        }
+        return $.when.apply($, newPromises);
+    }
+
+
 }

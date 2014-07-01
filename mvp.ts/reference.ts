@@ -64,6 +64,7 @@
 /// <reference path="src/main/ts/class.ts" />
 /// <reference path="src/main/ts/cookie.ts" />
 /// <reference path="src/main/ts/element.ts" />
+/// <reference path="src/main/ts/path.ts" />
 /// <reference path="src/main/ts/string.ts" />
 /// <reference path="src/main/ts/xml.ts" />
 //grunt-end

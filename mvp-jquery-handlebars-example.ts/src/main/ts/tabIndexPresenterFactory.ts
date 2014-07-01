@@ -157,7 +157,7 @@ module TS.IJQuery.MVP.HB.Example {
         tabBarPresenter.setModel(tabModel);
         tabPresenter.setModel(tabModel);
 
-        var allLoadingPromises: JQueryPromise<TS.MVP.IPresenter> = $.when.apply($, loadingPromises).then(function () {
+        var allLoadingPromises: JQueryPromise<TS.MVP.IPresenter> = jqueryDeferredProgressWhen(loadingPromises).then(function () {
             // import the state
             tabModel.importState(data, callback);
             // return the presenter

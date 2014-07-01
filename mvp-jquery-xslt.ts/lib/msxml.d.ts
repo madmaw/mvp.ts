@@ -14,6 +14,7 @@ declare module Msxml2 {
         input: FreeThreadedDOMDocument;
         transform(): void;
         output: string;
+        addParameter(key:string, value: any): void;
     }
 }
 
