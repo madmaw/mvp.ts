@@ -2,6 +2,7 @@
 module TS.MVP {
 
     export class AbstractModel implements IModel {
+
         private _changeListeners: IModelChangeListener[];
         private _stateChangeListeners: IModelStateChangeListener[];
         public _listeningForTokenChanges: boolean;
@@ -123,6 +124,16 @@ module TS.MVP {
                 }
             }
             return models;
+        }
+
+        public _proxyChanges(model: IModel): ()=>void {
+            var changeListener = (source: IModel, changeEvent: ModelChangeEvent)=> {
+                this._fireModelChangeEvent(changeEvent, true);
+            };
+            model.addChangeListener(changeListener)
+            return function() {
+                model.removeChangeListener(changeListener);
+            }
         }
     }
 }

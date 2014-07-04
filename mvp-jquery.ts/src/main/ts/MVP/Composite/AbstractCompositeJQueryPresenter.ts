@@ -56,14 +56,14 @@ module TS.IJQuery.MVP.Composite {
             return result;
         }
 
-        public _doInit(): boolean {
-            var result = super._doInit();
+        public _doInit(): void {
+            super._doInit();
             for (var i in this._presenters) {
                 var presenter = <TS.IJQuery.MVP.IJQueryPresenter>this._presenters[i];
                 var presenterContainer = this._getPresenterContainer(presenter);
-                result = presenter.init(presenterContainer, false) || result;
+                // TODO check that the presenter initialized
+                presenter.init(presenterContainer, false);
             }
-            return result;
         }
 
         public _doDestroy(detachView: boolean): boolean {

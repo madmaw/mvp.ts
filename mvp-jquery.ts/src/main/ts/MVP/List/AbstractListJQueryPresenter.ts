@@ -79,19 +79,17 @@ module TS.IJQuery.MVP.List {
             return true;
         }
 
-        public _doInit(): boolean {
-            var result = super._doInit();
-            if (result) {
-                // hope this iterates in numeric order!
-                for (var position in this._positionsToListItems) {
-                    var listItem = this._positionsToListItems[position];
-                    var containerView = listItem.getContainerView();
-                    containerView.attach();
-                    var presenter = listItem.getPresenter();
-                    presenter.init(containerView.$);
-                }
+        public _doInit() {
+            super._doInit();
+            // hope this iterates in numeric order!
+            for (var position in this._positionsToListItems) {
+                var listItem = this._positionsToListItems[position];
+                var containerView = listItem.getContainerView();
+                containerView.attach();
+                var presenter = listItem.getPresenter();
+                // TODO check that the presenter initialized
+                presenter.init(containerView.$);
             }
-            return result;
         }
 
         public _doStart(): boolean {

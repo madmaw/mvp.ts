@@ -26,15 +26,19 @@ module TS.IJQuery.MVP {
         }
 
         public init(container: JQuery, prepend?: boolean): boolean {
-            this._viewContainer = container;
-            this._viewPrepend = prepend;
-            var viewFactoryParams = this._getViewFactoryParams();
-            if (!this._viewFactory) {
-                throw "no view factory!";
+            var initialized = this._preInit();
+            if( initialized ) {
+                this._viewContainer = container;
+                this._viewPrepend = prepend;
+                var viewFactoryParams = this._getViewFactoryParams();
+                if (!this._viewFactory) {
+                    throw "no view factory!";
+                }
+                this._view = this._viewFactory(container, viewFactoryParams, prepend);
+                this._view.attach();
+                this._postInit();
             }
-            this._view = this._viewFactory(container, viewFactoryParams, prepend);
-            this._view.attach();
-            return this._init();
+            return initialized;
         }
 
         public _getViewFactoryParams(): any {

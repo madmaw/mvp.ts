@@ -36,29 +36,28 @@ module TS.MVP {
             this._firePresenterChangeEvent(new PresenterChangeEvent(true, previousModel));
         }
 
-        public _init(): boolean {
-            var result: boolean;
-            if (this._state == PresenterState.Uninitialized) {
-                result = this._doInit();
-                if (result) {
-                    this._state = PresenterState.Initialized;
-                    // kick off any pending animations
-                    if (this._animations != null) {
-                        for (var i in this._animations) {
-                            var animation: TS.Animation.IAnimation = this._animations[i];
-                            animation.init();
-                            animation.start();
-                        }
-                    }
-                }
-            } else {
-                result = false;
+        public _preInit(): boolean {
+            var result = this._state == PresenterState.Uninitialized;
+            if (result) {
+                this._state = PresenterState.Initialized;
             }
             return result;
         }
 
-        public _doInit(): boolean {
-            return true;
+        public _postInit(): void {
+            this._doInit();
+            // kick off any pending animations
+            if (this._animations != null) {
+                for (var i in this._animations) {
+                    var animation: TS.Animation.IAnimation = this._animations[i];
+                    animation.init();
+                    animation.start();
+                }
+            }
+        }
+
+        public _doInit(): void {
+
         }
 
         public load() {
@@ -201,7 +200,7 @@ module TS.MVP {
         }
 
         public _reinitialize() {
-            this._init();
+            this._doInit();
         }
 
         public _isAnimating(): boolean {

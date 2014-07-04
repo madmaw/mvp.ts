@@ -37,7 +37,7 @@ module TS.IJQuery.MVP.Composite {
             var model = <TS.MVP.Composite.IKeyedCompositePresenterModel>this._model;
             var key = model.getPresenterKey(presenter);
             var selector = this._keysToSelectors[key];
-            if (selector == null && key != null) {
+            if (selector == null && key != null && key.indexOf(".") != 0) {
                 // assume it's a class selector in lieu of an explicit mapping
                 selector = "."+key;
             }

@@ -21,7 +21,7 @@ module TS.MVP {
             }
         }
 
-        public lookup(changeType: string) {
+        public lookup(changeType: string): ModelChangeDescription {
             var result = null;
             for (var i in this._descriptions) {
                 var description = this._descriptions[i];

@@ -27,7 +27,7 @@ module TS.IJQuery.MVP.Composite.Stack {
                 pushed = true;
             }
             if (stackChangeDescription != null) {
-                var stackDescription: TS.MVP.Composite.Stack.StackPresenterModelChangeDescription = stackChangeDescription;
+                var stackDescription = <TS.MVP.Composite.Stack.StackPresenterModelChangeDescription>stackChangeDescription;
 
                 // remove all the silent ones (if any)
                 var silentRemovedPresenters = stackDescription.getSilentRemovedPresenters();
