@@ -1,7 +1,7 @@
 module TS.IJQuery.Template.XSLT {
 
     export function xsltSupportsStandard(): boolean {
-        return !!DOMParser && !!XSLTProcessor;
+        return !!window["DOMParser"] && !!window["XSLTProcessor"];
     }
 
     export function xsltJQueryAsyncPathTemplateFactory(properties?: { [_: string]: any }): IJQueryAsyncPathTemplateFactory {
