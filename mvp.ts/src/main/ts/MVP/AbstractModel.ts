@@ -128,12 +128,16 @@ module TS.MVP {
 
         public _proxyChanges(model: IModel): ()=>void {
             var changeListener = (source: IModel, changeEvent: ModelChangeEvent)=> {
-                this._fireModelChangeEvent(changeEvent, true);
+                this._notifyProxyChanged(source, changeEvent);
             };
             model.addChangeListener(changeListener)
             return function() {
                 model.removeChangeListener(changeListener);
             }
+        }
+
+        public _notifyProxyChanged(proxy: IModel, changeEvent: ModelChangeEvent) {
+            this._fireModelChangeEvent(changeEvent, true);
         }
     }
 }

@@ -52,6 +52,19 @@ module TS.Animation {
             return true;
         }
 
+        public forceToCompletion() {
+            var state = this.getState();
+            if( state < AnimationState.Finished ) {
+                if( state < AnimationState.Started ) {
+                    if( state < AnimationState.Initialized ) {
+                        this._doInit();
+                    }
+                    this._doStart();
+                }
+                this._doDestroy();
+            }
+        }
+
         public _fireAnimationStateChangeEvent(changeEvent: AnimationStateChangeEvent) {
             for (var i in this._animationChangeListeners) {
                 var animationChangeListener: (source: IAnimation, changeEvent: AnimationStateChangeEvent) => void = this._animationChangeListeners[i];

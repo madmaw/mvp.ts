@@ -8,9 +8,9 @@ module TS.IJQuery.Animation {
 
         public static cssAnimationEndEventNames = "animationend webkitAnimationEnd oanimationend MSAnimationEnd";
 
-        public static animationFactory(clazz: string, maxTimeMillis?: number, lifecycleFunction?: (animationState: TS.Animation.AnimationState, target: JQuery) => void): IJQueryAnimationFactory {
+        public static animationFactory(clazz: string, maxTimeMillis?: number, lifecycleFunction?: (animationState: TS.Animation.AnimationState, target: JQuery) => void, permanentAddClasses?: string[], permanentRemoveClasses?: string[]): IJQueryAnimationFactory {
             return function(container: JQuery, target: JQuery): TS.Animation.IAnimation {
-                return new JQueryCSSAnimation(target, clazz, maxTimeMillis, lifecycleFunction);
+                return new JQueryCSSAnimation(target, clazz, maxTimeMillis, lifecycleFunction, permanentAddClasses, permanentRemoveClasses);
             }
         }
 
@@ -18,7 +18,14 @@ module TS.IJQuery.Animation {
         
 
         // Constructor
-        constructor(private _target: JQuery, private _class: string, private _maxTimeMillis?: number, private _lifecycleFunction?: (state: TS.Animation.AnimationState, target:JQuery) => void ) {
+        constructor(
+            private _target: JQuery,
+            private _class: string,
+            private _maxTimeMillis?: number,
+            private _lifecycleFunction?: (state: TS.Animation.AnimationState, target:JQuery) => void,
+            private _permanentAddClasses?: string[],
+            private _permanentRemoveClasses?: string[]
+            ) {
             super();
             this._animationCompletionListener = () => {
                 this.destroy();
@@ -34,7 +41,23 @@ module TS.IJQuery.Animation {
         }
 
         public _doStart(): boolean {
-            this._target.addClass(this._class);
+            if( !this._target.hasClass(this._class) ) {
+                this._target.addClass(this._class);
+            }
+            if( this._permanentAddClasses ) {
+                for( var i in this._permanentAddClasses ) {
+                    var permanentAddClass = this._permanentAddClasses[i];
+                    if( !this._target.hasClass(permanentAddClass) ) {
+                        this._target.addClass(permanentAddClass);
+                    }
+                }
+            }
+            if( this._permanentRemoveClasses ) {
+                for( var i in this._permanentRemoveClasses ) {
+                    var permanentRemoveClass = this._permanentRemoveClasses[i];
+                    this._target.removeClass(permanentRemoveClass);
+                }
+            }
             // force destroy if max time millis supplied
             if (this._maxTimeMillis != null) {
                 setTimeout(this._animationCompletionListener, this._maxTimeMillis);

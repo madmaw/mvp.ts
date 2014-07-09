@@ -241,10 +241,10 @@ module TS.MVP {
             if (this._animations != null) {
                 if (arrayRemoveElement(this._animations, animation)) {
                     animation.removeAnimationListener(this._animationListener);
+                    if (doNotDestroy != true) {
+                        animation.destroy();
+                    }
                 }
-            }
-            if (doNotDestroy != true) {
-                animation.destroy();
             }
         }
 

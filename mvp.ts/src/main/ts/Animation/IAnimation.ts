@@ -14,6 +14,8 @@ module TS.Animation {
 
         destroy();
 
+        forceToCompletion();
+
         addAnimationListener(listener: IAnimationStateChangeListener );
 
         removeAnimationListener(listener: IAnimationStateChangeListener );
