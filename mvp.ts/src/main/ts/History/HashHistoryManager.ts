@@ -88,6 +88,10 @@ module TS.History {
                 // TODO pop?
                 window.history.back();
 
+            } else if( this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex+1].getModelStateDataEncoded() == s ) {
+
+                //window.history.forward();
+                this._historyItemIndex++;
             } else {
 
                 var before = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -97,7 +101,10 @@ module TS.History {
                     } else {
                         this._historyItemIndex++;
                     }
-                    var url = before + "#" + s;
+                    var url = before;
+                    if( s != null ) {
+                        url += "#" + s;
+                    }
                     if (replace) {
                         // TODO the model is now responsible for the title....
                         window.history.replaceState(stateDescription, null, url);
@@ -186,11 +193,11 @@ module TS.History {
         private _init(description: any, onInitialized?: TS.MVP.IModelImportStateCallback): void {
             var started = this._presenter.getState() == TS.MVP.PresenterState.Started;
             if (started) {
-                this._presenter.stop();
+                //this._presenter.stop();
             }
             this._model.importState(description, onInitialized);
             if (started) {
-                this._presenter.start();
+                //this._presenter.start();
             }
         }
     }
