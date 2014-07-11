@@ -1,0 +1,23 @@
+{
+    "folders":
+    [
+        {
+            "path": "."
+        }
+    ],
+    "settings":
+    {
+        "tab_size": 4,
+        "typescript":
+        [
+            "reference.ts"
+        ]
+    },
+    "build_systems":
+    [
+        {
+            "name": "Grunt",
+            "cmd": ["grunt"]
+        }
+    ]
+}
