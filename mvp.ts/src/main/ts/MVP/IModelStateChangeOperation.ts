@@ -7,6 +7,9 @@ module TS.MVP {
         undo(): void;
 
         redo(): void;
+
+        // called when the state is returned to via another state's undo operation
+        activate(): void;
     }
 
 }

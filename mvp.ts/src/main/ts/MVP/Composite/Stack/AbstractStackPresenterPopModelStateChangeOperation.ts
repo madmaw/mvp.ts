@@ -15,6 +15,10 @@ module TS.MVP.Composite.Stack {
                 this._model._deStack(this._entry.presenter, false, true);
             }
         }
+
+        public activate() {
+            // do nothing (probably)
+        }
     }
 
     

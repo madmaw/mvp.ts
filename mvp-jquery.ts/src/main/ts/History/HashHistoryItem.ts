@@ -1,9 +1,9 @@
-﻿module TS.History {
+﻿module TS.IJQuery.History {
 
     export class HashHistoryItem {
 
 
-        public constructor(private _modelStateData: any, private _modelStateDataEncoded: string, private _modelStateChange: TS.MVP.IModelStateChangeOperation) {
+        public constructor(private _modelStateData: any, private _modelStateDataEncoded: string, private _modelStateChange: TS.MVP.IModelStateChangeOperation, public replaceId: string) {
         }
 
         public getModelStateData() {

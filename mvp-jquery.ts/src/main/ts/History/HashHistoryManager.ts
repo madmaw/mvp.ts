@@ -1,5 +1,5 @@
 // Module
-module TS.History {
+module TS.IJQuery.History {
 
     // Class
     export class HashHistoryManager {
@@ -10,7 +10,6 @@ module TS.History {
         private _model: TS.MVP.IModel;
         private _historyItems: HashHistoryItem[];
         private _historyItemIndex: number;
-        
 
         // Constructor
         constructor(private _presenter: TS.MVP.IPresenter, private _encoder:(data:any)=>string, private _decoder:(encoded:string)=>any) {
@@ -46,25 +45,36 @@ module TS.History {
                 }
                 var back;
                 var change: TS.MVP.IModelStateChangeOperation;
+
                 var historyItemIndex: number;
                 if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == dataString) {
                     back = true;
-                    change = this._historyItems[this._historyItemIndex].getModelStateChange();
+                    var historyItem = this._historyItems[this._historyItemIndex];
+                    change = historyItem.getModelStateChange();
                     historyItemIndex = this._historyItemIndex - 1;
                 } else if (this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex + 1].getModelStateDataEncoded() == dataString) {
                     back = false;
                     historyItemIndex = this._historyItemIndex + 1;
-                    change = this._historyItems[historyItemIndex].getModelStateChange();
+                    var historyItem = this._historyItems[historyItemIndex];
+                    change = historyItem.getModelStateChange();
                 } else {
                     // we've probably backed off the end of the local history into the browser history (the user refreshed), add this value to the start of our history
                     historyItemIndex = 0;
-                    this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null));
+                    this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null, null));
                     back = true;
                     change = null;
                 }
                 if (change != null) {
+                    // try to stop it from scrolling
                     if (back) {
                         change.undo();
+                        // current change
+                        if( historyItemIndex >= 0 ) {
+                            var currentChange = this._historyItems[historyItemIndex].getModelStateChange();
+                            if( currentChange ) {
+                                currentChange.activate();
+                            }
+                        }
                     } else {
                         change.redo();
                     }
@@ -99,7 +109,12 @@ module TS.History {
                     if (this._historyItemIndex == null) {
                         this._historyItemIndex = 0;
                     } else {
-                        this._historyItemIndex++;
+                        var historyItem = this._historyItems[this._historyItemIndex];
+                        if( historyItem.replaceId != null && historyItem.replaceId == modelStateChange.getReplaceId() ) {
+                            replace = true;
+                        } else {
+                            this._historyItemIndex++;
+                        }
                     }
                     var url = before;
                     if( s != null ) {
@@ -112,7 +127,7 @@ module TS.History {
                         window.history.pushState(stateDescription, null, url);
                     }
                     // TODO maintain state changes alongside the shit (you know what I mean)
-                    var historyItem = new HashHistoryItem(stateDescription, s, modelStateChange.getOperation());
+                    var historyItem = new HashHistoryItem(stateDescription, s, modelStateChange.getOperation(), modelStateChange.getReplaceId());
                     if (this._historyItems.length <= this._historyItemIndex) {
                         this._historyItems.push(historyItem);
                     } else {

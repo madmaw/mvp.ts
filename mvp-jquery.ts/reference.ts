@@ -3,6 +3,8 @@
 //grunt-start
 /// <reference path="src/main/ts/Animation/IJQueryAnimationFactory.ts" />
 /// <reference path="src/main/ts/Animation/JQueryCSSAnimation.ts" />
+/// <reference path="src/main/ts/History/HashHistoryItem.ts" />
+/// <reference path="src/main/ts/History/HashHistoryManager.ts" />
 /// <reference path="src/main/ts/MVP/BorrowedJQueryView.ts" />
 /// <reference path="src/main/ts/MVP/Command/CommandJQueryViewDescription.ts" />
 /// <reference path="src/main/ts/MVP/Command/ICommandJQueryViewDescriptionFactory.ts" />

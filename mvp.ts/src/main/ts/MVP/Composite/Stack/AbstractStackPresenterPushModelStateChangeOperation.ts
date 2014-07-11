@@ -15,6 +15,10 @@ module TS.MVP.Composite.Stack {
                 this._model._pushEntry(this._entry, false, true);
             }
         }
+
+        public activate() {
+            // do nothing (probably)
+        }
     }
 
 } 
