@@ -11,7 +11,7 @@ module TS.IJQuery.MVP.Composite {
         constructor(
             private _loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
             private _failurePresenter: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
-            private _retryFunction: (data:any, callback:TS.MVP.IModelImportStateCallback) => { maxProgress: number; promise: JQueryPromise<TS.MVP.IPresenter>; },
+            private _retryFunction: (data:any, callback:TS.MVP.IModelImportStateCallback, additionalPromises:JQueryPromise<any>[]) => { maxProgress: number; promise: JQueryPromise<TS.MVP.IPresenter>; },
             private _errorMarshaler: (arguments:IArguments) => TS.MVP.Error.ErrorModelState
         ) {
             super();
@@ -26,9 +26,9 @@ module TS.IJQuery.MVP.Composite {
             }
         }
 
-        public retry() {
+        public retry(additionalPromises?:JQueryPromise<any>[]) {
             this._successPresenterAvailable = false;
-            var promiseDescription = this._retryFunction(this._importData, this._importCallback);
+            var promiseDescription = this._retryFunction(this._importData, this._importCallback, additionalPromises);
             var promise = promiseDescription.promise;
             var maxProgress = promiseDescription.maxProgress;
             // initialize the loading model

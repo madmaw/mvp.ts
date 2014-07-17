@@ -24,18 +24,7 @@ module TS.IJQuery.History {
                 // TODO back/forward doesn't work if the back and forward urls are the same!!!
                 var state = event.state;
                 var description;
-                var sequenceNumber;
-                var dataString;
-                var hash = window.location.hash;
-
-                if (hash != null && hash.length > 0) {
-                    if (hash.charAt(0) == '#') {
-                        hash = hash.substring(1);
-                    }
-                    dataString = hash;
-                } else {
-                    dataString = null;
-                }
+                var dataString = this._dataStringFromLocation(window.location);
 
                 if (state == null && dataString != null) {
                     // TOOD parse out the state from the URL required
@@ -104,7 +93,6 @@ module TS.IJQuery.History {
                 this._historyItemIndex++;
             } else {
 
-                var before = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 if (this._historyItemIndex == null || s != this._historyItems[this._historyItemIndex].getModelStateDataEncoded()) {
                     if (this._historyItemIndex == null) {
                         this._historyItemIndex = 0;
@@ -116,10 +104,7 @@ module TS.IJQuery.History {
                             this._historyItemIndex++;
                         }
                     }
-                    var url = before;
-                    if( s != null ) {
-                        url += "#" + s;
-                    }
+                    var url = this._dataStringToPath(s);
                     if (replace) {
                         // TODO the model is now responsible for the title....
                         window.history.replaceState(stateDescription, null, url);
@@ -135,6 +120,29 @@ module TS.IJQuery.History {
                     }
                 }
             }
+        }
+
+        public _dataStringToPath(dataString:string) {
+            var before = window.location.pathname;
+            var url = before;
+            if( dataString != null ) {
+                url += "#" + dataString;
+            }
+            return url;
+        }
+
+        public _dataStringFromLocation(location:Location): string {
+            var dataString: string;
+            var hash = location.hash;
+            if (hash != null && hash.length > 0) {
+                if (hash.charAt(0) == '#') {
+                    hash = hash.substring(1);
+                }
+                dataString = hash;
+            } else {
+                dataString = null;
+            }
+            return dataString;
         }
 
         public start(): void {
@@ -164,20 +172,7 @@ module TS.IJQuery.History {
 
         public init(location: Location, onInitialized?:()=>void): void {
 
-            var previousHash = cookieGet("previousHash");
-
-            var hash = location.hash;
-            var populateHistory = (previousHash != hash);
-
-            var dataString: string;
-            if (hash != null && hash.length > 0) {
-                if (hash.charAt(0) == '#') {
-                    hash = hash.substring(1);
-                }
-                dataString = hash;
-            } else {
-                dataString = null;
-            }
+            var dataString = this._dataStringFromLocation(window.location);
             var data = this._decode(dataString);
             this._init(data, (changes: TS.MVP.ModelStateChangeEvent[]) => {
                 // pre-populating history may not be a good idea anyway
