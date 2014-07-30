@@ -2,9 +2,9 @@ module TS.IJQuery.MVP.Composite {
 
     export class JQueryPromiseSwitcherModel extends TS.MVP.Composite.AbstractCompositePresenterModel {
 
-        private _currentPresenter: TS.MVP.IPresenter;
+        public _currentPresenter: TS.MVP.IPresenter;
 
-        private _successPresenterAvailable: boolean;
+        public _successPresenter: TS.MVP.IPresenter;
         private _importData: any;
         private _importCallback: TS.MVP.IModelImportStateCallback;
 
@@ -15,7 +15,6 @@ module TS.IJQuery.MVP.Composite {
             private _errorMarshaler: (arguments:IArguments) => TS.MVP.Error.ErrorModelState
         ) {
             super();
-            this._successPresenterAvailable = false;
         }
 
         public getPresenters(): TS.MVP.IPresenter[]{
@@ -27,7 +26,7 @@ module TS.IJQuery.MVP.Composite {
         }
 
         public retry(additionalPromises?:JQueryPromise<any>[]) {
-            this._successPresenterAvailable = false;
+            this._successPresenter = undefined;
             var promiseDescription = this._retryFunction(this._importData, this._importCallback, additionalPromises);
             var promise = promiseDescription.promise;
             var maxProgress = promiseDescription.maxProgress;
@@ -35,32 +34,33 @@ module TS.IJQuery.MVP.Composite {
             var loadingModel = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
             this._loadingPresenter.setModel(loadingModel);
 
-            this._currentPresenter = this._loadingPresenter;
-            this._updateListeningForStateDescriptionChanges();
-            this._fireModelChangeEvent();
+            this._setCurrentPresenter(this._loadingPresenter);
             promise.done((presenter: TS.MVP.IPresenter) => {
-                // let's assume the input callback has finished
-                this._importCallback = null;
-                this._successPresenterAvailable = true;
+                // let's assume the import callback has finished
+                this._importCallback = undefined;
+                this._importData = undefined;
+                this._successPresenter = presenter;
 
-                this._currentPresenter = presenter;
-                this._updateListeningForStateDescriptionChanges();
-                this._fireModelChangeEvent();
+                this._setCurrentPresenter(presenter)
             }).fail(() => {
                 // TODO make this a retrying error model
                 var args = arguments;
                 var errorState = this._errorMarshaler(args);
                 var errorModel = new TS.MVP.Stateful.ImmutableStatefulModel(errorState);
                 this._failurePresenter.setModel(errorModel);
-                this._currentPresenter = this._failurePresenter;
-                this._updateListeningForStateDescriptionChanges();
-                this._fireModelChangeEvent();
+                this._setCurrentPresenter(this._failurePresenter);
             });
         }
 
+        public _setCurrentPresenter(currentPresenter: TS.MVP.IPresenter) {
+            this._currentPresenter = currentPresenter;
+            this._updateListeningForStateDescriptionChanges();
+            this._fireModelChangeEvent();
+        }
+
         public importState(description: any, importCompletionCallback: TS.MVP.IModelImportStateCallback): void {
-            if (this._successPresenterAvailable) {
-                this._currentPresenter.getModel().importState(description, importCompletionCallback);
+            if (this._successPresenter) {
+                this._successPresenter.getModel().importState(description, importCompletionCallback);
             } else {
                 this._importData = description;
                 this._importCallback = importCompletionCallback;
@@ -69,8 +69,8 @@ module TS.IJQuery.MVP.Composite {
 
         public exportState() {
             var result;
-            if (this._successPresenterAvailable) {
-                result = this._currentPresenter.getModel().exportState();
+            if (this._successPresenter) {
+                result = this._successPresenter.getModel().exportState();
             } else {
                 result = null;
             }
