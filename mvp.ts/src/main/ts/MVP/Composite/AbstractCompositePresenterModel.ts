@@ -10,10 +10,10 @@ module TS.MVP.Composite {
 
         constructor() {
             super();
-            this._stateChangeListener = (source: IModel, change: ModelStateChangeEvent) => {
+            this._stateChangeListener = (source: IModel, change: ModelStateChangeEvent, firedModels:IModel[]) => {
                 if (source != this) {
                     // models can be shared between controllers so we need to be careful we don't propogate our own events 
-                    this._fireStateChangeEvent(source, change);
+                    this._fireStateChangeEvent(source, change, firedModels);
                 }
             };
             this._presenterChangeListener = (source: IPresenter, change: PresenterChangeEvent) => {

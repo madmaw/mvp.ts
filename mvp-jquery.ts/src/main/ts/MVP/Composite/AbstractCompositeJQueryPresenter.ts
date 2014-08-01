@@ -4,7 +4,7 @@ module TS.IJQuery.MVP.Composite {
 
         public _presenters: TS.MVP.IPresenter[];
 
-        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory) {
+        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory, private _defaultPresenterContainerSelector?:string) {
             super(viewFactory);
             this._presenters = [];
         }
@@ -177,7 +177,7 @@ module TS.IJQuery.MVP.Composite {
         }
 
         public _getPresenterContainerSelector(presenter: TS.MVP.IPresenter): string {
-            return null;
+            return this._defaultPresenterContainerSelector;
         }
 
 

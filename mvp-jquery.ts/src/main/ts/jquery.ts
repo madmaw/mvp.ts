@@ -19,23 +19,44 @@ module TS.IJQuery {
         return result;
     }
 
-    export function jqueryDeferredProgressWhen(promises: JQueryPromise<any>[]): JQueryPromise<any> {
+    export function jqueryDeferredProgressWhen(promises: JQueryPromise<any>[], beforePromise?: JQueryPromise<any>, initProgress?: number): JQueryPromise<any> {
         var deferred: JQueryDeferred<any> = new jQuery.Deferred();
-        var newPromises: JQueryPromise<any>[] = [deferred];
-        var progress = 0;
-        for (var i in promises) {
-            var promise = promises[i];
-            var newPromise = promise.then(function () {
-                progress++;
-                deferred.notify(progress);
-                if (progress == promises.length) {
-                    // we finish when everything else does
-                    deferred.resolve();
-                }
-            });
-            newPromises.push(newPromise);
+        var progress = initProgress;
+        if( progress == null ) {
+            if( beforePromise ) {
+                progress = 1;
+            } else {
+                progress = 0;
+            }
         }
-        return $.when.apply($, newPromises);
+        var promiseFunction = function() {
+            for (var i in promises) {
+                var promise = promises[i];
+                promise.then(function () {
+                    progress++;
+                    deferred.notify(progress);
+                    if (progress == promises.length) {
+                        // we finish when everything else does
+                        deferred.resolve();
+                    }
+                }).fail(function(e) {
+                    deferred.reject(e);
+                });
+            }
+        }
+        if( beforePromise ) {
+            beforePromise.then(function() {
+                deferred.notify(progress);
+                promiseFunction();
+            }).fail(function(e) {
+                deferred.reject(e);
+            });
+        } else {
+            promiseFunction();
+        }
+
+
+        return deferred.promise();
     }
 
 

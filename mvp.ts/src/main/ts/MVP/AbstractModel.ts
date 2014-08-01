@@ -37,23 +37,26 @@ module TS.MVP {
         public _stoppedListening() {
         }
 
-        public _fireModelChangeEvent(changeDescription?: string, suppressFireStateTokenChange?:boolean);
-        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription, suppressFireStateTokenChange?: boolean);
-        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent, suppressFireStateTokenChange?: boolean);
-        public _fireModelChangeEvent(changeEvent?: any, suppressFireStateTokenChange?: boolean) {
+        public _fireModelChangeEvent(changeDescription?: string, suppressFireStateTokenChange?:boolean, firedModels?:IModel[]);
+        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription, suppressFireStateTokenChange?: boolean, firedModels?:IModel[]);
+        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent, suppressFireStateTokenChange?: boolean, firedModels?:IModel[]);
+        public _fireModelChangeEvent(changeEvent?: any, suppressFireStateTokenChange?: boolean, firedModels?:IModel[]) {
             if (changeEvent == null) {
                 changeEvent = new ModelChangeEvent();
             } else if (!(changeEvent instanceof ModelChangeEvent)) {
                 changeEvent = new ModelChangeEvent(changeEvent);
             }
-            for (var i = this._changeListeners.length; i > 0;) {
-                i--;
-                var modelOnChangeListener = this._changeListeners[i];
-                modelOnChangeListener(this, changeEvent);
-            }
-            if (suppressFireStateTokenChange != true) {
-                // fire state token change event
-                this._fireStateChangeOperation(this);
+            if( firedModels == null || firedModels.indexOf(this) < 0 ) {
+                var newFiredModels = this._checkModels(firedModels);
+                for (var i = this._changeListeners.length; i > 0;) {
+                    i--;
+                    var modelOnChangeListener = this._changeListeners[i];
+                    modelOnChangeListener(this, changeEvent, newFiredModels);
+                }
+                if (suppressFireStateTokenChange != true) {
+                    // fire state token change event
+                    this._fireStateChangeOperation(this, null, firedModels);
+                }
             }
         }
 
@@ -79,19 +82,22 @@ module TS.MVP {
         public _stoppedListeningForStateChanges() {
         }
 
-        public _fireStateChangeOperation(source: IModel, operation?: IModelStateChangeOperation) {
+        public _fireStateChangeOperation(source: IModel, operation?: IModelStateChangeOperation, firedModels?:IModel[]) {
             var event = new ModelStateChangeEvent(operation);
-            this._fireStateChangeEvent(source, event);
+            this._fireStateChangeEvent(source, event, firedModels);
         } 
 
-        public _fireStateChangeEvent(source: IModel, event: ModelStateChangeEvent) {
+        public _fireStateChangeEvent(source: IModel, event: ModelStateChangeEvent, firedModels?:IModel[]) {
             var fired = [];
-            for (var i in this._stateChangeListeners) {
-                var stateTokenChangeListener = this._stateChangeListeners[i];
-                if (fired.indexOf(stateTokenChangeListener) < 0) {
-                    stateTokenChangeListener(source, event);
-                    // can end up with legitimate duplicates, don't want to fire them multiple times though
-                    fired.push(stateTokenChangeListener);
+            if( firedModels == null || firedModels.indexOf(this) < 0 ) {
+                firedModels = this._checkModels(firedModels);
+                for (var i in this._stateChangeListeners) {
+                    var stateTokenChangeListener = this._stateChangeListeners[i];
+                    if (fired.indexOf(stateTokenChangeListener) < 0) {
+                        // can end up with legitimate duplicates, don't want to fire them multiple times though
+                        fired.push(stateTokenChangeListener);
+                        stateTokenChangeListener(source, event, firedModels);
+                    }
                 }
             }
         }
@@ -120,15 +126,18 @@ module TS.MVP {
                 if (models.indexOf(this) >= 0) {
                     throw ("this model "+this+" has already been added");
                 } else {
-                    models.push(this);
+                    //models.push(this); -- create a copy, it's safer
+                    var result = arrayCopy(models);
+                    result.push(this);
+                    models = result;
                 }
             }
             return models;
         }
 
         public _proxyChanges(model: IModel): ()=>void {
-            var changeListener = (source: IModel, changeEvent: ModelChangeEvent)=> {
-                this._notifyProxyChanged(source, changeEvent);
+            var changeListener = (source: IModel, changeEvent: ModelChangeEvent, firedModels: IModel[])=> {
+                this._notifyProxyChanged(source, changeEvent, firedModels);
             };
             model.addChangeListener(changeListener)
             return function() {
@@ -136,8 +145,8 @@ module TS.MVP {
             }
         }
 
-        public _notifyProxyChanged(proxy: IModel, changeEvent: ModelChangeEvent) {
-            this._fireModelChangeEvent(changeEvent, true);
+        public _notifyProxyChanged(proxy: IModel, changeEvent: ModelChangeEvent, firedModels?:IModel[]) {
+            this._fireModelChangeEvent(changeEvent, true, firedModels);
         }
     }
 }
