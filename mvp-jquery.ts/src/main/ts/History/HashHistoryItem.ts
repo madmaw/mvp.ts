@@ -14,6 +14,10 @@
             return this._modelStateChange;
         }
 
+        public setModelStateChange(modelStateChange: TS.MVP.IModelStateChangeOperation) {
+            this._modelStateChange = modelStateChange;
+        }
+
         public getModelStateDataEncoded() {
             return this._modelStateDataEncoded;
         }

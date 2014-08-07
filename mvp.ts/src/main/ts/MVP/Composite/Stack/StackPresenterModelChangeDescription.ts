@@ -11,6 +11,7 @@ module TS.MVP.Composite.Stack {
             changeType: string,
             private _removedPresenter: IPresenter,
             private _addedPresenter: IPresenter,
+            private _presenterType?: string,
             private _silentRemovedPresenters?: IPresenter[],
             private _silentAddedPresenters?: IPresenter[]
         ) {
@@ -31,6 +32,10 @@ module TS.MVP.Composite.Stack {
 
         public getSilentAddedPresenters(): IPresenter[]{
             return this._silentAddedPresenters;
+        }
+
+        public getPresenterType() {
+            return this._presenterType;
         }
     }
 

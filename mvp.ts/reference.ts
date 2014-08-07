@@ -5,6 +5,7 @@
 
 /// <reference path="src/main/ts/MVP/IModel.ts" />
 /// <reference path="src/main/ts/MVP/AbstractModel.ts" />
+/// <reference path="src/main/ts/MVP/ModelChangeDescription.ts" />
 
 /// <reference path="src/main/ts/MVP/Composite/AbstractCompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/MappedKeyedCompositePresenterModel.ts" />
@@ -27,8 +28,10 @@
 /// <reference path="src/main/ts/MVP/Command/Command.ts" />
 /// <reference path="src/main/ts/MVP/Command/CommandType.ts" />
 /// <reference path="src/main/ts/MVP/Command/ICommandModel.ts" />
+/// <reference path="src/main/ts/MVP/Composite/CompositePresenterModelChangeDescription.ts" />
 /// <reference path="src/main/ts/MVP/Composite/ICompositePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/IKeyedCompositePresenterModel.ts" />
+/// <reference path="src/main/ts/MVP/Composite/MappedKeyedCompositePresenterModelStateChangeOperation.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterModelEntry.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPopModelStateChangeOperation.ts" />
 /// <reference path="src/main/ts/MVP/Composite/Stack/AbstractStackPresenterPushModelStateChangeOperation.ts" />
@@ -48,7 +51,6 @@
 /// <reference path="src/main/ts/MVP/List/IListPresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Loading/ILoadingModel.ts" />
 /// <reference path="src/main/ts/MVP/Loading/LoadingModelState.ts" />
-/// <reference path="src/main/ts/MVP/ModelChangeDescription.ts" />
 /// <reference path="src/main/ts/MVP/ModelChangeEvent.ts" />
 /// <reference path="src/main/ts/MVP/ModelStateChangeEvent.ts" />
 /// <reference path="src/main/ts/MVP/PresenterChangeEvent.ts" />

@@ -39,25 +39,37 @@ module TS.MVP.Composite {
             return result;
         }
 
-        public setPresenter(key: string, presenter: IPresenter, doNotFireEvent?: boolean) {
-            if (this._listeningForTokenChanges) {
-                var oldPresenter: IPresenter = this._presenterMap[key];
-                if (oldPresenter != null) {
+        public setPresenter(key: string, presenter: IPresenter, doNotFireEvent?: boolean, doNotFireStateEvent?:boolean) {
+            var addedPresenters: IPresenter[] = [];
+            var removedPresenters: IPresenter[] = [];
+            var oldPresenter: IPresenter = this._presenterMap[key];
+            if (oldPresenter != null) {
+                removedPresenters.push(oldPresenter);
+                if (this._listeningForTokenChanges) {
                     var oldModel = oldPresenter.getModel();
                     if (oldModel != null) {
                         oldModel.removeStateChangeListener(this._stateChangeListener);
                     }
                 }
             }
-            this._presenterMap[key] = presenter;
+
             if (presenter != null) {
+                addedPresenters.push(presenter);
+                this._presenterMap[key] = presenter;
                 var model = presenter.getModel();
                 if (model != null) {
                     model.addStateChangeListener(this._stateChangeListener);
                 }
+            } else {
+                delete this._presenterMap[key];
             }
             if (doNotFireEvent != true) {
-                this._fireModelChangeEvent(compositePresenterModelEventTypePresentersChanged);
+                var event = new ModelChangeEvent()
+                this._fireModelChangeEvent(new CompositePresenterModelChangeDescription(addedPresenters, removedPresenters), true);
+                if( !doNotFireStateEvent ) {
+                    // fire the operation
+                    this._fireStateChangeOperation(this, new MappedKeyedCompositePresenterModelStateChangeOperation(this, key, presenter, oldPresenter));
+                }
             }
         }
 

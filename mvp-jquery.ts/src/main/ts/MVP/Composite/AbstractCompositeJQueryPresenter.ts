@@ -9,6 +9,25 @@ module TS.IJQuery.MVP.Composite {
             this._presenters = [];
         }
 
+        public _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            var description = <TS.MVP.Composite.CompositePresenterModelChangeDescription>event.lookupExclusive(TS.MVP.Composite.CompositePresenterModelChangeDescription.COMPOSITE_PRESENTER_MODEL_CHANGED);
+            if( description ) {
+                // handle manually
+                var removedPresenters = description.removedPresenters;
+                for( var i in removedPresenters ) {
+                    var removedPresenter = removedPresenters[i];
+                    this._remove(removedPresenter);
+                }
+                var addedPresenters = description.addedPresenters;
+                for( var i in addedPresenters ) {
+                    var addedPresenter = addedPresenters[i];
+                    this._add(<IJQueryPresenter>addedPresenter);
+                }
+            } else {
+                super._handleModelChangeEvent(event);
+            }
+        }
+
         public _doLoad(model: TS.MVP.Composite.ICompositePresenterModel) {
             // load up the controllers
             this.clear();

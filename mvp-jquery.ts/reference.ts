@@ -1,4 +1,4 @@
-/// <reference path="src/main/ts/MVP/AbstracJQueryPresenter.ts" />
+/// <reference path="src/main/ts/MVP/AbstractJQueryPresenter.ts" />
 
 //grunt-start
 /// <reference path="src/main/ts/Animation/IJQueryAnimationFactory.ts" />

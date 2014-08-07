@@ -109,7 +109,7 @@ module TS.MVP.Composite.Stack {
                 var previousEntry = this._stack[this._stack.length - 1];
                 var entries = this._stack.splice(this._stack.length - 1, 1);
                 if (suppressFireModelChangeEvent != true) {
-                    var changeDescription = new StackPresenterModelChangeDescription(stackPresenterModelEventTypePopped, previousEntry.presenter, this.peek());
+                    var changeDescription = new StackPresenterModelChangeDescription(stackPresenterModelEventTypePopped, previousEntry.presenter, this.peek(), previousEntry.presenterName);
                     // TODO need a popchange (reverse of push change)
                     this._fireModelChangeEvent(changeDescription, true);
                 }
@@ -124,9 +124,9 @@ module TS.MVP.Composite.Stack {
             return result;
         }
 
-        public _push(presenter: PresenterType, data?: any, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): void {
+        public _push(presenter: PresenterType, data?: any, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean, presenterName?: string): void {
             this._pushEntry(
-                new AbstractStackPresenterModelEntry(presenter, data),
+                new AbstractStackPresenterModelEntry(presenter, data, presenterName),
                 suppressFireModelChangeEvent,
                 suppressFireDescriptionChangeEvent
             );
@@ -153,7 +153,7 @@ module TS.MVP.Composite.Stack {
             var previousPresenter = this.peek();
             this._stack.push(entry);
             if (suppressFireModelChangeEvent != true) {
-                var description = new StackPresenterModelChangeDescription(stackPresenterModelEventTypePushed, previousPresenter, entry.presenter);
+                var description = new StackPresenterModelChangeDescription(stackPresenterModelEventTypePushed, previousPresenter, entry.presenter, entry.presenterName);
                 this._fireModelChangeEvent(description, true);
             }
             this._updateListeningForStateDescriptionChanges();

@@ -11,7 +11,7 @@ module TS.MVP.Tab {
         private _selectedTabId: string;
 
         // Constructor
-        constructor(selectedTabId: string, private _tabIdsToPresenters: { [_:string]: IPresenter; }, private _tabControllerKey: string, _presenterMap?: { [_:string]: IPresenter; }) {
+        constructor(selectedTabId: string, private _tabIdsToPresenters: { [_:string]: IPresenter; }, private _tabPresenterKey: string, _presenterMap?: { [_:string]: IPresenter; }) {
             super(_presenterMap);
             this._setSelectedTabId(selectedTabId);
         }
@@ -36,8 +36,8 @@ module TS.MVP.Tab {
         public _setSelectedTabId(tabId: string, suppressModelChangeEvent?:boolean) {
             if (this._selectedTabId != tabId) {
                 this._selectedTabId = tabId;
-                var selectedTabController = this._tabIdsToPresenters[tabId];
-                this.setPresenter(this._tabControllerKey, selectedTabController, true);
+                var selectedTabPresenter = this._tabIdsToPresenters[tabId];
+                this.setPresenter(this._tabPresenterKey, selectedTabPresenter, true);
                 if (suppressModelChangeEvent != true) {
                     this._fireModelChangeEvent(
                         new ModelChangeEvent(
@@ -80,7 +80,7 @@ module TS.MVP.Tab {
 
         public _getDescribedPresenterKey(presenter: IPresenter): string {
             var result = super._getDescribedPresenterKey(presenter);
-            if (result == this._tabControllerKey || result == null) {
+            if (result == this._tabPresenterKey || result == null) {
                 // need to differentiate
                 for (var key in this._tabIdsToPresenters) {
                     var tabPresenter = this._tabIdsToPresenters[key];

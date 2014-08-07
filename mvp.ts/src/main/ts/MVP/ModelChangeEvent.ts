@@ -32,5 +32,15 @@ module TS.MVP {
             }
             return result;
         }
+
+        public lookupExclusive(changeType: string): ModelChangeDescription {
+            var modelChangeDescription: ModelChangeDescription;
+            if( this._descriptions.length == 1 ) {
+                modelChangeDescription = this.lookup(changeType);
+            } else {
+                modelChangeDescription = null;
+            }
+            return modelChangeDescription;
+        }
     }
 }

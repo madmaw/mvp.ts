@@ -23,56 +23,60 @@ module TS.IJQuery.History {
             this._historyChangeListener = (event: PopStateEvent) => {
                 // TODO back/forward doesn't work if the back and forward urls are the same!!!
                 var state = event.state;
-                var description;
-                var dataString = this._dataStringFromLocation(window.location);
-
-                if (state == null && dataString != null) {
-                    // TOOD parse out the state from the URL required
-                    description = this._decode(dataString);
-                } else {
-                    description = state;
-                }
-                var back;
-                var change: TS.MVP.IModelStateChangeOperation;
-
-                var historyItemIndex: number;
-                if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == dataString) {
-                    back = true;
-                    var historyItem = this._historyItems[this._historyItemIndex];
-                    change = historyItem.getModelStateChange();
-                    historyItemIndex = this._historyItemIndex - 1;
-                } else if (this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex + 1].getModelStateDataEncoded() == dataString) {
-                    back = false;
-                    historyItemIndex = this._historyItemIndex + 1;
-                    var historyItem = this._historyItems[historyItemIndex];
-                    change = historyItem.getModelStateChange();
-                } else {
-                    // we've probably backed off the end of the local history into the browser history (the user refreshed), add this value to the start of our history
-                    historyItemIndex = 0;
-                    this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null, null));
-                    back = true;
-                    change = null;
-                }
-                if (change != null) {
-                    // try to stop it from scrolling
-                    if (back) {
-                        change.undo();
-                        // current change
-                        if( historyItemIndex >= 0 ) {
-                            var currentChange = this._historyItems[historyItemIndex].getModelStateChange();
-                            if( currentChange ) {
-                                currentChange.activate();
-                            }
-                        }
-                    } else {
-                        change.redo();
-                    }
-                } else {
-                    this._init(description);
-                }
-                this._historyItemIndex = historyItemIndex;
+                this._consumeBrowserStateChange(state);
             };
 
+        }
+
+        public _consumeBrowserStateChange(state?: any) {
+            var description;
+            var dataString = this._dataStringFromLocation(window.location);
+
+            if (state == null && dataString != null) {
+                // TOOD parse out the state from the URL required
+                description = this._decode(dataString);
+            } else {
+                description = state;
+            }
+            var back;
+            var change: TS.MVP.IModelStateChangeOperation;
+
+            var historyItemIndex: number;
+            if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == dataString) {
+                back = true;
+                var historyItem = this._historyItems[this._historyItemIndex];
+                change = historyItem.getModelStateChange();
+                historyItemIndex = this._historyItemIndex - 1;
+            } else if (this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex + 1].getModelStateDataEncoded() == dataString) {
+                back = false;
+                historyItemIndex = this._historyItemIndex + 1;
+                var historyItem = this._historyItems[historyItemIndex];
+                change = historyItem.getModelStateChange();
+            } else {
+                // we've probably backed off the end of the local history into the browser history (the user refreshed), add this value to the start of our history
+                historyItemIndex = 0;
+                this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null, null));
+                back = true;
+                change = null;
+            }
+            if (change != null) {
+                // try to stop it from scrolling
+                if (back) {
+                    change.undo();
+                    // current change
+                    if( historyItemIndex >= 0 ) {
+                        var currentChange = this._historyItems[historyItemIndex].getModelStateChange();
+                        if( currentChange ) {
+                            currentChange.activate();
+                        }
+                    }
+                } else {
+                    change.redo();
+                }
+            } else {
+                this._init(description);
+            }
+            this._historyItemIndex = historyItemIndex;
         }
 
         public push(modelStateChange: TS.MVP.ModelStateChangeEvent) {
@@ -84,13 +88,18 @@ module TS.IJQuery.History {
             // assume that if the previous is the same, we are actually seeing a back operation!
             if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == s) {
 
+                var previousHistoryItem = this._historyItems[this._historyItemIndex -1];
+                previousHistoryItem.setModelStateChange(modelStateChange.getOperation());
                 // TODO pop?
                 window.history.back();
 
-            } else if( this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex+1].getModelStateDataEncoded() == s ) {
+            } else if( false && this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex+1].getModelStateDataEncoded() == s ) {
 
-                //window.history.forward();
+                var nextHistoryItem = this._historyItems[this._historyItemIndex + 1];
+                nextHistoryItem.setModelStateChange(modelStateChange.getOperation());
                 this._historyItemIndex++;
+                // pretty sure we're better off handling this ourselves than trying to convince the browser to behave
+                //window.history.forward();
             } else {
 
                 if (this._historyItemIndex == null || s != this._historyItems[this._historyItemIndex].getModelStateDataEncoded()) {
@@ -146,9 +155,9 @@ module TS.IJQuery.History {
         }
 
         public start(): void {
-            // force a hash on the URL
             this._model.addStateChangeListener(this._stateDescriptionChangeListener);
             window.addEventListener('popstate', this._historyChangeListener);
+            // force the current window location onto the stack
         }
 
         public stop(): void {
@@ -194,6 +203,11 @@ module TS.IJQuery.History {
                     }
                 }
                 */
+                if( this._historyItemIndex == null ) {
+                    this._historyItems.push(new HashHistoryItem(data, dataString, null, null));
+                    this._historyItemIndex = 0;
+                }
+
                 if (onInitialized) {
                     onInitialized();
                 }

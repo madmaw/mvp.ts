@@ -7,14 +7,19 @@ module TS.IJQuery.MVP.Composite.Stack {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
-            private _animationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[]=[]
+            private _defaultAnimationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[]=[],
+            private _presenterTypeAnimationFactoryBundles: { [_:string]: StackJQueryPresenterAnimationFactoryBundle[] } = {}
         ) {
             super(viewFactory);
             this.removedAnimatedChildren = [];
         }
 
-        public setAnimationFactoryBundles(animationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[]) {
-            this._animationFactoryBundles = animationFactoryBundles;
+        public setDefaultAnimationFactoryBundles(animationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[]) {
+            this._defaultAnimationFactoryBundles = animationFactoryBundles;
+        }
+
+        public setPresenterTypeAnimationFactoryBundles(presenterTypeAnimationFactoryBundles: { [_:string]: StackJQueryPresenterAnimationFactoryBundle[] }) {
+            this._presenterTypeAnimationFactoryBundles = presenterTypeAnimationFactoryBundles;
         }
 
         public _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
@@ -109,6 +114,7 @@ module TS.IJQuery.MVP.Composite.Stack {
                         animationListener = null;
                     }
                     animated = this._animate(
+                        stackDescription.getPresenterType(),
                         animationFactoryName,
                         animationListener
                         );
@@ -131,14 +137,21 @@ module TS.IJQuery.MVP.Composite.Stack {
             stackPresenterModel.requestPop();
         }
 
-        private _animate(animationFactoryName: string, animationCompletionListener?: (source: TS.Animation.IAnimation, event: TS.Animation.AnimationStateChangeEvent) => void): boolean {
+        private _animate(presenterType: string, animationFactoryName: string, animationCompletionListener?: (source: TS.Animation.IAnimation, event: TS.Animation.AnimationStateChangeEvent) => void): boolean {
             var result: boolean = false;
 
             var count = 0;
             var completionCount = 0;
 
-            for (var i in this._animationFactoryBundles) {
-                var animationFactoryBundle: StackJQueryPresenterAnimationFactoryBundle = this._animationFactoryBundles[i];
+            var animationFactoryBundles: StackJQueryPresenterAnimationFactoryBundle[];
+            if( presenterType == null ) {
+                animationFactoryBundles = this._defaultAnimationFactoryBundles;
+            } else {
+                animationFactoryBundles = this._presenterTypeAnimationFactoryBundles[presenterType];
+            }
+
+            for (var i in animationFactoryBundles) {
+                var animationFactoryBundle: StackJQueryPresenterAnimationFactoryBundle = animationFactoryBundles[i];
                 var animationFactory = <TS.IJQuery.Animation.IJQueryAnimationFactory>animationFactoryBundle[animationFactoryName];
                 if (animationFactory != null) {
                     var selector = animationFactoryBundle.selector;
