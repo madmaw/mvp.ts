@@ -6,7 +6,7 @@ module TS.IJQuery.MVP {
             return function (container: JQuery, params:any, prepend?: boolean): IJQueryView {
                 var jquery;
                 if (selector) {
-                    jquery = container.find(selector);
+                    jquery = TS.IJQuery.jquerySelectFromRoot(container, selector);
                 } else {
                     jquery = container;
                 }
