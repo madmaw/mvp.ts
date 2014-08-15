@@ -92,6 +92,7 @@ module TS.IJQuery.MVP {
         }
 
         layout(): boolean {
+            this.$.resize();
             return false;
         }
 

@@ -34,6 +34,10 @@ module TS.IJQuery.MVP {
         }
 
         layout(): boolean {
+            // check we aren't the window, one of the few things that actually fire a resize event on their own!
+            if( this.$.index($(window)) < 0 ) {
+                this.$.resize();
+            }
             return false;
         }
 

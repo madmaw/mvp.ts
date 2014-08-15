@@ -54,7 +54,6 @@ module TS.IJQuery.MVP {
             this.layout();
         }
 
-
         public _doDestroy(detachView:boolean): boolean {
             if (detachView) {
                 this._view.detach();

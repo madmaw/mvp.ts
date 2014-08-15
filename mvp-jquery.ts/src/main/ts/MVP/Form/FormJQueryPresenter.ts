@@ -160,6 +160,7 @@ module TS.IJQuery.MVP.Form {
                     var validationErrors = model.getFieldValidationErrors(key);
                     field.setValidationErrors(validationErrors);
                 }
+                this.layout();
             } else {
                 super._handleModelChangeEvent(event);
             }
@@ -181,6 +182,7 @@ module TS.IJQuery.MVP.Form {
             } else {
                 formErrorsElement.html("");
             }
+            this.layout();
         }
 
         public _submit() {
