@@ -93,6 +93,31 @@ module TS.IJQuery.MVP.Form {
             }
         }
 
+        public static fieldFactoryInnerText(inputSelector: string) {
+            return function(form: JQuery) {
+                var element = TS.IJQuery.jquerySelectFromRoot(form, inputSelector);
+
+                return {
+                    setValue: function(value: any) {
+                        element.text(value);
+                    },
+
+                    getValue: function() {
+                        return element.text();
+                    },
+
+                    setValidationErrors: function(validationErrors: string[]) {
+                        // do nothing
+                    },
+
+                    setChangeCallback: function(changeCallback: (field: IFormJQueryPresenterField)=>void) {
+                        // never changes
+                    }
+                }
+            }
+
+        }
+
         private _fields: {[_:string]:IFormJQueryPresenterField};
         private _submitCallback: (event: JQueryEventObject) => void;
 

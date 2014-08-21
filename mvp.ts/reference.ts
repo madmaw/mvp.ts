@@ -61,6 +61,7 @@
 /// <reference path="src/main/ts/MVP/Stateful/IStatefulModel.ts" />
 /// <reference path="src/main/ts/MVP/Stateful/ImmutableStatefulModel.ts" />
 /// <reference path="src/main/ts/MVP/Tab/ITabBarModel.ts" />
+/// <reference path="src/main/ts/MVP/Tab/MappedKeyedCompositePresenterTabBarModelStateChangeOperation.ts" />
 /// <reference path="src/main/ts/MVP/Table/TableHeader.ts" />
 /// <reference path="src/main/ts/MVP/Table/TableHeaderTree.ts" />
 /// <reference path="src/main/ts/array.ts" />

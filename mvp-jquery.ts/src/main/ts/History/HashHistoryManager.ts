@@ -114,6 +114,10 @@ module TS.IJQuery.History {
                         }
                     }
                     var url = this._dataStringToPath(s);
+                    if( url == null || url.length == 0 ) {
+                        // empty paths will not be pushed?
+                        url = "/";
+                    }
                     if (replace) {
                         // TODO the model is now responsible for the title....
                         window.history.replaceState(stateDescription, null, url);

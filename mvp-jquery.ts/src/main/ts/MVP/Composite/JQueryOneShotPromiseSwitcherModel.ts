@@ -6,12 +6,19 @@ module TS.IJQuery.MVP.Composite {
 
         public _successPresenter: TS.MVP.IPresenter;
 
+        public _importing: boolean;
+        public _importData: any;
+        public _importCallback: TS.MVP.IModelImportStateCallback;
+
         constructor(
             private _loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
             private _failurePresenter?: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
-            private _errorMarshaler?: (arguments:IArguments) => TS.MVP.Error.ErrorModelState
+            private _errorMarshaler?: (arguments:IArguments) => TS.MVP.Error.ErrorModelState,
+            public _defaultStateDescription?: any
         ) {
             super();
+            // assume we want to import it on a refresh, in lieu of anything else being available
+            this._importData = _defaultStateDescription;
         }
 
         public setPromise(promise: JQueryPromise<TS.MVP.IPresenter>, maxProgress: number) {
@@ -23,7 +30,10 @@ module TS.IJQuery.MVP.Composite {
             this._setCurrentPresenter(this._loadingPresenter);
             promise.then((presenter: TS.MVP.IPresenter) => {
                 this._successPresenter = presenter;
-
+                if( this._importing ) {
+                    this._importing = false;
+                    presenter.getModel().importState(this._importData, this._importCallback);
+                }
                 this._setCurrentPresenter(presenter)
             });
             // only handle failures if we actually have a failure presenter (otherwise, infinite loading!)
@@ -56,6 +66,28 @@ module TS.IJQuery.MVP.Composite {
             this._updateListeningForStateDescriptionChanges();
             this._fireModelChangeEvent();
         }
+
+        public importState(description: any, importCompletionCallback: TS.MVP.IModelImportStateCallback): void {
+            if (this._successPresenter) {
+                this._successPresenter.getModel().importState(description, importCompletionCallback);
+                this._importing = false;
+            } else {
+                this._importData = description;
+                this._importCallback = importCompletionCallback;
+                this._importing = true;
+            }
+        }
+
+        public exportState() {
+            var result;
+            if (this._successPresenter) {
+                result = this._successPresenter.getModel().exportState();
+            } else {
+                result = this._defaultStateDescription;
+            }
+            return result;
+        }
+
     }
 
 }

@@ -8,10 +8,10 @@ module TS.MVP.Tab {
      */
     export class MappedKeyedCompositePresenterTabBarModel extends TS.MVP.Composite.MappedKeyedCompositePresenterModel implements ITabBarModel {
 
-        private _selectedTabId: string;
+        public _selectedTabId: string;
 
         // Constructor
-        constructor(selectedTabId: string, private _tabIdsToPresenters: { [_:string]: IPresenter; }, private _tabPresenterKey: string, _presenterMap?: { [_:string]: IPresenter; }) {
+        constructor(selectedTabId: string, private _tabIdsToPresenters: { [_:string]: IPresenter; }, public _tabPresenterKey: string, _presenterMap?: { [_:string]: IPresenter; }) {
             super(_presenterMap);
             this._setSelectedTabId(selectedTabId);
         }
@@ -33,20 +33,32 @@ module TS.MVP.Tab {
             this._setSelectedTabId(tabId);
         }
 
-        public _setSelectedTabId(tabId: string, suppressModelChangeEvent?:boolean) {
+        public _setSelectedTabId(tabId: string, suppressModelChangeEvent?:boolean, suppressStateChangeEvent?:boolean) {
             if (this._selectedTabId != tabId) {
+                var previouslySelectedTabId = this._selectedTabId;
                 this._selectedTabId = tabId;
                 var selectedTabPresenter = this._tabIdsToPresenters[tabId];
                 this.setPresenter(this._tabPresenterKey, selectedTabPresenter, true);
-                if (suppressModelChangeEvent != true) {
+                if (!suppressModelChangeEvent) {
                     this._fireModelChangeEvent(
                         new ModelChangeEvent(
                             [
                                 new ModelChangeDescription(tabBarModelEventTypeSelectedTabChange),
                                 new ModelChangeDescription(TS.MVP.Composite.compositePresenterModelEventTypePresentersChanged)
                             ]
-                        )
+                        ),
+                        true
                     );
+                }
+                if( !suppressStateChangeEvent ) {
+                    this._fireStateChangeOperation(
+                        this,
+                        new MappedKeyedCompositePresenterTabBarModelStateChangeOperation(
+                            this,
+                            previouslySelectedTabId,
+                            tabId
+                        )
+                    )
                 }
             }
         }
@@ -70,9 +82,9 @@ module TS.MVP.Tab {
         public _getDescribedPresenters(): IPresenter[] {
             var result = super._getDescribedPresenters();
             for (var tabId in this._tabIdsToPresenters) {
-                var controller = this._tabIdsToPresenters[tabId];
-                if (result.indexOf(controller) < 0) {
-                    result.push(controller);
+                var presenter = this._tabIdsToPresenters[tabId];
+                if (presenter != null && result.indexOf(presenter) < 0) {
+                    result.push(presenter);
                 }
             }
             return result;

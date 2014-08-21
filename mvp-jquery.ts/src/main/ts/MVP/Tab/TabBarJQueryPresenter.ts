@@ -25,21 +25,23 @@ module TS.IJQuery.MVP.Tab {
             for (var i in tabIds) {
                 var tabId = tabIds[i];
                 var description: TabBarTabJQueryViewDescription = this._tabBarTabViewDescriptionFactory(tabButtonContainer, tabId);
+                if( description ) {
+                    // null descriptions are allowed for virtual tabs
+                    var view = description.getView();
+                    view.attach();
 
-                var view = description.getView();
-                view.attach();
-
-                if (tabId == selectedTabId) {
-                    // add the class
-                    var styleableElements = jquerySelectFromRoot(view.$, description.getStyleableElementSelector());
-                    styleableElements.addClass(this._selectedTabClass);
+                    if (tabId == selectedTabId) {
+                        // add the class
+                        var styleableElements = jquerySelectFromRoot(view.$, description.getStyleableElementSelector());
+                        styleableElements.addClass(this._selectedTabClass);
+                    }
+                    // add in the onclick listener
+                    var clickableElements = jquerySelectFromRoot(view.$, description.getClickableElementSelector());
+                    clickableElements.click(tabId, (e:JQueryEventObject) => {
+                        this._requestSelectTabId(e.data);
+                    });
+                    this._tabIdsToDescriptions[tabId] = description;
                 }
-                // add in the onclick listener
-                var clickableElements = jquerySelectFromRoot(view.$, description.getClickableElementSelector());
-                clickableElements.click(tabId, (e:JQueryEventObject) => {
-                    this._requestSelectTabId(e.data);
-                });
-                this._tabIdsToDescriptions[tabId] = description;
             }
         }
 

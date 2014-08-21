@@ -61,24 +61,26 @@ module TS.MVP.Form {
             return this._fieldValidationErrors[key];
         }
 
-        setFieldValidationErrors(fieldValidationErrors: {[_:string]:string[]}, suppressStateChangeEvent?:boolean) {
+        setFieldValidationErrors(fieldValidationErrors: {[_:string]:string[]}) {
             this._fieldValidationErrors = fieldValidationErrors;
             var fieldValidationErrorKeys = [];
             for( var key in fieldValidationErrors ) {
                 fieldValidationErrorKeys.push(key);
             }
-            this._fireModelChangeEvent(new FormFieldModelChangeDescription([], fieldValidationErrorKeys), suppressStateChangeEvent);
+            // always suppress state change events (validation errors are derived from values)
+            this._fireModelChangeEvent(new FormFieldModelChangeDescription([], fieldValidationErrorKeys), true);
         }
 
         getFormErrors(): string[] {
             return this._formErrors;
         }
 
-        setFormErrors(formErrors: string[], suppressModelChangeEvent?:boolean, suppressStateChangeEvent?:boolean) {
+        setFormErrors(formErrors: string[], suppressModelChangeEvent?:boolean) {
             this._formErrors = formErrors;
             // TODO don't redo everything
             if( !suppressModelChangeEvent ) {
-                this._fireModelChangeEvent();
+                // always suppress state change events for this (errors are not persistent)
+                this._fireModelChangeEvent(null, true);
             }
         }
 
