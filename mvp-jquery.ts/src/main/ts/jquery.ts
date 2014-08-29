@@ -21,29 +21,34 @@ module TS.IJQuery {
 
     export function jqueryDeferredProgressWhen(promises: JQueryPromise<any>[], beforePromise?: JQueryPromise<any>, initProgress?: number): JQueryPromise<any> {
         var deferred: JQueryDeferred<any> = new jQuery.Deferred();
-        var progress = initProgress;
-        if( progress == null ) {
+        if( initProgress == null ) {
             if( beforePromise ) {
-                progress = 1;
+                initProgress = 1;
             } else {
-                progress = 0;
+                initProgress = 0;
             }
         }
+        var progress = initProgress;
         var promiseFunction = function() {
-            for (var i in promises) {
-                var promise = promises[i];
-                promise.then(function () {
-                    progress++;
-                    deferred.notify(progress);
-                    if (progress == promises.length) {
-                        // we finish when everything else does
-                        deferred.resolve();
-                    }
-                }).fail(function(e) {
-                    deferred.reject(e);
-                });
+            if( promises != null && promises.length > 0 ) {
+                for (var i in promises) {
+                    var promise = promises[i];
+                    promise.then(function () {
+                        progress++;
+                        deferred.notify(progress);
+                        if (progress == promises.length + initProgress) {
+                            // we finish when everything else does
+                            deferred.resolve();
+                        }
+                    }).fail(function(e) {
+                        deferred.reject(e);
+                    });
+                }
+            } else {
+                // done, it's empty
+                deferred.resolve();
             }
-        }
+        };
         if( beforePromise ) {
             beforePromise.then(function() {
                 deferred.notify(progress);
