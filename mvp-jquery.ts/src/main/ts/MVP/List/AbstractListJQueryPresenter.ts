@@ -2,11 +2,14 @@ module TS.IJQuery.MVP.List {
 
     export class AbstractListJQueryPresenter<ModelType extends TS.MVP.List.IListPresenterModel> extends TS.IJQuery.MVP.AbstractJQueryPresenter<ModelType> {
 
-        private _positionsToListItems: { [_:number]: AbstractListJQueryPresenterItem; };
+        public _positionsToListItems: { [_:number]: AbstractListJQueryPresenterItem; };
         private _typesToReusableControllers: { [_: string]: TS.MVP.IPresenter[]; };
 
         // Constructor
-        constructor(viewFactory: TS.IJQuery.MVP.IJQueryViewFactory, private _listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory) {
+        constructor(
+            viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
+            private _listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory
+        ) {
             super(viewFactory);
             this._positionsToListItems = {};
             this._typesToReusableControllers = {};

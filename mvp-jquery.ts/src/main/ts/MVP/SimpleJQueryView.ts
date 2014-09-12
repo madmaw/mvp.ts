@@ -4,7 +4,7 @@ module TS.IJQuery.MVP {
 
         public static viewFactoryFromHTML(html: string): IJQueryViewFactory {
             return function (container: JQuery, params: any, prepend?: boolean): IJQueryView {
-                var nodes = $.parseHTML(this._html);
+                var nodes = $.parseHTML(html);
                 var jquery = $(nodes);
                 return new SimpleJQueryView(jquery, container, prepend);
             };
@@ -72,7 +72,7 @@ module TS.IJQuery.MVP {
             if (!this._attached) {
                 if (this._prepend) {
                     var first = this._container.children().first();
-                    if (first) {
+                    if (first && first.length > 0) {
                         this.$.insertBefore(first);
                     } else {
                         this._container.append(this.$);

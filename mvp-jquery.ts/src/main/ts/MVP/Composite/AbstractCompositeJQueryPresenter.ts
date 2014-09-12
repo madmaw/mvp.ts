@@ -29,7 +29,7 @@ module TS.IJQuery.MVP.Composite {
         }
 
         public _doLoad(model: TS.MVP.Composite.ICompositePresenterModel) {
-            // load up the controllers
+            // load up the presenters
             this.clear();
             var presenters = model.getPresenters();
             for (var i in presenters) {
@@ -95,6 +95,8 @@ module TS.IJQuery.MVP.Composite {
                 // NOTE, it only works if we actually own the underlying view, hence the check here
                 result = presenter.destroy(!ownsView && detachView) || result;
             }
+            // remove the presenters, will be reloaded later - avoids double load
+            this._presenters = [];
             // destroy our view at the end, otherwise the children cannot remove themselves from an empty view
             result = super._doDestroy(detachView) || result;
             return result;

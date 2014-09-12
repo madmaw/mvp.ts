@@ -2,14 +2,16 @@ module TS.MVP.Form {
 
     export interface IFormModel extends IModel {
 
-        getFieldValue(key: string): any;
+        getErrors(): string[];
 
-        setFieldValue(key: string, value: any);
+        // NOTE: these are only used internally!
+        setError(error: any);
 
-        getFieldValidationErrors(key: string): string[];
+        clearError(): void;
 
-        getFormErrors(): string[];
+        setValue(value: any, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
 
-        requestSubmit();
+        getValue(into?: any): any;
+
     }
 }
