@@ -1,18 +1,21 @@
 module TS.MVP.Form {
-    export class IntrospectingCompositeFormModel extends TS.MVP.Composite.MappedKeyedCompositePresenterModel implements IFormModel {
+    export class IntrospectingCompositeFormModel<ValueType> extends TS.MVP.Composite.MappedKeyedCompositePresenterModel implements IFormModel<ValueType> {
 
         private _value: any;
         private _errors: string[];
+        private _modified: boolean;
 
-        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel>}) {
+        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any>>}) {
             super(presenterMap);
+            this._modified = false;
         }
 
-        public setValue(value: any, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
+        public setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
+            this._modified = this._modified || !notModified;
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
                 var fieldValue;
                 if( value == null ) {
                     fieldValue = null;
@@ -26,41 +29,44 @@ module TS.MVP.Form {
             }
         }
 
-        public getValue(into: any = {}) {
+        public getValue(into: ValueType = <any>{}) {
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
                 var fieldValue = model.getValue();
                 into[key] = fieldValue;
             }
             return into;
         }
 
-        clearError(): void {
+        clear(): void {
             this._errors = [];
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel>>presenter).getModel();
-                model.clearError();
+                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
+                model.clear();
             }
             // TODO indicate that it's the validation errors that have changed (only)
             this._fireModelChangeEvent(null, true);
         }
 
 
-        setError(error: any) {
-            var formError = <IFormError>error;
-            this._errors = formError.errors;
+        setError(error: IFormError, forceShow?:boolean) {
+            if( error != null ) {
+                this._errors = error.errors;
+            } else {
+                this._errors = null;
+            }
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<any>>>presenter).getModel();
                 var fieldValue;
-                if( formError == null || formError.children == null ) {
+                if( error == null || error.children == null ) {
                     fieldValue = null;
                 } else {
-                    fieldValue = formError.children[key];
+                    fieldValue = error.children[key];
                 }
-                model.setError(fieldValue);
+                model.setError(fieldValue, forceShow && fieldValue != null);
             }
             // TODO indicate that it's the validation errors that have changed (only)
             this._fireModelChangeEvent(null, true);
@@ -72,6 +78,10 @@ module TS.MVP.Form {
 
         exportState() {
             return this.getValue();
+        }
+
+        isModified() {
+            return this._modified;
         }
 
     }

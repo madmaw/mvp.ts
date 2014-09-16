@@ -1,9 +1,9 @@
 module TS.MVP.Form {
-    export class DirectValueFormModel<ValueType> extends AbstractModel implements IValueFormModel<ValueType> {
+    export class DirectValueFormModel<ValueType> extends AbstractModel implements IFormModel<ValueType> {
 
         private _errors: string[];
-        private _value: ValueType;
-        private _modified: boolean;
+        public _value: ValueType;
+        public _modified: boolean;
 
         constructor() {
             super();
@@ -11,27 +11,38 @@ module TS.MVP.Form {
         }
 
         getErrors(): string[] {
-            return this._errors;
+            if( this._modified ) {
+                return this._errors;
+            } else {
+                return null;
+            }
         }
 
-        setError(error: any) {
-            this._errors = <string[]>error;
+        setError(error: IFormError, forceShow?:boolean) {
+            if( error ) {
+                this._errors = error.errors;
+            } else {
+                this._errors = null;
+            }
+            if( forceShow ) {
+                this._modified = true;
+            }
             this._fireModelChangeEvent(null, true);
         }
 
-        setValue(value: any, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
+        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
-            this._modified = true;
+            this._modified = this._modified || !notModified;
             if(!suppressModelChangeEvent ) {
                 this._fireModelChangeEvent(null, suppressStateChangeEvent);
             }
         }
 
-        getValue(into?: any) {
+        getValue(into?: ValueType) {
             return this._value;
         }
 
-        clearError(): void {
+        clear(): void {
             this._modified = false;
             this._errors = [];
             this._fireModelChangeEvent(null, true);
@@ -41,6 +52,9 @@ module TS.MVP.Form {
             return this.getValue();
         }
 
+        isModified() {
+            return this._modified;
+        }
 
     }
 }

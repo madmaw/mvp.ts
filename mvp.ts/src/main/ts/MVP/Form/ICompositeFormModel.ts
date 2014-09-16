@@ -1,5 +1,5 @@
 module TS.MVP.Form {
-    export interface ICompositeFormModel extends IFormModel, TS.MVP.Composite.IKeyedCompositePresenterModel {
+    export interface ICompositeFormModel<ValueType> extends IFormModel<ValueType>, TS.MVP.Composite.IKeyedCompositePresenterModel {
 
     }
 }

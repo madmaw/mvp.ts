@@ -1,17 +1,21 @@
 module TS.MVP.Form {
 
-    export interface IFormModel extends IModel {
+    export interface IFormModel<ValueType> extends IModel {
 
         getErrors(): string[];
 
-        // NOTE: these are only used internally!
-        setError(error: any);
+        setValue(value: ValueType): void;
 
-        clearError(): void;
+        // NOTE: the below methods are only used internally!
+        setError(error: IFormError, forceShow?:boolean);
 
-        setValue(value: any, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
+        clear(): void;
 
-        getValue(into?: any): any;
+        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
+
+        getValue(into?: ValueType): ValueType;
+
+        isModified(): boolean;
 
     }
 }

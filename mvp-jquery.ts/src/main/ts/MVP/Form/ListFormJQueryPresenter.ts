@@ -1,6 +1,6 @@
 module TS.IJQuery.MVP.Form {
 
-    export class ListFormJQueryPresenter<ModelType extends TS.MVP.Form.IListFormModel> extends TS.IJQuery.MVP.List.AbstractListJQueryPresenter<ModelType> {
+    export class ListFormJQueryPresenter<ModelType extends TS.MVP.Form.IListFormModel<any[]>> extends TS.IJQuery.MVP.List.AbstractListJQueryPresenter<ModelType> {
 
         private _addCallback: (event: JQueryEventObject) => void;
         private _removeCallback: (event: JQueryEventObject) => void;
@@ -54,15 +54,19 @@ module TS.IJQuery.MVP.Form {
         _doLoad(model: ModelType) {
             super._doLoad(model);
             // TODO add any remove callbacks
-            // present any errors
-            var errors = model.getErrors();
-            var errorString = this._errorFormatter(errors);
-            var errorJQuery = this.$(this._errorSelector);
-            errorJQuery.html(errorString);
-            if( errors != null && errors.length > 0 ) {
-                this.$().addClass(this._errorClass);
-            } else {
-                this.$().removeClass(this._errorClass);
+            if( this._errorFormatter && this._errorSelector !== undefined ) {
+                // present any errors
+                var errors = model.getErrors();
+                var errorString = this._errorFormatter(errors);
+                var errorJQuery = this.$(this._errorSelector);
+                errorJQuery.html(errorString);
+                if( this._errorClass ) {
+                    if( errors != null && errors.length > 0 ) {
+                        this.$().addClass(this._errorClass);
+                    } else {
+                        this.$().removeClass(this._errorClass);
+                    }
+                }
             }
         }
 

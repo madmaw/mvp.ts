@@ -6,7 +6,7 @@ module TS.MVP.List {
     // Class
     export interface IListPresenterModel extends IModel {
 
-        getPresenter(index: number, reuseController: IPresenter): IPresenter;
+        getPresenter(index: number, reusePresenter: IPresenter): IPresenter;
 
         getPresenterType(index: number): string;
 

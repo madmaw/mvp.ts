@@ -48,7 +48,6 @@
 /// <reference path="src/main/ts/MVP/Form/IFormModel.ts" />
 /// <reference path="src/main/ts/MVP/Form/IFormSubmitModel.ts" />
 /// <reference path="src/main/ts/MVP/Form/IListFormModel.ts" />
-/// <reference path="src/main/ts/MVP/Form/IValueFormModel.ts" />
 /// <reference path="src/main/ts/MVP/Form/IntrospectingCompositeFormModel.ts" />
 /// <reference path="src/main/ts/MVP/IModelChangeListener.ts" />
 /// <reference path="src/main/ts/MVP/IModelImportStateCallback.ts" />

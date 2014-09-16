@@ -1,9 +1,9 @@
 module TS.MVP.Form {
-    export class CompositeFormSubmitModel extends TS.MVP.Composite.AbstractCompositePresenterModel implements IFormSubmitModel {
+    export class CompositeFormSubmitModel<ValueType> extends TS.MVP.Composite.AbstractCompositePresenterModel implements IFormSubmitModel {
 
         constructor(
-            private _formPresenter: IPresenterWithModel<IFormModel>,
-            private _submitCallback: (value: any) => void
+            public _formPresenter: IPresenterWithModel<IFormModel<ValueType>>,
+            private _submitCallback: (value: ValueType) => void
         ) {
             super();
         }
@@ -12,8 +12,7 @@ module TS.MVP.Form {
             return [this._formPresenter];
         }
 
-        requestSubmit() {
-            var value = this._formPresenter.getModel().getValue();
+        requestSubmit(value:ValueType = this._formPresenter.getModel().getValue()) {
             this._submitCallback(value);
         }
 
