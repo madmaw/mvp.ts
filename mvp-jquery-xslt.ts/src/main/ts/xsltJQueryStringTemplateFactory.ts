@@ -18,6 +18,8 @@ module TS.IJQuery.Template.XSLT {
                         function() {
                             // use the node for the template
                             var template;
+                            // merge in the extra properties
+
                             if( xsltSupportsStandard() ) {
                                 template = standardXsltJQueryNodeTemplate(node, properties);
                             } else {
@@ -46,6 +48,9 @@ module TS.IJQuery.Template.XSLT {
     export function xsltRewriteIncludes(path:string, node: Node, imported: { [_: string]: boolean }, onRewritten:()=>void, onFailure:(e:any)=>void): boolean {
         var result;
         var element = <Element>node;
+        if( element == null ) {
+            throw "unable to load path ("+path+")";
+        }
         var importNodes = element.querySelectorAll("import,include");
         if (importNodes.length == 0) {
             onRewritten();

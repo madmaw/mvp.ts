@@ -11,6 +11,7 @@
 /// <reference path="src/main/ts/MVP/Command/ICommandJQueryViewDescriptionFactory.ts" />
 /// <reference path="src/main/ts/MVP/Command/ToolbarCommandJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/Composite/AbstractCompositeJQueryPresenter.ts" />
+/// <reference path="src/main/ts/MVP/Composite/IJQueryRepeatablePromiseSwitcherModelRetryCallback.ts" />
 /// <reference path="src/main/ts/MVP/Composite/JQueryOneShotPromiseSwitcherModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/JQueryRepeatablePromiseSwitcherModel.ts" />
 /// <reference path="src/main/ts/MVP/Composite/KeyedCompositeJQueryPresenter.ts" />

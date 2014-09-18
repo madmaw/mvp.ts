@@ -29,7 +29,7 @@ module TS.IJQuery.MVP {
             };
         }
 
-        public static viewFactoryFromTemplatePromise<T>(templatePromise: JQueryPromise<TS.IJQuery.Template.IJQueryTemplate<T>>, loadingPromises?: JQueryPromise<any>[]) {
+        public static viewFactoryFromTemplatePromise<T>(templatePromise: JQueryPromise<TS.IJQuery.Template.IJQueryTemplate<T>>, loadingPromises?: JQueryPromise<any>[], hint?: string) {
             var myTemplate: TS.IJQuery.Template.IJQueryTemplate<T> = null;
             templatePromise.done(function (template: TS.IJQuery.Template.IJQueryTemplate<T>) {
                 myTemplate = template;
@@ -40,7 +40,11 @@ module TS.IJQuery.MVP {
             // we assume this doesn't get called until the template is loaded !!!
             return function (container: JQuery, params: any, prepend?: boolean): IJQueryView {
                 if (myTemplate == null) {
-                    throw "template not loaded yet!";
+                    var s = "template not loaded yet!";
+                    if( hint ) {
+                        s += " ("+hint+")";
+                    }
+                    throw s;
                 }
                 var html = myTemplate(params);
                 return new SimpleJQueryView(html, container, prepend);
@@ -58,7 +62,7 @@ module TS.IJQuery.MVP {
 
         public static viewFactoryFromTemplatePath(asyncPathTemplateFactory:TS.IJQuery.Template.IJQueryAsyncPathTemplateFactory, asyncPath:string, promises?:JQueryPromise<any>[]) {
             var templatePromise = asyncPathTemplateFactory(asyncPath);
-            return SimpleJQueryView.viewFactoryFromTemplatePromise(templatePromise, promises);
+            return SimpleJQueryView.viewFactoryFromTemplatePromise(templatePromise, promises, asyncPath);
         }
 
         private _attached: boolean;

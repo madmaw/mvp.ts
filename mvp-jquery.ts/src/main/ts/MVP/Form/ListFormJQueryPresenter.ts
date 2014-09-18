@@ -8,13 +8,14 @@ module TS.IJQuery.MVP.Form {
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
+            listContainerSelector: string,
             private _listItemRemoveButtonSelector: string,
             private _addButtonSelector: string,
             private _errorSelector: string,
             private _errorFormatter: IErrorFormatter,
             private _errorClass: string
         ) {
-            super(viewFactory, listItemContainerViewFactory);
+            super(viewFactory, listItemContainerViewFactory, listContainerSelector);
 
             this._addCallback = () => {
                 var model = this.getModel();

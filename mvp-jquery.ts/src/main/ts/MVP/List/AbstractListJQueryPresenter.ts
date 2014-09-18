@@ -8,7 +8,8 @@ module TS.IJQuery.MVP.List {
         // Constructor
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
-            private _listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory
+            private _listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
+            private _listContainerSelector?: string
         ) {
             super(viewFactory);
             this._positionsToListItems = {};
@@ -53,7 +54,7 @@ module TS.IJQuery.MVP.List {
 
             // load everything for now
             var presenterCount = model.getPresenterCount();
-            var container = this._getContainer();
+            var container = this.$(this._listContainerSelector);
             for (var i = 0; i < presenterCount; i++) {
                 if (this._keepLoading(model, i)) {
                     var controllerType = model.getPresenterType(i);

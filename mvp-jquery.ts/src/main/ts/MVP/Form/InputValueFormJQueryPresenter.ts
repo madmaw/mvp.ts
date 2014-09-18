@@ -2,7 +2,7 @@ module TS.IJQuery.MVP.Form {
 
     export class InputValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<string>> {
 
-        private static EVENT_NAMES = "input propertychange change paste";
+        public static EVENT_NAMES = "input propertychange change paste";
 
         private _onChangeCallback: (event: JQueryEventObject) => void;
 

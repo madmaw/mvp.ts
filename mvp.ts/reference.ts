@@ -74,6 +74,7 @@
 /// <reference path="src/main/ts/class.ts" />
 /// <reference path="src/main/ts/cookie.ts" />
 /// <reference path="src/main/ts/element.ts" />
+/// <reference path="src/main/ts/map.ts" />
 /// <reference path="src/main/ts/path.ts" />
 /// <reference path="src/main/ts/shims.ts" />
 /// <reference path="src/main/ts/string.ts" />

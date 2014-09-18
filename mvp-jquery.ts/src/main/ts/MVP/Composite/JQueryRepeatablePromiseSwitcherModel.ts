@@ -4,7 +4,7 @@ module TS.IJQuery.MVP.Composite {
 
         constructor(
             loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
-            private _retryFunction: (data:any, callback:TS.MVP.IModelImportStateCallback, beforePromise: JQueryPromise<any>, additionalPromises:JQueryPromise<any>[], afterFunction: ()=>JQueryPromise<any>) => { maxProgress: number; promise: JQueryPromise<TS.MVP.IPresenter>; },
+            private _retryFunction: IJQueryRepeatablePromiseSwitcherModelRetryCallback,
             failurePresenter: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
             errorMarshaler: (arguments:IArguments) => TS.MVP.Error.ErrorModelState,
             defaultStateDescription?: any
