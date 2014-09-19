@@ -15,6 +15,7 @@ module TS.IJQuery.Template.XSLT {
                         path,
                         node,
                         {},
+                        {},
                         function() {
                             // use the node for the template
                             var template;
@@ -45,11 +46,17 @@ module TS.IJQuery.Template.XSLT {
         };
     }
 
-    export function xsltRewriteIncludes(path:string, node: Node, imported: { [_: string]: boolean }, onRewritten:()=>void, onFailure:(e:any)=>void): boolean {
+    export function xsltRewriteIncludes(path:string, node: Node, imported: { [_: string]: boolean }, params: {[_:string]: boolean }, onRewritten:()=>void, onFailure:(e:any)=>void): boolean {
         var result;
         var element = <Element>node;
         if( element == null ) {
             throw "unable to load path ("+path+")";
+        }
+        var paramNodes = element.querySelectorAll("param");
+        for( var i=0; i<paramNodes.length; i++ ) {
+            var paramNode = <Element>paramNodes.item(i);
+            var name = paramNode.getAttribute("name");
+            params[name] = true;
         }
         var importNodes = element.querySelectorAll("import,include");
         if (importNodes.length == 0) {
@@ -58,34 +65,44 @@ module TS.IJQuery.Template.XSLT {
         } else {
             var rewrittenNodes = 0;
             // load imports
+            var nodeCount = importNodes.length;
             for (var i = 0; i < importNodes.length; i++) {
                 var importElement = <Element>importNodes.item(i);
                 var href = importElement.getAttribute("href");
                 // work out relative path
                 var relativePath = TS.pathAppendRelative(path, href);
+
                 if (!imported[relativePath]) {
-                    var e = importElement;
-                    imported[relativePath] = true;
-                    TS.xmlRead(relativePath, (importedStylesheet: Node) => {
-                        xsltRewriteIncludes(relativePath, importedStylesheet, imported, function () {
-                            // replace the import with this node (minus stylesheet container)
-                            for (var j = 0; j < importedStylesheet.firstChild.childNodes.length; j++) {
-                                var templateNode = importedStylesheet.firstChild.childNodes.item(j);
-                                if (templateNode.nodeName.indexOf("template") >= 0) {
-                                    e.parentNode.insertBefore(templateNode, e);
+                    var f = function(e: Element) {
+                        imported[relativePath] = true;
+                        TS.xmlRead(relativePath, (importedStylesheet: Node) => {
+                            xsltRewriteIncludes(relativePath, importedStylesheet, imported, params, function () {
+                                // replace the import with this node (minus stylesheet container)
+                                for (var j = 0; j < importedStylesheet.firstChild.childNodes.length; j++) {
+                                    var templateNode = <Element>importedStylesheet.firstChild.childNodes.item(j);
+                                    if (templateNode.nodeName.indexOf("template") >= 0 || templateNode.nodeName.indexOf("param") >= 0 && !params[templateNode.getAttribute("name")]) {
+                                        e.parentNode.insertBefore(templateNode, e);
+                                    }
                                 }
-                            }
-                            e.parentNode.removeChild(e);
-                            rewrittenNodes++;
-                            if (rewrittenNodes == importNodes.length) {
-                                if (onRewritten) {
-                                    onRewritten();
+                                e.parentNode.removeChild(e);
+                                rewrittenNodes++;
+                                if (rewrittenNodes == nodeCount) {
+                                    if (onRewritten) {
+                                        onRewritten();
+                                    }
                                 }
-                            }
+                            }, onFailure);
                         }, onFailure);
-                    }, onFailure);
+                    };
+                    f(importElement);
                 } else {
                     importElement.parentNode.removeChild(importElement);
+                    nodeCount--;
+                    if( nodeCount == 0 ) {
+                        if (onRewritten) {
+                            onRewritten();
+                        }
+                    }
                 }
             }
             result = true;

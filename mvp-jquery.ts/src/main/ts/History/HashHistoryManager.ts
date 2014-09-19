@@ -14,7 +14,6 @@ module TS.IJQuery.History {
         // Constructor
         constructor(private _presenter: TS.MVP.IPresenter, private _encoder:(data:any)=>string, private _decoder:(encoded:string)=>any) {
             this._historyItems = [];
-            this._model = this._presenter.getModel();
 
             this._stateDescriptionChangeListener = (model: TS.MVP.IModel, modelStateChange: TS.MVP.ModelStateChangeEvent) => {
                 this.push(modelStateChange);
@@ -26,6 +25,14 @@ module TS.IJQuery.History {
                 this._consumeBrowserStateChange(state);
             };
 
+        }
+
+        /**
+         * reset to base state, useful after a major change of application context (login/logout for example)
+         */
+        public reset() {
+            this._historyItems = [];
+            this._historyItemIndex = undefined;
         }
 
         public _consumeBrowserStateChange(state?: any) {
@@ -184,7 +191,7 @@ module TS.IJQuery.History {
         }
 
         public init(location: Location, onInitialized?:()=>void): void {
-
+            this._model = this._presenter.getModel();
             var dataString = this._dataStringFromLocation(window.location);
             var data = this._decode(dataString);
             this._init(data, (changes: TS.MVP.ModelStateChangeEvent[]) => {

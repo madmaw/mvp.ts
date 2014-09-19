@@ -25,6 +25,7 @@
 /// <reference path="src/main/ts/MVP/Form/InnerTextValueFormJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/Form/InputValueFormJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/Form/ListFormJQueryPresenter.ts" />
+/// <reference path="src/main/ts/MVP/Form/SelectValueFormJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/IJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/IJQueryView.ts" />
 /// <reference path="src/main/ts/MVP/IJQueryViewFactory.ts" />
