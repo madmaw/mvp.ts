@@ -19,6 +19,15 @@ module TS.IJQuery.MVP.Form {
             };
         }
 
+        _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            if( event.lookupExclusive(TS.MVP.Form.FORM_FIELD_FOCUS_MODEL_CHANGE) ) {
+                var checkBox = this.$(this._checkBoxSelector);
+                checkBox.focus();
+            } else {
+                super._handleModelChangeEvent(event);
+            }
+        }
+
         _doStart() {
             var checkBox = this.$(this._checkBoxSelector);
             checkBox.on("change", this._onChangeCallback);

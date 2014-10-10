@@ -1,5 +1,5 @@
 module TS.IJQuery.MVP.Form {
-    export class SelectValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<any>> {
+    export class SelectValueFormJQueryPresenter<T> extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<T>> {
         public static EVENT_NAMES = "change";
 
         private _onChangeCallback: (event: JQueryEventObject) => void;
@@ -10,28 +10,29 @@ module TS.IJQuery.MVP.Form {
             errorFormatter: IErrorFormatter,
             errorClass: string,
             private _selectSelector: string,
-            private _options?: {[_:string]: string}
+            private _options: {[_:string]: T}
             ) {
             super(viewFactory, errorSelector, errorFormatter, errorClass);
 
             this._onChangeCallback = () => {
                 var select = this.$(this._selectSelector);
-                var value = select.val();
+                var id = select.val();
+                var value: T;
+                if( _options != null ) {
+                    value = _options[id];
+                } else {
+                    value = <any>id;
+                }
                 this.getModel().setValue(value, false);
             };
         }
 
-        _doInit() {
-            super._doInit();
-            // add in the options
-            if( this._options ) {
+        _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            if( event.lookupExclusive(TS.MVP.Form.FORM_FIELD_FOCUS_MODEL_CHANGE) ) {
                 var select = this.$(this._selectSelector);
-                var html = "";
-                for( var key in this._options ) {
-                    var value = this._options[key];
-                    html += "<option value='"+key+"'>"+value+"</option>";
-                }
-                select.html(html)
+                select.focus();
+            } else {
+                super._handleModelChangeEvent(event);
             }
         }
 
@@ -45,12 +46,23 @@ module TS.IJQuery.MVP.Form {
         _doStop() {
             var select = this.$(this._selectSelector);
             select.off(SelectValueFormJQueryPresenter.EVENT_NAMES, this._onChangeCallback);
+
             return super._doStop();
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<string>) {
+        _doLoad(model: TS.MVP.Form.IFormModel<T>) {
             super._doLoad(model);
-            this.$(this._selectSelector).val(model.getValue());
+            var select = this.$(this._selectSelector);
+            var id: string = null;
+            var selectedValue = model.getValue();
+            for( var key in this._options ) {
+                var value = this._options[key];
+                if( value == selectedValue ) {
+                    id = key;
+                    break;
+                }
+            }
+            select.val(id);
         }
     }
 }

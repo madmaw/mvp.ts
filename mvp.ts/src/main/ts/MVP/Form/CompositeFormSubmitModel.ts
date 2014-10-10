@@ -6,7 +6,15 @@ module TS.MVP.Form {
             private _submitCallback: (value: ValueType) => void
         ) {
             super();
+            this._formPresenter.getModel().setCompletionListener(()=> {
+                this.requestSubmit();
+            });
         }
+
+        requestInit() {
+            this._formPresenter.getModel().requestFocus();
+        }
+
 
         public getPresenters(): IPresenter[]{
             return [this._formPresenter];

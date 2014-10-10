@@ -5,6 +5,7 @@ module TS.IJQuery.MVP.Form {
         public static EVENT_NAMES = "input propertychange change paste";
 
         private _onChangeCallback: (event: JQueryEventObject) => void;
+        private _onEnterCallback: (event: JQueryEventObject)=> void;
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
@@ -20,17 +21,33 @@ module TS.IJQuery.MVP.Form {
                 var value = input.val();
                 this.getModel().setValue(value, false);
             };
+            this._onEnterCallback = (e: JQueryEventObject) => {
+                if(e.which == 13 ) {
+                    this.getModel().requestComplete();
+                }
+            };
+        }
+
+        _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            if( event.lookupExclusive(TS.MVP.Form.FORM_FIELD_FOCUS_MODEL_CHANGE) ) {
+                var input = this.$(this._inputSelector);
+                input.focus();
+            } else {
+                super._handleModelChangeEvent(event);
+            }
         }
 
         _doStart() {
             var input = this.$(this._inputSelector);
             input.on(InputValueFormJQueryPresenter.EVENT_NAMES, this._onChangeCallback);
+            input.on("keydown", this._onEnterCallback);
             return super._doStart();
         }
 
         _doStop() {
             var input = this.$(this._inputSelector);
             input.off(InputValueFormJQueryPresenter.EVENT_NAMES, this._onChangeCallback);
+            input.off("keydown", this._onEnterCallback);
             return super._doStop();
         }
 

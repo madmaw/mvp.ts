@@ -17,6 +17,13 @@ module TS.IJQuery.MVP.Form {
             return super._doStart();
         }
 
+        start() {
+            var result = super.start();
+            // do last
+            this.getModel().requestInit();
+            return result;
+        }
+
         _doStop() {
             this.$(this._submitButtonSelector).off('click', this._submitCallback);
             return super._doStop();

@@ -4,8 +4,9 @@ module TS.MVP.Form {
         private _value: any;
         private _errors: string[];
         private _modified: boolean;
+        public _completionListener: ()=> void;
 
-        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any>>}) {
+        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any>>}, private _focusModel?: IFormModel<any>) {
             super(presenterMap);
             this._modified = false;
         }
@@ -68,7 +69,7 @@ module TS.MVP.Form {
                 }
                 model.setError(fieldValue, forceShow && fieldValue != null);
             }
-            // TODO indicate that it's the validation errors that have changed (only)
+            // TODO indicate that it's the validation errors that have changed (only) - this reloads the entire page!
             this._fireModelChangeEvent(null, true);
         }
 
@@ -82,6 +83,22 @@ module TS.MVP.Form {
 
         isModified() {
             return this._modified;
+        }
+
+        requestFocus() {
+            if( this._focusModel ) {
+                this._focusModel.requestFocus();
+            }
+        }
+
+        setCompletionListener(completionListener: ()=>void) {
+            this._completionListener = completionListener;
+        }
+
+        requestComplete() {
+            if( this._completionListener ) {
+                this._completionListener();
+            }
         }
 
     }

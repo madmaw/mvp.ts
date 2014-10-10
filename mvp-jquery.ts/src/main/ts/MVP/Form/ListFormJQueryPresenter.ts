@@ -37,7 +37,7 @@ module TS.IJQuery.MVP.Form {
 
         _doStart() {
             // listen for add events
-            var addButton = $(this._addButtonSelector);
+            var addButton = this.$(this._addButtonSelector);
             addButton.on('click', this._addCallback);
             // listen for remove events
 
@@ -45,15 +45,58 @@ module TS.IJQuery.MVP.Form {
         }
 
         _doStop() {
-            var addButton = $(this._addButtonSelector);
+            var addButton = this.$(this._addButtonSelector);
             addButton.off('click', this._addCallback);
 
             return super._doStop();
         }
 
+        _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            if( event.lookupExclusive(TS.MVP.Form.FORM_FIELD_FOCUS_MODEL_CHANGE) ) {
+                // forcus on first list item
+                if( this._positionsToListItems[0] ) {
+                    var model: TS.MVP.Form.IFormModel<any> = <any>this._positionsToListItems[0].getPresenter().getModel();
+                    model.requestFocus();
+                } else {
+                    // focus on the add button
+                    this.$(this._addButtonSelector).focus();
+                }
+            } else {
+                super._handleModelChangeEvent(event);
+            }
+        }
+
 
         _doLoad(model: ModelType) {
+            for( var i in this._positionsToListItems ) {
+                var listItem = this._positionsToListItems[i];
+                var listItemPresenter = listItem.getPresenter();
+                var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
+                listItemPresenterView.$.find(this._listItemRemoveButtonSelector).off('click', this._removeCallback);
+            }
             super._doLoad(model);
+            // should have entirely cleared it
+            for( var i in this._positionsToListItems ) {
+                var listItem = this._positionsToListItems[i];
+                var listItemPresenter = listItem.getPresenter();
+                var listItemModel: TS.MVP.Form.IFormModel<any> = <any>listItemPresenter.getModel();
+                var f = (index: number) => {
+                    listItemModel.setCompletionListener(()=> {
+                        // focus on the next list item
+                        var nextListItem = this._positionsToListItems[index];
+                        if( nextListItem != null ) {
+                            var nextListItemPresenter = nextListItem.getPresenter();
+                            var nextListItemModel: TS.MVP.Form.IFormModel<any> = <any>nextListItemPresenter.getModel();
+                            nextListItemModel.requestFocus();
+                        } else {
+                            var addButton = this.$(this._addButtonSelector).focus();
+                        }
+                    });
+                };
+                f(parseInt(i)+1);
+                var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
+                listItemPresenterView.$.find(this._listItemRemoveButtonSelector).on('click', this._removeCallback);
+            }
             // TODO add any remove callbacks
             if( this._errorFormatter && this._errorSelector !== undefined ) {
                 // present any errors

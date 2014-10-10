@@ -191,9 +191,11 @@ module TS.IJQuery.MVP.Composite {
             } else {
                 result = this.$(selector);
             }
+            /* - there are cases where we don't want a
             if (result.length == 0) {
                 throw "no container for selector " + selector;
             }
+            */
             return result;
         }
 

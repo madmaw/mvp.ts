@@ -4,6 +4,7 @@ module TS.MVP.Form {
         private _errors: string[];
         public _value: ValueType;
         public _modified: boolean;
+        public _completionListener: ()=> void;
 
         constructor() {
             super();
@@ -17,6 +18,22 @@ module TS.MVP.Form {
                 return null;
             }
         }
+
+        setCompletionListener(completionListener: ()=>void) {
+            this._completionListener = completionListener;
+        }
+
+        requestComplete() {
+            if( this._completionListener ) {
+                this._completionListener();
+            }
+        }
+
+        // fires a special focus event
+        requestFocus() {
+            this._fireModelChangeEvent(FORM_FIELD_FOCUS_MODEL_CHANGE, true);
+        }
+
 
         setError(error: IFormError, forceShow?:boolean) {
             if( error ) {
