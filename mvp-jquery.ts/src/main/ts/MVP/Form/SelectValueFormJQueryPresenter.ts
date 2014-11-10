@@ -1,5 +1,5 @@
 module TS.IJQuery.MVP.Form {
-    export class SelectValueFormJQueryPresenter<T> extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<T>> {
+    export class SelectValueFormJQueryPresenter<T> extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<T, any>> {
         public static EVENT_NAMES = "change";
 
         private _onChangeCallback: (event: JQueryEventObject) => void;
@@ -50,7 +50,7 @@ module TS.IJQuery.MVP.Form {
             return super._doStop();
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<T>) {
+        _doLoad(model: TS.MVP.Form.IFormModel<T, any>) {
             super._doLoad(model);
             var select = this.$(this._selectSelector);
             var id: string = null;

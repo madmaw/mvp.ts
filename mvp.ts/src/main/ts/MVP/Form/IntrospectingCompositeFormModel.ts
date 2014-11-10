@@ -1,39 +1,45 @@
 module TS.MVP.Form {
-    export class IntrospectingCompositeFormModel<ValueType> extends TS.MVP.Composite.MappedKeyedCompositePresenterModel implements IFormModel<ValueType> {
+    export class IntrospectingCompositeFormModel<ValueType> extends TS.MVP.Composite.MappedKeyedCompositePresenterModel implements IFormModel<ValueType, ValueType> {
 
         private _value: any;
-        private _errors: string[];
+        public _errors: string[];
         private _modified: boolean;
         public _completionListener: ()=> void;
 
-        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any>>}, private _focusModel?: IFormModel<any>) {
+        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, any>>}, private _focusModel?: IFormModel<any, any>) {
             super(presenterMap);
             this._modified = false;
         }
 
         public setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
+            this.setSourceValue(value, notModified, suppressModelChangeEvent, suppressStateChangeEvent);
+        }
+
+
+        public setSourceValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
             this._modified = this._modified || !notModified;
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
                 var fieldValue;
                 if( value == null ) {
                     fieldValue = null;
                 } else {
                     fieldValue = value[key];
                 }
-                model.setValue(fieldValue, false || suppressModelChangeEvent, true);
+                model.setValue(fieldValue, false, false || suppressModelChangeEvent, true);
             }
             if( !suppressStateChangeEvent ) {
                 this._fireStateChangeEvent(this, null);
             }
         }
 
-        public getValue(into: ValueType = <any>{}) {
+        public getValue() {
+            var into: ValueType = <any>{};
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
                 var fieldValue = model.getValue();
                 into[key] = fieldValue;
             }
@@ -44,7 +50,7 @@ module TS.MVP.Form {
             this._errors = [];
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel<ValueType>>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
                 model.clear();
             }
             // TODO indicate that it's the validation errors that have changed (only)
@@ -52,7 +58,7 @@ module TS.MVP.Form {
         }
 
 
-        setError(error: IFormError, forceShow?:boolean) {
+        setSourceError(error: IFormError, forceShow?:boolean) {
             if( error != null ) {
                 this._errors = error.errors;
             } else {
@@ -60,14 +66,14 @@ module TS.MVP.Form {
             }
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
-                var model = (<IPresenterWithModel<IFormModel<any>>>presenter).getModel();
+                var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
                 var fieldValue;
                 if( error == null || error.children == null ) {
                     fieldValue = null;
                 } else {
                     fieldValue = error.children[key];
                 }
-                model.setError(fieldValue, forceShow && fieldValue != null);
+                model.setSourceError(fieldValue, forceShow && fieldValue != null);
             }
             // TODO indicate that it's the validation errors that have changed (only) - this reloads the entire page!
             this._fireModelChangeEvent(null, true);

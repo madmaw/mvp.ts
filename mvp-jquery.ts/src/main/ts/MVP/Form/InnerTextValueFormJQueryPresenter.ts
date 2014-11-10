@@ -1,5 +1,5 @@
 module TS.IJQuery.MVP.Form {
-    export class InnerTextValueFormJQueryPresenter<ValueType> extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<ValueType>> {
+    export class InnerTextValueFormJQueryPresenter<ValueType> extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<ValueType, any>> {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
@@ -12,7 +12,7 @@ module TS.IJQuery.MVP.Form {
             super(viewFactory, errorSelector, errorFormatter, errorClass);
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<any>) {
+        _doLoad(model: TS.MVP.Form.IFormModel<ValueType, any>) {
             super._doLoad(model);
             var value = model.getValue();
             var formattedValue: any;

@@ -19,6 +19,9 @@
 /// <reference path="src/main/ts/MVP/Table/ITablePresenterModel.ts" />
 /// <reference path="src/main/ts/MVP/Table/AbstractTablePresenterModel.ts" />
 
+/// <reference path="src/main/ts/MVP/Form/PassthroughCompositeFormModel.ts" />
+/// <reference path="src/main/ts/MVP/Form/IntrospectingPassthroughCompositeFormModel.ts" />
+
 //grunt-start
 /// <reference path="src/main/ts/Animation/AnimationState.ts" />
 /// <reference path="src/main/ts/Animation/AnimationStateChangeEvent.ts" />
@@ -49,6 +52,7 @@
 /// <reference path="src/main/ts/MVP/Form/IFormSubmitModel.ts" />
 /// <reference path="src/main/ts/MVP/Form/IListFormModel.ts" />
 /// <reference path="src/main/ts/MVP/Form/IntrospectingCompositeFormModel.ts" />
+/// <reference path="src/main/ts/MVP/Form/IntrospectingValueFormModel.ts" />
 /// <reference path="src/main/ts/MVP/IModelChangeListener.ts" />
 /// <reference path="src/main/ts/MVP/IModelImportStateCallback.ts" />
 /// <reference path="src/main/ts/MVP/IModelStateChangeListener.ts" />

@@ -1,5 +1,5 @@
 module TS.MVP.Form {
-    export class DirectValueFormModel<ValueType> extends AbstractModel implements IFormModel<ValueType> {
+    export class DirectValueFormModel<ValueType> extends AbstractModel implements IFormModel<ValueType, ValueType> {
 
         private _errors: string[];
         public _value: ValueType;
@@ -35,7 +35,7 @@ module TS.MVP.Form {
         }
 
 
-        setError(error: IFormError, forceShow?:boolean) {
+        setSourceError(error: IFormError, forceShow?:boolean) {
             if( error ) {
                 this._errors = error.errors;
             } else {
@@ -48,6 +48,10 @@ module TS.MVP.Form {
         }
 
         setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
+            this.setSourceValue(value, notModified, suppressModelChangeEvent, suppressStateChangeEvent);
+        }
+
+        setSourceValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
             this._modified = this._modified || !notModified;
             if(!suppressModelChangeEvent ) {
@@ -55,7 +59,7 @@ module TS.MVP.Form {
             }
         }
 
-        getValue(into?: ValueType) {
+        getValue() {
             return this._value;
         }
 

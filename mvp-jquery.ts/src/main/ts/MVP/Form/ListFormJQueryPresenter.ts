@@ -1,6 +1,6 @@
 module TS.IJQuery.MVP.Form {
 
-    export class ListFormJQueryPresenter<ModelType extends TS.MVP.Form.IListFormModel<any[]>> extends TS.IJQuery.MVP.List.AbstractListJQueryPresenter<ModelType> {
+    export class ListFormJQueryPresenter<ModelType extends TS.MVP.Form.IListFormModel<any[], any>> extends TS.IJQuery.MVP.List.AbstractListJQueryPresenter<ModelType> {
 
         private _addCallback: (event: JQueryEventObject) => void;
         private _removeCallback: (event: JQueryEventObject) => void;
@@ -55,7 +55,7 @@ module TS.IJQuery.MVP.Form {
             if( event.lookupExclusive(TS.MVP.Form.FORM_FIELD_FOCUS_MODEL_CHANGE) ) {
                 // forcus on first list item
                 if( this._positionsToListItems[0] ) {
-                    var model: TS.MVP.Form.IFormModel<any> = <any>this._positionsToListItems[0].getPresenter().getModel();
+                    var model: TS.MVP.Form.IFormModel<any, any> = <any>this._positionsToListItems[0].getPresenter().getModel();
                     model.requestFocus();
                 } else {
                     // focus on the add button
@@ -79,14 +79,14 @@ module TS.IJQuery.MVP.Form {
             for( var i in this._positionsToListItems ) {
                 var listItem = this._positionsToListItems[i];
                 var listItemPresenter = listItem.getPresenter();
-                var listItemModel: TS.MVP.Form.IFormModel<any> = <any>listItemPresenter.getModel();
+                var listItemModel: TS.MVP.Form.IFormModel<any, any> = <any>listItemPresenter.getModel();
                 var f = (index: number) => {
                     listItemModel.setCompletionListener(()=> {
                         // focus on the next list item
                         var nextListItem = this._positionsToListItems[index];
                         if( nextListItem != null ) {
                             var nextListItemPresenter = nextListItem.getPresenter();
-                            var nextListItemModel: TS.MVP.Form.IFormModel<any> = <any>nextListItemPresenter.getModel();
+                            var nextListItemModel: TS.MVP.Form.IFormModel<any, any> = <any>nextListItemPresenter.getModel();
                             nextListItemModel.requestFocus();
                         } else {
                             var addButton = this.$(this._addButtonSelector).focus();

@@ -1,6 +1,6 @@
 module TS.IJQuery.MVP.Form {
 
-    export class InputValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<string>> {
+    export class InputValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<string, any>> {
 
         public static EVENT_NAMES = "input propertychange change paste";
 
@@ -51,7 +51,7 @@ module TS.IJQuery.MVP.Form {
             return super._doStop();
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<string>) {
+        _doLoad(model: TS.MVP.Form.IFormModel<string, any>) {
             super._doLoad(model);
 
             this.$(this._inputSelector).val(model.getValue());

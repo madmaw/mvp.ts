@@ -1,6 +1,6 @@
 module TS.IJQuery.MVP.Form {
 
-    export class AbstractFormJQueryPresenter<ModelType extends TS.MVP.Form.IFormModel<any>> extends AbstractJQueryPresenter<ModelType> {
+    export class AbstractFormJQueryPresenter<ModelType extends TS.MVP.Form.IFormModel<any, any>> extends AbstractJQueryPresenter<ModelType> {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,

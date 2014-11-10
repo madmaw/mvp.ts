@@ -1,22 +1,22 @@
 module TS.MVP.Form {
     export var FORM_FIELD_FOCUS_MODEL_CHANGE = "FormFieldFocusModelChange";
 
-    export interface IFormModel<ValueType> extends IModel {
+    export interface IFormModel<ValueType, SourceValueType> extends IModel {
 
         getErrors(): string[];
 
-        setValue(value: ValueType): void;
+        getValue(): ValueType;
+
+        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean): void;
 
         requestComplete(): void;
 
         // NOTE: the below methods are only used internally!
-        setError(error: IFormError, forceShow?:boolean);
+        setSourceError(error: IFormError, forceShow?:boolean);
 
         clear(): void;
 
-        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
-
-        getValue(into?: ValueType): ValueType;
+        setSourceValue(sourceValue: SourceValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
 
         isModified(): boolean;
 
