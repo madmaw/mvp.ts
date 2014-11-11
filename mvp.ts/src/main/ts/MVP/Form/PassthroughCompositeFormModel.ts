@@ -9,7 +9,7 @@ module TS.MVP.Form {
         public _modified: boolean;
         public _completionListener: ()=> void;
 
-        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, ValueType>>}, private _focusModel?: IFormModel<any, ValueType>, private _presentChildErrors?:boolean) {
+        constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, ValueType>>}, private _focusModel?: IFormModel<any, ValueType>) {
             super(presenterMap);
             this._modified = false;
             // pre-populate with empty value
@@ -66,16 +66,13 @@ module TS.MVP.Form {
         }
 
         getErrors(error: IFormError = this.getError(), into: string[] = []): string[] {
+            var result;
             if( error != null ) {
-                TS.arrayPushAll(into, error.errors);
-                if( this._presentChildErrors ) {
-                    for( var i in error.children ) {
-                        var childError: IFormError = error.children[i];
-                        this.getErrors(childError, into)
-                    }
-                }
+                result = error.errors;
+            } else {
+                result = null;
             }
-            return into;
+            return result;
         }
 
         exportState() {

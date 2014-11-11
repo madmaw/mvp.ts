@@ -62,6 +62,7 @@
 /// <reference path="src/main/ts/MVP/IPresenterWithModel.ts" />
 /// <reference path="src/main/ts/MVP/IView.ts" />
 /// <reference path="src/main/ts/MVP/List/IListPresenterModel.ts" />
+/// <reference path="src/main/ts/MVP/List/ListPresenterModelChangeDescription.ts" />
 /// <reference path="src/main/ts/MVP/Loading/ILoadingModel.ts" />
 /// <reference path="src/main/ts/MVP/Loading/LoadingModelState.ts" />
 /// <reference path="src/main/ts/MVP/ModelChangeEvent.ts" />

@@ -4,9 +4,9 @@ module TS.IJQuery.MVP.Form {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
-            private _errorSelector: string,
-            private _errorFormatter: IErrorFormatter,
-            private _errorClass: string
+            private _errorSelector?: string,
+            private _errorFormatter?: IErrorFormatter,
+            private _errorClass?: string
         ) {
             super(viewFactory)
         }

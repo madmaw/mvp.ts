@@ -9,10 +9,10 @@ module TS.IJQuery.MVP.Form {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
-            errorSelector: string,
-            errorFormatter: IErrorFormatter,
-            errorClass: string,
-            private _inputSelector: string
+            errorSelector?: string,
+            errorFormatter?: IErrorFormatter,
+            errorClass?: string,
+            private _inputSelector?: string
         ) {
             super(viewFactory, errorSelector, errorFormatter, errorClass);
 

@@ -47,32 +47,53 @@ module TS.IJQuery.MVP.List {
             }
         }
 
+        public _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            var model = this.getModel();
+            var description: TS.MVP.List.ListPresenterModelChangeDescription = <any>event.lookupExclusive(TS.MVP.List.ListPresenterModelChangeDescription.CHANGE_TYPE_LIST_ITEMS_CHANGE);
+            if( description ) {
+                var previousItemCount = description.previousItemCount;
+                var appendedRowCount = description.appendedRowCount;
+                for( var i in description.removedRows ) {
+                    var removedRow = description.removedRows[i];
+                    var item = this._positionsToListItems[removedRow];
+                    if( item != null ) {
+                        // move everything else down
+                        var index = removedRow;
+                        this._clearListItem(item);
+                        while( index < previousItemCount ) {
+                            var next = this._positionsToListItems[index+1];
+                            if( next ) {
+                                this._positionsToListItems[index] = next;
+                            } else {
+                                delete this._positionsToListItems[index];
+                            }
+                            index++;
+                        }
+                    }
+                }
+                // add in any extra
+                var index = previousItemCount;
+                while( index < (previousItemCount + appendedRowCount) && this._keepLoading(model, index) ) {
+                    this._appendItem(index);
+                    index++;
+                }
+            } else {
+                super._handleModelChangeEvent(event);
+            }
+        }
+
+
         public _doLoad(model: TS.MVP.List.IListPresenterModel) {
+
 
             // unload everything
             this._clear();
 
             // load everything for now
             var presenterCount = model.getPresenterCount();
-            var container = this.$(this._listContainerSelector);
             for (var i = 0; i < presenterCount; i++) {
                 if (this._keepLoading(model, i)) {
-                    var controllerType = model.getPresenterType(i);
-                    // check reusable controllers
-                    var reusablePresenters = this._typesToReusableControllers[controllerType];
-                    var reusablePresenter: TS.MVP.IPresenter;
-                    if (reusablePresenters != null && reusablePresenters.length > 0) {
-                        // note, this controller gets removed from the reuse pile regardless of whether it is actually used or not
-                        reusablePresenter = reusablePresenters.pop();
-                    } else {
-                        reusablePresenter = null;
-                    }
-                    var presenter = <TS.IJQuery.MVP.IJQueryPresenter>model.getPresenter(i, reusablePresenter);
-                    // TODO parameters to the view factory based on the controller might be useful
-                    var listItemContainer = this._listItemContainerViewFactory(container, null);
-                    listItemContainer.attach();
-                    this._initAndStart(presenter, listItemContainer.$);
-                    this._positionsToListItems[i] = new AbstractListJQueryPresenterItem(presenter, controllerType, listItemContainer);
+                    this._appendItem(i);
                 } else {
                     break;
                 }
@@ -81,6 +102,29 @@ module TS.IJQuery.MVP.List {
 
         public _keepLoading(listModel: TS.MVP.List.IListPresenterModel, position: number): boolean {
             return true;
+        }
+
+        public _appendItem(index: number) {
+            var model = this.getModel();
+            var container = this.$(this._listContainerSelector);
+            var controllerType = model.getPresenterType(index);
+            // check reusable controllers
+            var reusablePresenters = this._typesToReusableControllers[controllerType];
+            var reusablePresenter: TS.MVP.IPresenter;
+            if (reusablePresenters != null && reusablePresenters.length > 0) {
+                // note, this controller gets removed from the reuse pile regardless of whether it is actually used or not
+                reusablePresenter = reusablePresenters.pop();
+            } else {
+                reusablePresenter = null;
+            }
+            var presenter = <TS.IJQuery.MVP.IJQueryPresenter>model.getPresenter(index, reusablePresenter);
+            // TODO parameters to the view factory based on the controller might be useful
+            var listItemContainer = this._listItemContainerViewFactory(container, null);
+            listItemContainer.attach();
+            this._initAndStart(presenter, listItemContainer.$);
+            var item = new AbstractListJQueryPresenterItem(presenter, controllerType, listItemContainer);
+            this._positionsToListItems[index] = item;
+            return item;
         }
 
         public _doInit() {
@@ -145,19 +189,23 @@ module TS.IJQuery.MVP.List {
             // save any discarded controllers for later
             for (var position in this._positionsToListItems) {
                 var listItem = this._positionsToListItems[position];
-                var presenter = listItem.getPresenter();
-                this._stop(presenter);
-                this._destroy(presenter);
-                listItem.getContainerView().detach();
-                var presenterType = listItem.getPresenterType();
-                var reusablePresenters = this._typesToReusableControllers[presenterType];
-                if (reusablePresenters == null) {
-                    reusablePresenters = [];
-                    this._typesToReusableControllers[presenterType] = reusablePresenters;
-                }
-                reusablePresenters.push(presenter);
+                this._clearListItem(listItem);
             }
             this._positionsToListItems = {};
+        }
+
+        public _clearListItem(listItem: AbstractListJQueryPresenterItem) {
+            var presenter = listItem.getPresenter();
+            this._stop(presenter);
+            this._destroy(presenter);
+            listItem.getContainerView().detach();
+            var presenterType = listItem.getPresenterType();
+            var reusablePresenters = this._typesToReusableControllers[presenterType];
+            if (reusablePresenters == null) {
+                reusablePresenters = [];
+                this._typesToReusableControllers[presenterType] = reusablePresenters;
+            }
+            reusablePresenters.push(presenter);
         }
 
         // all list items are assumed to go into the same container!

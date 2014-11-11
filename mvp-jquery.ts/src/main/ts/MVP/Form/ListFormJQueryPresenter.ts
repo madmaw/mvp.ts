@@ -28,7 +28,7 @@ module TS.IJQuery.MVP.Form {
                     var containerView = listItem.getContainerView();
                     if( containerView.$.has(eventTarget).length > 0 ) {
                         var model = this.getModel();
-                        model.requestRemoveRow(i);
+                        model.requestRemoveRow(parseInt(i));
                         break;
                     }
                 }
@@ -66,38 +66,36 @@ module TS.IJQuery.MVP.Form {
             }
         }
 
+        public _appendItem(index: number) {
+            var listItem = super._appendItem(index);
+            var listItemPresenter = listItem.getPresenter();
+            var listItemModel: TS.MVP.Form.IFormModel<any, any> = <any>listItemPresenter.getModel();
+            listItemModel.setCompletionListener(()=> {
+                // focus on the next list item
+                var nextIndex = 1+index;
+                var nextListItem = this._positionsToListItems[nextIndex];
+                if( nextListItem != null ) {
+                    var nextListItemPresenter = nextListItem.getPresenter();
+                    var nextListItemModel: TS.MVP.Form.IFormModel<any, any> = <any>nextListItemPresenter.getModel();
+                    nextListItemModel.requestFocus();
+                } else {
+                    var addButton = this.$(this._addButtonSelector).focus();
+                }
+            });
+            var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
+            listItemPresenterView.$.find(this._listItemRemoveButtonSelector).on('click', this._removeCallback);
+            return listItem;
+        }
+
+        public _clearListItem(listItem: TS.IJQuery.MVP.List.AbstractListJQueryPresenterItem) {
+            var listItemPresenter = listItem.getPresenter();
+            var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
+            listItemPresenterView.$.find(this._listItemRemoveButtonSelector).off('click', this._removeCallback);
+            super._clearListItem(listItem);
+        }
 
         _doLoad(model: ModelType) {
-            for( var i in this._positionsToListItems ) {
-                var listItem = this._positionsToListItems[i];
-                var listItemPresenter = listItem.getPresenter();
-                var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
-                listItemPresenterView.$.find(this._listItemRemoveButtonSelector).off('click', this._removeCallback);
-            }
             super._doLoad(model);
-            // should have entirely cleared it
-            for( var i in this._positionsToListItems ) {
-                var listItem = this._positionsToListItems[i];
-                var listItemPresenter = listItem.getPresenter();
-                var listItemModel: TS.MVP.Form.IFormModel<any, any> = <any>listItemPresenter.getModel();
-                var f = (index: number) => {
-                    listItemModel.setCompletionListener(()=> {
-                        // focus on the next list item
-                        var nextListItem = this._positionsToListItems[index];
-                        if( nextListItem != null ) {
-                            var nextListItemPresenter = nextListItem.getPresenter();
-                            var nextListItemModel: TS.MVP.Form.IFormModel<any, any> = <any>nextListItemPresenter.getModel();
-                            nextListItemModel.requestFocus();
-                        } else {
-                            var addButton = this.$(this._addButtonSelector).focus();
-                        }
-                    });
-                };
-                f(parseInt(i)+1);
-                var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
-                listItemPresenterView.$.find(this._listItemRemoveButtonSelector).on('click', this._removeCallback);
-            }
-            // TODO add any remove callbacks
             if( this._errorFormatter && this._errorSelector !== undefined ) {
                 // present any errors
                 var errors = model.getErrors();

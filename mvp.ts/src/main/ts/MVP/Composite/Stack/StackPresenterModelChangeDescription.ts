@@ -1,5 +1,3 @@
-///<reference path="../../ModelChangeDescription.ts"/>
-
 // Module
 module TS.MVP.Composite.Stack {
 
