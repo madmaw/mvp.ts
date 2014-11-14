@@ -6,11 +6,11 @@ module TS.IJQuery.MVP.Form {
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
-            errorSelector: string,
-            errorFormatter: IErrorFormatter,
-            errorClass: string,
-            private _selectSelector: string,
-            private _options: {[_:string]: T}
+            private _options: {[_:string]: T},
+            private _selectSelector?: string,
+            errorSelector?: string,
+            errorFormatter?: IErrorFormatter,
+            errorClass?: string
             ) {
             super(viewFactory, errorSelector, errorFormatter, errorClass);
 

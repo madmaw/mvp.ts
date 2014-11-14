@@ -12,8 +12,6 @@ module TS.MVP.Form {
         constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, ValueType>>}, private _focusModel?: IFormModel<any, ValueType>) {
             super(presenterMap);
             this._modified = false;
-            // pre-populate with empty value
-            this.setSourceValue(<any>{}, true);
         }
 
         public getValue() {
@@ -45,6 +43,7 @@ module TS.MVP.Form {
                 var model = (<IPresenterWithModel<IFormModel<any, ValueType>>>presenter).getModel();
                 model.clear();
             }
+
             // TODO indicate that it's the validation errors that have changed (only)
             this._fireModelChangeEvent(null, true);
         }
