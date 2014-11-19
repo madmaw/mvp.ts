@@ -19,6 +19,19 @@ interface HandlebarsTemplateDelegate {
     (context: any, options?: any): string;
 }
 
+interface Logger {
+    DEBUG: number;
+    INFO: number;
+    WARN: number;
+    ERROR: number;
+    level: number;
+
+    methodMap: { [level: number]: string };
+
+    log(level: number, obj: string): void;
+}
+
+
 interface HandlebarsCommon {
     registerHelper(name: string, fn: Function, inverse?: boolean): void;
     registerPartial(name: string, str: any): void;
@@ -30,7 +43,6 @@ interface HandlebarsCommon {
 
     logger: Logger;
     log(level: number, obj: any): void;
-    Logger: typeof Logger;
 }
 
 interface HandlebarsStatic extends HandlebarsCommon {
@@ -46,18 +58,6 @@ interface HandlebarsRuntimeStatic extends HandlebarsCommon {
 declare class SafeString {
     constructor(str: string);
     static toString(): string;
-}
-
-interface Logger {
-    DEBUG: number;
-    INFO: number;
-    WARN: number;
-    ERROR: number;
-    level: number;
-
-    methodMap: { [level: number]: string };
-
-    log(level: number, obj: string): void;
 }
 
 declare module "handlebars" {

@@ -9,11 +9,11 @@
             super();
 
             // create the cell array
-            this._cells = arrayCreate2DArray(this._rowCount, this._columnCount);
+            this._cells = arrayCreate2DArray<IPresenter>(this._rowCount, this._columnCount);
 
             // create the header arrays
-            this._rowHeaders = arrayCreate2DArray(this._rowCount, this._rowHeaderDepth);
-            this._columnHeaders = arrayCreate2DArray(this._columnCount, this._columnHeaderDepth);
+            this._rowHeaders = arrayCreate2DArray<TableHeader>(this._rowCount, this._rowHeaderDepth);
+            this._columnHeaders = arrayCreate2DArray<TableHeader>(this._columnCount, this._columnHeaderDepth);
         }
 
         public getRowCount(): number {

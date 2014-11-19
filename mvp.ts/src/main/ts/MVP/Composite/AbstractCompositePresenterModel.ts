@@ -53,7 +53,7 @@ module TS.MVP.Composite {
             this._startListeningForStateDescriptionChanges();
         }
 
-        private _startListeningForStateDescriptionChanges() {
+        protected _startListeningForStateDescriptionChanges() {
             var presenters = this._getDescribedPresenters();
             this._previouslyDescribedPresenters = [];
             if (presenters != null) {
@@ -76,7 +76,7 @@ module TS.MVP.Composite {
             this._previouslyDescribedPresenters = null;
         }
 
-        private _stopListeningForStateDescriptionChanges() {
+        protected _stopListeningForStateDescriptionChanges() {
             var presenters = this._previouslyDescribedPresenters;
             if (presenters != null) {
                 for (var i in presenters) {
@@ -90,7 +90,7 @@ module TS.MVP.Composite {
             }
         }
 
-        public _updateListeningForStateDescriptionChanges() {
+        protected _updateListeningForStateDescriptionChanges() {
             this._stopListeningForStateDescriptionChanges();
             this._startListeningForStateDescriptionChanges();
         }

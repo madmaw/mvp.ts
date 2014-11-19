@@ -16,7 +16,7 @@ module TS.MVP.Table {
                     }
                     totalBreadth += breadth;
                 }
-                tableHeaders = arrayCreate2DArray(totalBreadth, maxDepth);
+                tableHeaders = arrayCreate2DArray<TableHeader>(totalBreadth, maxDepth);
             }
             if (depthOffset == null) {
                 depthOffset = 0;

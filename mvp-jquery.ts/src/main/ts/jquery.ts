@@ -1,5 +1,9 @@
 module TS.IJQuery {
 
+    export interface IJQueryCallback {
+        (event: JQueryEventObject): void;
+    }
+
     // additional jQuery functions
     export function jquerySelectFromRoot(jquery:JQuery, selector?:string, childFilter?:(index:number)=>boolean) {
         var result:JQuery;

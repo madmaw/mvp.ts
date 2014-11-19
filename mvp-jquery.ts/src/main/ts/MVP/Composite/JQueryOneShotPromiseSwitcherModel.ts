@@ -10,6 +10,10 @@ module TS.IJQuery.MVP.Composite {
         public _importData: any;
         public _importCallback: TS.MVP.IModelImportStateCallback;
 
+        private _queuedPromiseFactory: ()=>JQueryPromise<TS.MVP.IPresenter>;
+        private _queuedMaxProgress: number;
+        private _inProgress: boolean;
+
         constructor(
             private _loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
             private _failurePresenter?: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
@@ -21,32 +25,56 @@ module TS.IJQuery.MVP.Composite {
             this._importData = _defaultStateDescription;
         }
 
-        public setPromise(promise: JQueryPromise<TS.MVP.IPresenter>, maxProgress: number) {
-            this._successPresenter = undefined;
-            // initialize the loading model
-            var loadingModel = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
-            this._loadingPresenter.setModel(loadingModel);
+        public queuePromise(promiseFactory: ()=>JQueryPromise<TS.MVP.IPresenter>, maxProgress: number) {
+            if( this._inProgress ) {
+                this._queuedPromiseFactory = promiseFactory;
+                this._queuedMaxProgress = maxProgress;
+            } else {
+                this._inProgress = true;
+                this._successPresenter = undefined;
+                // initialize the loading model
+                var doIt = (promise: JQueryPromise<TS.MVP.IPresenter>, maxProgress: number)=> {
+                    var loadingModel = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
+                    this._loadingPresenter.setModel(loadingModel);
 
-            this._setCurrentPresenter(this._loadingPresenter);
-            promise.then((presenter: TS.MVP.IPresenter) => {
-                this._successPresenter = presenter;
-                if( this._importing ) {
-                    this._importing = false;
-                    presenter.getModel().importState(this._importData, this._importCallback);
-                }
-                this._setCurrentPresenter(presenter)
-            });
-            // only handle failures if we actually have a failure presenter (otherwise, infinite loading!)
-            if( this._failurePresenter ) {
-                promise.fail(() => {
-                    var args = arguments;
-                    var errorState = this._errorMarshaler(args);
-                    var errorModel = this._getErrorModel(errorState);
-                    this._failurePresenter.setModel(errorModel);
-                    this._setCurrentPresenter(this._failurePresenter);
-                });
+                    this._setCurrentPresenter(this._loadingPresenter);
+                    promise.then((presenter: TS.MVP.IPresenter) => {
+                        if( !this._queuedPromiseFactory ) {
+                            this._successPresenter = presenter;
+                            if( this._importing ) {
+                                this._importing = false;
+                                presenter.getModel().importState(this._importData, this._importCallback);
+                            }
+                            this._setCurrentPresenter(presenter)
+                            this._inProgress = false;
+                        } else if( this._queuedPromiseFactory ) {
+                            // we have a queued promise
+                            doIt(this._queuedPromiseFactory(), this._queuedMaxProgress);
+                            this._queuedMaxProgress = null;
+                            this._queuedPromiseFactory = null;
+                        }
+                    });
+                    // only handle failures if we actually have a failure presenter (otherwise, infinite loading!)
+                    promise.fail(() => {
+                        if( this._failurePresenter && this._queuedPromiseFactory == null ) {
+                            var args = arguments;
+                            var errorState = this._errorMarshaler(args);
+                            var errorModel = this._getErrorModel(errorState);
+                            this._failurePresenter.setModel(errorModel);
+                            this._setCurrentPresenter(this._failurePresenter);
+                        }
+                        if( this._queuedPromiseFactory ) {
+                            // we have a queued promise
+                            doIt(this._queuedPromiseFactory(), this._queuedMaxProgress);
+                            this._queuedMaxProgress = null;
+                            this._queuedPromiseFactory = null;
+                        } else {
+                            this._inProgress = false;
+                        }
+                    });
+                };
+                doIt(promiseFactory(), maxProgress);
             }
-
         }
 
         public _getErrorModel(errorState: TS.MVP.Error.ErrorModelState) {

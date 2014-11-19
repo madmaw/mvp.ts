@@ -1,26 +1,36 @@
 module TS.IJQuery.MVP.Form {
 
+
+
     export class ListFormJQueryPresenter<ModelType extends TS.MVP.Form.IListFormModel<any[], any>> extends TS.IJQuery.MVP.List.AbstractListJQueryPresenter<ModelType> {
 
-        private _addCallback: (event: JQueryEventObject) => void;
-        private _removeCallback: (event: JQueryEventObject) => void;
+        private _addCallbacks: {[_:string]: IJQueryCallback};
+        private _removeCallback: IJQueryCallback;
 
         constructor(
             viewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             listItemContainerViewFactory: TS.IJQuery.MVP.IJQueryViewFactory,
             listContainerSelector: string,
             private _listItemRemoveButtonSelector: string,
-            private _addButtonSelector: string,
+            private _addButtonTypesToSelectors: {[_:string]: string},
             private _errorSelector: string,
             private _errorFormatter: IErrorFormatter,
             private _errorClass: string
         ) {
             super(viewFactory, listItemContainerViewFactory, listContainerSelector);
 
-            this._addCallback = () => {
-                var model = this.getModel();
-                model.requestAddRow();
-            };
+            this._addCallbacks = {};
+            for( var type in _addButtonTypesToSelectors ) {
+
+                var f = (type) => {
+                    var addCallback = (event: JQueryEventObject) => {
+                        var model = this.getModel();
+                        model.requestAddRow(type);
+                    };
+                    this._addCallbacks[type] = addCallback;
+                }
+                f(type);
+            }
             this._removeCallback = (event: JQueryEventObject) => {
                 var eventTarget = <any>event.target;
                 for( var i in this._positionsToListItems ) {
@@ -37,16 +47,24 @@ module TS.IJQuery.MVP.Form {
 
         _doStart() {
             // listen for add events
-            var addButton = this.$(this._addButtonSelector);
-            addButton.on('click', this._addCallback);
+            for( var type in this._addButtonTypesToSelectors ) {
+                var addButtonSelector = this._addButtonTypesToSelectors[type];
+                var addButton = this.$(addButtonSelector);
+                var addCallback = this._addCallbacks[type];
+                addButton.on('click', addCallback);
+            }
             // listen for remove events
 
             return super._doStart();
         }
 
         _doStop() {
-            var addButton = this.$(this._addButtonSelector);
-            addButton.off('click', this._addCallback);
+            for( var type in this._addButtonTypesToSelectors ) {
+                var addButtonSelector = this._addButtonTypesToSelectors[type];
+                var addButton = this.$(addButtonSelector);
+                var addCallback = this._addCallbacks[type];
+                addButton.off('click', addCallback);
+            }
 
             return super._doStop();
         }
@@ -58,11 +76,20 @@ module TS.IJQuery.MVP.Form {
                     var model: TS.MVP.Form.IFormModel<any, any> = <any>this._positionsToListItems[0].getPresenter().getModel();
                     model.requestFocus();
                 } else {
-                    // focus on the add button
-                    this.$(this._addButtonSelector).focus();
+                    // focus on an add button
+                    for( var type in this._addButtonTypesToSelectors ) {
+                        var addButtonSelector = this._addButtonTypesToSelectors[type];
+                        this.$(addButtonSelector).focus();
+                        break;
+                    }
                 }
             } else {
-                super._handleModelChangeEvent(event);
+                var description: TS.MVP.Form.FormModelErrorChangeDescription = <any>event.lookupExclusive(TS.MVP.Form.FormModelErrorChangeDescription.CHANGE_TYPE_FORM_ERROR);
+                if( description ) {
+                    this._showErrors(description.errors);
+                } else {
+                    super._handleModelChangeEvent(event);
+                }
             }
         }
 
@@ -78,8 +105,6 @@ module TS.IJQuery.MVP.Form {
                     var nextListItemPresenter = nextListItem.getPresenter();
                     var nextListItemModel: TS.MVP.Form.IFormModel<any, any> = <any>nextListItemPresenter.getModel();
                     nextListItemModel.requestFocus();
-                } else {
-                    var addButton = this.$(this._addButtonSelector).focus();
                 }
             });
             var listItemPresenterView: TS.IJQuery.MVP.IJQueryView = <any>listItemPresenter.getView();
@@ -96,9 +121,13 @@ module TS.IJQuery.MVP.Form {
 
         _doLoad(model: ModelType) {
             super._doLoad(model);
+            var errors = model.getErrors();
+            this._showErrors(errors);
+        }
+
+        public _showErrors(errors: string[] ) {
             if( this._errorFormatter && this._errorSelector !== undefined ) {
                 // present any errors
-                var errors = model.getErrors();
                 var errorString = this._errorFormatter(errors);
                 var errorJQuery = this.$(this._errorSelector);
                 errorJQuery.html(errorString);

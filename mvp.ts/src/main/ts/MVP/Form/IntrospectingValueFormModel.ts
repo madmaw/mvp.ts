@@ -5,6 +5,7 @@ module TS.MVP.Form {
         private _sourceValue: SourceValueType;
         public _sourceError: IFormError;
         private _modified: boolean;
+        private _showErrors: boolean;
         public _completionListener: ()=> void;
 
         constructor(public _key: string) {
@@ -13,7 +14,7 @@ module TS.MVP.Form {
 
         getErrors(): string[] {
             var result: string[] = null;
-            if( this._modified && this._sourceError ) {
+            if( (this._modified || this._showErrors) && this._sourceError ) {
                 var children = this._sourceError.children;
                 if( children ) {
                     var child: IFormError = children[this._key];
@@ -43,10 +44,8 @@ module TS.MVP.Form {
 
         setSourceError(error: IFormError, forceShow?:boolean) {
             this._sourceError = error;
-            if( forceShow ) {
-                this._modified = true;
-            }
-            this._fireModelChangeEvent(null, true);
+            this._showErrors = forceShow;
+            this._fireModelChangeEvent(new FormModelErrorChangeDescription(this.getErrors()), true);
         }
 
         setSourceValue(value: SourceValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
@@ -58,10 +57,13 @@ module TS.MVP.Form {
         }
 
         setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
-            this._sourceValue[this._key] = value;
-            this._modified = this._modified || !notModified;
-            if( !suppressModelChangeEvent ) {
-                this._fireModelChangeEvent(undefined, suppressStateChangeEvent);
+            var oldValue = this.getValue();
+            if( oldValue != value ) {
+                this._sourceValue[this._key] = value;
+                this._modified = this._modified || !notModified;
+                if( !suppressModelChangeEvent ) {
+                    this._fireModelChangeEvent(undefined, suppressStateChangeEvent);
+                }
             }
         }
 
@@ -72,6 +74,7 @@ module TS.MVP.Form {
         clear(): void {
             this._modified = false;
             this._sourceError = null;
+            this._showErrors = false;
             this._fireModelChangeEvent(null, true);
         }
 

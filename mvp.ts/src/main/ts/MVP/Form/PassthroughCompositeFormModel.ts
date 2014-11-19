@@ -7,6 +7,7 @@ module TS.MVP.Form {
         public _sourceValue: SourceValueType;
         public _sourceError: IFormError;
         public _modified: boolean;
+        private _showErrors: boolean;
         public _completionListener: ()=> void;
 
         constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, ValueType>>}, private _focusModel?: IFormModel<any, ValueType>) {
@@ -38,6 +39,8 @@ module TS.MVP.Form {
 
         clear(): void {
             this._sourceError = null;
+            this._showErrors = false;
+            this._modified = false;
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
                 var model = (<IPresenterWithModel<IFormModel<any, ValueType>>>presenter).getModel();
@@ -50,6 +53,7 @@ module TS.MVP.Form {
 
         setSourceError(sourceError: IFormError, forceShow?:boolean) {
             this._sourceError = sourceError;
+            this._showErrors = forceShow;
             var error = this.getError();
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
@@ -57,16 +61,17 @@ module TS.MVP.Form {
                 model.setSourceError(error, forceShow);
             }
             // TODO indicate that it's the validation errors that have changed (only) - this reloads the entire page!
-            this._fireModelChangeEvent(null, true);
+            this._fireModelChangeEvent(new FormModelErrorChangeDescription(this.getErrors()), true);
         }
 
         getError(): IFormError {
             return this._sourceError;
         }
 
-        getErrors(error: IFormError = this.getError(), into: string[] = []): string[] {
+        getErrors(): string[] {
             var result;
-            if( error != null ) {
+            var error = this.getError();
+            if( error != null && (this._modified || this._showErrors) ) {
                 result = error.errors;
             } else {
                 result = null;

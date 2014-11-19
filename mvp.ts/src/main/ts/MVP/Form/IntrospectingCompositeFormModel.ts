@@ -4,11 +4,11 @@ module TS.MVP.Form {
         private _value: any;
         public _errors: string[];
         private _modified: boolean;
+        private _showErrors: boolean;
         public _completionListener: ()=> void;
 
         constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, any>>}, private _focusModel?: IFormModel<any, any>) {
             super(presenterMap);
-            this._modified = false;
         }
 
         public setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
@@ -47,6 +47,8 @@ module TS.MVP.Form {
         }
 
         clear(): void {
+            this._modified = false;
+            this._showErrors = false;
             this._errors = [];
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
@@ -64,6 +66,7 @@ module TS.MVP.Form {
             } else {
                 this._errors = null;
             }
+            this._showErrors = forceShow;
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
                 var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
@@ -75,12 +78,16 @@ module TS.MVP.Form {
                 }
                 model.setSourceError(fieldValue, forceShow && fieldValue != null);
             }
-            // TODO indicate that it's the validation errors that have changed (only) - this reloads the entire page!
-            this._fireModelChangeEvent(null, true);
+            // indicate that it's the validation errors that have changed (only) - this reloads the entire page!
+            this._fireModelChangeEvent(new FormModelErrorChangeDescription(this.getErrors()), true);
         }
 
         getErrors(): string[] {
-            return this._errors;
+            if( this._modified || this._showErrors ) {
+                return this._errors;
+            } else {
+                return this._errors;
+            }
         }
 
         exportState() {

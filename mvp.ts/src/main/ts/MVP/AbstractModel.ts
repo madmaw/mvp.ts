@@ -20,6 +20,9 @@ module TS.MVP {
                 this._isListening = true;
                 this._startedListening();
             }
+            if( TS.arrayContains(this._changeListeners, listener) ) {
+                throw "already exists!";
+            }
             this._changeListeners.push(listener);
         }
 

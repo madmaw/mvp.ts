@@ -44,7 +44,7 @@ module TS.IJQuery.Template.HB {
                 result = classString;
             }
         }
-        return new Handlebars.SafeString(result);
+        return new Handlebars.SafeString(result).toString();
     }
 
 }

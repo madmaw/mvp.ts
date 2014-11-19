@@ -17,14 +17,18 @@ module TS.IJQuery.MVP.Composite {
             this._importing = false;
             var promiseDescription = this._retryFunction(this._importData, this._importCallback, beforePromise, additionalPromises, afterFunction);
 
-
-            this.setPromise(
-                promiseDescription.promise.then((presenter: TS.MVP.IPresenter)=>{
+            var promiseFactory = () => {
+                var promise = promiseDescription.promiseFactory();
+                return promise.then((presenter: TS.MVP.IPresenter)=>{
                     // let's assume the import callback has finished
                     this._importCallback = undefined;
                     this._importData = this._defaultStateDescription;
                     return presenter;
-                }),
+                });
+            };
+
+            this.queuePromise(
+                promiseFactory,
                 promiseDescription.maxProgress
             );
         }
