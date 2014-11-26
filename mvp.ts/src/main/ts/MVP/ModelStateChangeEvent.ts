@@ -2,7 +2,7 @@
 
     export class ModelStateChangeEvent {
 
-        constructor(private _operation: IModelStateChangeOperation, private _replaceId?: string) {
+        constructor(private _operation: IModelStateChangeOperation, private _replace?: boolean) {
 
         }
 
@@ -11,11 +11,10 @@
         }
 
         /**
-         * If the operation should overwrite previous operations instead of being pushed, then this should be non-null
-         * @return the id of the thing that requires replacement
+         * If the operation should overwrite previous operations instead of being pushed
          */
-        public getReplaceId() {
-            return this._replaceId;
+        public getReplace() {
+            return this._replace;
         }
 
     }

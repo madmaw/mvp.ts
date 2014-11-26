@@ -994,12 +994,13 @@ interface JQueryStatic {
      */
     removeData(element: Element, name?: string): JQuery;
 
+
     /**
      * A constructor function that returns a chainable utility object with methods to register multiple callbacks into callback queues, invoke callback queues, and relay the success or failure state of any synchronous or asynchronous function.
      *
      * @param beforeStart A function that is called just before the constructor returns.
      */
-    Deferred<T>(beforeStart?: (deferred: JQueryDeferred<T>) => any): void;
+    Deferred: new <T>(beforeStart?: (deferred: JQueryDeferred<T>) => any) => JQueryDeferred<T>;
 
     /**
      * Effects

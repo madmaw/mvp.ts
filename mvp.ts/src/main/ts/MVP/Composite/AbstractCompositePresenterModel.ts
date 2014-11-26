@@ -22,11 +22,13 @@ module TS.MVP.Composite {
                     if (previousModel != null) {
                         previousModel.removeStateChangeListener(this._stateChangeListener);
                     }
-                    // listen on the new modle
+                    // listen on the new model
                     var currentModel = source.getModel();
                     if (currentModel != null) {
                         currentModel.addStateChangeListener(this._stateChangeListener);
                     }
+                    // this is highly irregular, probably should fire a state change, but we want to replace the state, not push it
+                    this._fireStateChangeEvent(this, new ModelStateChangeEvent(undefined, true));
                 }
             }
         }

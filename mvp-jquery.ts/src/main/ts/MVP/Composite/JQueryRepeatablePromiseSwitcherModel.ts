@@ -7,9 +7,10 @@ module TS.IJQuery.MVP.Composite {
             private _retryFunction: IJQueryRepeatablePromiseSwitcherModelRetryCallback,
             failurePresenter: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
             errorMarshaler: (arguments:IArguments) => TS.MVP.Error.ErrorModelState,
-            defaultStateDescription?: any
+            defaultStateDescription?: any,
+            alwaysReturnDefaultStateDescription?:boolean
         ) {
-            super(loadingPresenter, failurePresenter, errorMarshaler, defaultStateDescription);
+            super(loadingPresenter, failurePresenter, errorMarshaler, defaultStateDescription, alwaysReturnDefaultStateDescription);
         }
 
         public retry(beforePromise?: JQueryPromise<any>, additionalPromises?:JQueryPromise<any>[], afterFunction?:()=>JQueryPromise<any>) {

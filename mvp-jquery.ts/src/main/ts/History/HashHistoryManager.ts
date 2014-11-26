@@ -45,8 +45,9 @@ module TS.IJQuery.History {
             } else {
                 description = state;
             }
-            var back;
+            var back: boolean;
             var change: TS.MVP.IModelStateChangeOperation;
+            var skip: boolean = false;
 
             var historyItemIndex: number;
             if (this._historyItemIndex != null && this._historyItemIndex > 0 && this._historyItems[this._historyItemIndex - 1].getModelStateDataEncoded() == dataString) {
@@ -54,6 +55,10 @@ module TS.IJQuery.History {
                 var historyItem = this._historyItems[this._historyItemIndex];
                 change = historyItem.getModelStateChange();
                 historyItemIndex = this._historyItemIndex - 1;
+                // special case, we can't pop stuff off the stack without causing this event (unlike push and replace), so we need to check if the app is already in this state
+                var currentState = this._model.exportState();
+                var currentStateString = this._encode(currentState);
+                skip = currentStateString == dataString;
             } else if (this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex + 1].getModelStateDataEncoded() == dataString) {
                 back = false;
                 historyItemIndex = this._historyItemIndex + 1;
@@ -62,26 +67,28 @@ module TS.IJQuery.History {
             } else {
                 // we've probably backed off the end of the local history into the browser history (the user refreshed), add this value to the start of our history
                 historyItemIndex = 0;
-                this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null, null));
+                this._historyItems.splice(0, 0, new HashHistoryItem(description, dataString, null));
                 back = true;
                 change = null;
             }
-            if (change != null) {
-                // try to stop it from scrolling
-                if (back) {
-                    change.undo();
-                    // current change
-                    if( historyItemIndex >= 0 ) {
-                        var currentChange = this._historyItems[historyItemIndex].getModelStateChange();
-                        if( currentChange ) {
-                            currentChange.activate();
+            if( !skip ) {
+                if (change != null) {
+                    // try to stop it from scrolling
+                    if (back) {
+                        change.undo();
+                        // current change
+                        if( historyItemIndex >= 0 ) {
+                            var currentChange = this._historyItems[historyItemIndex].getModelStateChange();
+                            if( currentChange ) {
+                                currentChange.activate();
+                            }
                         }
+                    } else {
+                        change.redo();
                     }
                 } else {
-                    change.redo();
+                    this._init(description);
                 }
-            } else {
-                this._init(description);
             }
             this._historyItemIndex = historyItemIndex;
         }
@@ -89,7 +96,7 @@ module TS.IJQuery.History {
         public push(modelStateChange: TS.MVP.ModelStateChangeEvent) {
             // TODO : check that the state isn't identical to the back state, if it is, then assume this is actually a back event and adjust the history accordingly
             // always replace the first entry as it will occur on loading the model
-            var replace = this._historyItemIndex == null;
+            var replace = this._historyItemIndex == null || modelStateChange.getReplace();
             var stateDescription = this._model.exportState();
             var s = this._encode(stateDescription);
             // assume that if the previous is the same, we are actually seeing a back operation!
@@ -113,10 +120,7 @@ module TS.IJQuery.History {
                     if (this._historyItemIndex == null) {
                         this._historyItemIndex = 0;
                     } else {
-                        var historyItem = this._historyItems[this._historyItemIndex];
-                        if( historyItem.replaceId != null && historyItem.replaceId == modelStateChange.getReplaceId() ) {
-                            replace = true;
-                        } else {
+                        if( !replace ) {
                             this._historyItemIndex++;
                         }
                     }
@@ -132,7 +136,7 @@ module TS.IJQuery.History {
                         window.history.pushState(stateDescription, null, url);
                     }
                     // TODO maintain state changes alongside the shit (you know what I mean)
-                    var historyItem = new HashHistoryItem(stateDescription, s, modelStateChange.getOperation(), modelStateChange.getReplaceId());
+                    var historyItem = new HashHistoryItem(stateDescription, s, modelStateChange.getOperation());
                     if (this._historyItems.length <= this._historyItemIndex) {
                         this._historyItems.push(historyItem);
                     } else {
@@ -215,7 +219,7 @@ module TS.IJQuery.History {
                 }
                 */
                 if( this._historyItemIndex == null ) {
-                    this._historyItems.push(new HashHistoryItem(data, dataString, null, null));
+                    this._historyItems.push(new HashHistoryItem(data, dataString, null));
                     this._historyItemIndex = 0;
                 }
 

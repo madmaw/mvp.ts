@@ -10,15 +10,15 @@ module TS.IJQuery.MVP.Composite {
         public _importData: any;
         public _importCallback: TS.MVP.IModelImportStateCallback;
 
-        private _queuedPromiseFactory: ()=>JQueryPromise<TS.MVP.IPresenter>;
-        private _queuedMaxProgress: number;
-        private _inProgress: boolean;
+        private _inProgress: TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel<TS.MVP.IPresenter>;
+
 
         constructor(
             private _loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
             private _failurePresenter?: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
             private _errorMarshaler?: (arguments:IArguments) => TS.MVP.Error.ErrorModelState,
-            public _defaultStateDescription?: any
+            public _defaultStateDescription?: any,
+            public _alwaysReturnDefaultStateDescription?: boolean
         ) {
             super();
             // assume we want to import it on a refresh, in lieu of anything else being available
@@ -26,55 +26,36 @@ module TS.IJQuery.MVP.Composite {
         }
 
         public queuePromise(promiseFactory: ()=>JQueryPromise<TS.MVP.IPresenter>, maxProgress: number) {
-            if( this._inProgress ) {
-                this._queuedPromiseFactory = promiseFactory;
-                this._queuedMaxProgress = maxProgress;
-            } else {
-                this._inProgress = true;
+            if( !this._inProgress ) {
                 this._successPresenter = undefined;
-                // initialize the loading model
-                var doIt = (promise: JQueryPromise<TS.MVP.IPresenter>, maxProgress: number)=> {
-                    var loadingModel = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel(promise, maxProgress);
-                    this._loadingPresenter.setModel(loadingModel);
-
-                    this._setCurrentPresenter(this._loadingPresenter);
-                    promise.then((presenter: TS.MVP.IPresenter) => {
-                        if( !this._queuedPromiseFactory ) {
-                            this._successPresenter = presenter;
-                            if( this._importing ) {
-                                this._importing = false;
-                                presenter.getModel().importState(this._importData, this._importCallback);
-                            }
-                            this._setCurrentPresenter(presenter)
-                            this._inProgress = false;
-                        } else if( this._queuedPromiseFactory ) {
-                            // we have a queued promise
-                            doIt(this._queuedPromiseFactory(), this._queuedMaxProgress);
-                            this._queuedMaxProgress = null;
-                            this._queuedPromiseFactory = null;
-                        }
-                    });
-                    // only handle failures if we actually have a failure presenter (otherwise, infinite loading!)
-                    promise.fail(() => {
-                        if( this._failurePresenter && this._queuedPromiseFactory == null ) {
-                            var args = arguments;
-                            var errorState = this._errorMarshaler(args);
-                            var errorModel = this._getErrorModel(errorState);
-                            this._failurePresenter.setModel(errorModel);
-                            this._setCurrentPresenter(this._failurePresenter);
-                        }
-                        if( this._queuedPromiseFactory ) {
-                            // we have a queued promise
-                            doIt(this._queuedPromiseFactory(), this._queuedMaxProgress);
-                            this._queuedMaxProgress = null;
-                            this._queuedPromiseFactory = null;
-                        } else {
-                            this._inProgress = false;
-                        }
-                    });
-                };
-                doIt(promiseFactory(), maxProgress);
+                this._inProgress = new TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel<TS.MVP.IPresenter>();
+                this._loadingPresenter.setModel(this._inProgress);
+                this._setCurrentPresenter(this._loadingPresenter);
             }
+            var promise: JQueryPromise<TS.MVP.IPresenter> = this._inProgress.appendPromise(promiseFactory, maxProgress);
+
+            promise.then((presenter: TS.MVP.IPresenter) => {
+                if( this._inProgress && this._inProgress.isCompleted() ) {
+                    this._successPresenter = presenter;
+                    if( this._importing ) {
+                        this._importing = false;
+                        presenter.getModel().importState(this._importData, this._importCallback);
+                    }
+                    this._setCurrentPresenter(presenter)
+                    this._inProgress = null;
+                }
+            });
+            // only handle failures if we actually have a failure presenter (otherwise, infinite loading!)
+            promise.fail(() => {
+                if( this._inProgress && this._inProgress.isCompleted() && this._failurePresenter ) {
+                    var args = arguments;
+                    var errorState = this._errorMarshaler(args);
+                    var errorModel = this._getErrorModel(errorState);
+                    this._failurePresenter.setModel(errorModel);
+                    this._setCurrentPresenter(this._failurePresenter);
+                    this._inProgress = null;
+                }
+            });
         }
 
         public _getErrorModel(errorState: TS.MVP.Error.ErrorModelState) {
@@ -92,7 +73,7 @@ module TS.IJQuery.MVP.Composite {
         public _setCurrentPresenter(currentPresenter: TS.MVP.IPresenter) {
             this._currentPresenter = currentPresenter;
             this._updateListeningForStateDescriptionChanges();
-            this._fireModelChangeEvent();
+            this._fireModelChangeEvent(undefined, this._alwaysReturnDefaultStateDescription);
         }
 
         public importState(description: any, importCompletionCallback: TS.MVP.IModelImportStateCallback): void {
@@ -108,7 +89,7 @@ module TS.IJQuery.MVP.Composite {
 
         public exportState() {
             var result;
-            if (this._successPresenter) {
+            if (this._successPresenter && !this._alwaysReturnDefaultStateDescription) {
                 result = this._successPresenter.getModel().exportState();
             } else {
                 result = this._defaultStateDescription;
