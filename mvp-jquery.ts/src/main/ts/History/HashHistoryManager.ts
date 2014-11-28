@@ -104,7 +104,7 @@ module TS.IJQuery.History {
 
                 var previousHistoryItem = this._historyItems[this._historyItemIndex -1];
                 previousHistoryItem.setModelStateChange(modelStateChange.getOperation());
-                // TODO pop?
+                // pop, we will correct the stack this as the event fires
                 window.history.back();
 
             } else if( false && this._historyItemIndex != null && this._historyItemIndex < this._historyItems.length - 1 && this._historyItems[this._historyItemIndex+1].getModelStateDataEncoded() == s ) {
@@ -129,14 +129,20 @@ module TS.IJQuery.History {
                         // empty paths will not be pushed?
                         url = "/";
                     }
+                    var operation = modelStateChange.getOperation();
                     if (replace) {
                         // TODO the model is now responsible for the title....
                         window.history.replaceState(stateDescription, null, url);
+                        // replaces use the replaced state's operation
+                        var previousHistoryItem = this._historyItems[this._historyItemIndex];
+                        if( previousHistoryItem ) {
+                            operation = previousHistoryItem.getModelStateChange();
+                        }
                     } else {
                         window.history.pushState(stateDescription, null, url);
                     }
                     // TODO maintain state changes alongside the shit (you know what I mean)
-                    var historyItem = new HashHistoryItem(stateDescription, s, modelStateChange.getOperation());
+                    var historyItem = new HashHistoryItem(stateDescription, s, operation);
                     if (this._historyItems.length <= this._historyItemIndex) {
                         this._historyItems.push(historyItem);
                     } else {

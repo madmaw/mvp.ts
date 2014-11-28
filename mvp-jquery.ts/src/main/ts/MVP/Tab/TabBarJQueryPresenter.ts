@@ -7,7 +7,12 @@ module TS.IJQuery.MVP.Tab {
         private _tabIdsToDescriptions: { [_:string]: TabBarTabJQueryViewDescription; };
 
         // Constructor
-        constructor(viewFactory: IJQueryViewFactory, private _tabBarTabViewDescriptionFactory: ITabBarTabJQueryViewDescriptionFactory, private _tabButtonContainerSelector:string, private _selectedTabClass:string) {
+        constructor(
+            viewFactory: IJQueryViewFactory,
+            private _tabBarTabViewDescriptionFactory: ITabBarTabJQueryViewDescriptionFactory,
+            private _tabButtonContainerSelector: string,
+            private _selectedTabClass: string,
+            private _defaultTabClass?: string) {
             super(viewFactory);
             this._tabIdsToDescriptions = {};
         }
@@ -30,10 +35,18 @@ module TS.IJQuery.MVP.Tab {
                     var view = description.getView();
                     view.attach();
 
+                    var styleableElements = jquerySelectFromRoot(view.$, description.getStyleableElementSelector());
                     if (tabId == selectedTabId) {
                         // add the class
-                        var styleableElements = jquerySelectFromRoot(view.$, description.getStyleableElementSelector());
                         styleableElements.addClass(this._selectedTabClass);
+                        if( this._defaultTabClass ) {
+                            styleableElements.removeClass(this._defaultTabClass);
+                        }
+                    } else {
+                        if( this._defaultTabClass ) {
+                            styleableElements.addClass(this._defaultTabClass);
+                        }
+                        styleableElements.removeClass(this._selectedTabClass);
                     }
                     // add in the onclick listener
                     var clickableElements = jquerySelectFromRoot(view.$, description.getClickableElementSelector());
@@ -67,8 +80,13 @@ module TS.IJQuery.MVP.Tab {
                 if (tabId == selectedTabId) {
                     // add the class
                     styleableElements.addClass(this._selectedTabClass);
+                    if( this._defaultTabClass ) {
+                        styleableElements.removeClass(this._defaultTabClass);
+                    }
                 } else {
-                    // remove the class
+                    if( this._defaultTabClass ) {
+                        styleableElements.addClass(this._defaultTabClass);
+                    }
                     styleableElements.removeClass(this._selectedTabClass);
                 }
             }

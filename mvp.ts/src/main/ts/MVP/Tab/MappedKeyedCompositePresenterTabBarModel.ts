@@ -11,7 +11,12 @@ module TS.MVP.Tab {
         public _selectedTabId: string;
 
         // Constructor
-        constructor(selectedTabId: string, private _tabIdsToPresenters: { [_:string]: IPresenter; }, public _tabPresenterKey: string, _presenterMap?: { [_:string]: IPresenter; }) {
+        constructor(
+            selectedTabId: string,
+            private _tabIdsToPresenters: { [_:string]: IPresenter; },
+            public _tabPresenterKey: string,
+            _presenterMap?: { [_:string]: IPresenter; },
+            private _stateChangesReplace?:boolean) {
             super(_presenterMap);
             this._setSelectedTabId(selectedTabId);
         }
@@ -51,14 +56,17 @@ module TS.MVP.Tab {
                     );
                 }
                 if( !suppressStateChangeEvent ) {
-                    this._fireStateChangeOperation(
+                    this._fireStateChangeEvent(
                         this,
-                        new MappedKeyedCompositePresenterTabBarModelStateChangeOperation(
-                            this,
-                            previouslySelectedTabId,
-                            tabId
+                        new TS.MVP.ModelStateChangeEvent(
+                            new MappedKeyedCompositePresenterTabBarModelStateChangeOperation(
+                                this,
+                                previouslySelectedTabId,
+                                tabId
+                            ),
+                            this._stateChangesReplace
                         )
-                    )
+                    );
                 }
             }
         }
