@@ -53,8 +53,13 @@ module TS.IJQuery.MVP.Form {
 
         _doLoad(model: TS.MVP.Form.IFormModel<string, any>) {
             super._doLoad(model);
-
-            this.$(this._inputSelector).val(model.getValue());
+            var input = this.$(this._inputSelector);
+            var oldValue = input.val();
+            var newValue = model.getValue();
+            // don't change if it's the same because that resets the input
+            if( oldValue != newValue ) {
+                input.val(newValue);
+            }
         }
 
     }

@@ -53,7 +53,7 @@ module TS.MVP.Form {
 
         setSourceError(sourceError: IFormError, forceShow?:boolean) {
             this._sourceError = sourceError;
-            this._showErrors = forceShow;
+            this._showErrors = forceShow || this._showErrors;
             var error = this.getError();
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];

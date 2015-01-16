@@ -44,7 +44,7 @@ module TS.MVP.Form {
 
         setSourceError(error: IFormError, forceShow?:boolean) {
             this._sourceError = error;
-            this._showErrors = forceShow;
+            this._showErrors = forceShow || this._showErrors;
             this._fireModelChangeEvent(new FormModelErrorChangeDescription(this.getErrors()), true);
         }
 
@@ -58,7 +58,8 @@ module TS.MVP.Form {
 
         setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             var oldValue = this.getValue();
-            if( oldValue != value ) {
+            // can force an update by explicitly specifying notModified
+            if( oldValue != value || notModified === false ) {
                 this._sourceValue[this._key] = value;
                 this._modified = this._modified || !notModified;
                 if( !suppressModelChangeEvent ) {
@@ -67,8 +68,8 @@ module TS.MVP.Form {
             }
         }
 
-        getValue() {
-            return this._sourceValue[this._key];
+        getValue(key: string = this._key) {
+            return this._sourceValue[key];
         }
 
         clear(): void {

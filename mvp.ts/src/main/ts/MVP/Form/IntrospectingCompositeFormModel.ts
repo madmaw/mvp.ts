@@ -66,7 +66,7 @@ module TS.MVP.Form {
             } else {
                 this._errors = null;
             }
-            this._showErrors = forceShow;
+            this._showErrors = forceShow || this._showErrors;
             for( var key in this._presenterMap ) {
                 var presenter = this._presenterMap[key];
                 var model = (<IPresenterWithModel<IFormModel<any, any>>>presenter).getModel();
