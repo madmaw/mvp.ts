@@ -20,5 +20,9 @@ module TS {
         return result;
     }
 
+    export function stringEndsWith(s:string, suffix:string): boolean {
+        return s.indexOf(suffix, s.length - suffix.length) != -1;
+    }
+
 }
 
