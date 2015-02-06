@@ -5,20 +5,24 @@ module TS.IJQuery.MVP.Form {
 
         constructor(
             viewFactory: IJQueryViewFactory,
-            keysToSelectors: {[_:string]: string},
-            private _errorSelector: string,
-            private _errorFormatter: IErrorFormatter,
-            private _errorClass: string
+            keysToSelectors?: {[_:string]: string},
+            private _errorSelector?: string,
+            private _errorFormatter?: IErrorFormatter,
+            private _errorClass?: string
         ) {
             super(viewFactory, keysToSelectors);
         }
 
         public _handleModelChangeEvent(event:TS.MVP.ModelChangeEvent):void {
-            var description: TS.MVP.Form.FormModelErrorChangeDescription = <any>event.lookupExclusive(TS.MVP.Form.FormModelErrorChangeDescription.CHANGE_TYPE_FORM_ERROR);
-            if( description ) {
-                this._showErrors(description.errors);
+            var errorDescription: TS.MVP.Form.FormModelErrorChangeDescription = <any>event.lookupExclusive(TS.MVP.Form.FormModelErrorChangeDescription.CHANGE_TYPE_FORM_ERROR);
+            if( errorDescription ) {
+                this._showErrors(errorDescription.errors);
             } else {
-                super._handleModelChangeEvent(event);
+                var valueDescription = event.lookupExclusive(TS.MVP.Form.FormModelValueChangeDescription.CHANGE_TYPE_FORM_VALUE);
+                if( valueDescription == null ) {
+                    // do not want to reload on a value change
+                    super._handleModelChangeEvent(event);
+                }
             }
         }
 

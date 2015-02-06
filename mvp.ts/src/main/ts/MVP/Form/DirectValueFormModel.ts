@@ -1,10 +1,11 @@
 module TS.MVP.Form {
-    export class DirectValueFormModel<ValueType> extends AbstractModel implements IFormModel<ValueType, ValueType> {
+    export class DirectValueFormModel<ValueType> extends AbstractModel implements IFormFieldModel<ValueType, ValueType> {
 
         private _errors: string[];
         public _value: ValueType;
         public _modified: boolean;
         public _completionListener: ()=> void;
+        public _defaultValue: ValueType;
 
         constructor() {
             super();
@@ -51,11 +52,15 @@ module TS.MVP.Form {
             this.setSourceValue(value, notModified, suppressModelChangeEvent, suppressStateChangeEvent);
         }
 
+        getSourceValue() {
+            return this._value;
+        }
+
         setSourceValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
             this._modified = this._modified || !notModified;
             if(!suppressModelChangeEvent ) {
-                this._fireModelChangeEvent(null, suppressStateChangeEvent);
+                this._fireModelChangeEvent(new FormModelValueChangeDescription(), suppressStateChangeEvent);
             }
         }
 
@@ -66,7 +71,7 @@ module TS.MVP.Form {
         clear(): void {
             this._modified = false;
             this._errors = [];
-            this._fireModelChangeEvent(null, true);
+            this._fireModelChangeEvent(new FormModelValueChangeDescription(), true);
         }
 
         exportState() {
@@ -77,5 +82,13 @@ module TS.MVP.Form {
             return this._modified;
         }
 
+        getDefaultValue() {
+            return this._defaultValue;
+        }
+
+        setDefaultValue(defaultValue: ValueType) {
+            this._defaultValue = defaultValue;
+            this._fireModelChangeEvent(null, true);
+        }
     }
 }

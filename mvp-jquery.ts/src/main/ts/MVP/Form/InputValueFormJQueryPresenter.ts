@@ -1,6 +1,6 @@
 module TS.IJQuery.MVP.Form {
 
-    export class InputValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<string, any>> {
+    export class InputValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormFieldModel<string, any>> {
 
         public static EVENT_NAMES = "input propertychange change paste";
 
@@ -51,7 +51,7 @@ module TS.IJQuery.MVP.Form {
             return super._doStop();
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<string, any>) {
+        _doLoad(model: TS.MVP.Form.IFormFieldModel<string, any>) {
             super._doLoad(model);
             var input = this.$(this._inputSelector);
             var oldValue = input.val();
@@ -59,6 +59,12 @@ module TS.IJQuery.MVP.Form {
             // don't change if it's the same because that resets the input
             if( oldValue != newValue ) {
                 input.val(newValue);
+            }
+            var defaultValue = model.getDefaultValue();
+            if( defaultValue != null ) {
+                input.attr('placeholder', defaultValue);
+            } else {
+                input.removeAttr('placeholder');
             }
         }
 

@@ -1,12 +1,13 @@
 module TS.MVP.Form {
 
-    export class IntrospectingValueFormModel<ValueType, SourceValueType> extends AbstractModel implements IFormModel<ValueType, SourceValueType> {
+    export class IntrospectingValueFormModel<ValueType, SourceValueType> extends AbstractModel implements IFormFieldModel<ValueType, SourceValueType> {
 
         private _sourceValue: SourceValueType;
         public _sourceError: IFormError;
         private _modified: boolean;
         private _showErrors: boolean;
         public _completionListener: ()=> void;
+        private _defaultValue: ValueType;
 
         constructor(public _key: string) {
             super();
@@ -48,11 +49,15 @@ module TS.MVP.Form {
             this._fireModelChangeEvent(new FormModelErrorChangeDescription(this.getErrors()), true);
         }
 
+        getSourceValue() {
+            return this._sourceValue;
+        }
+
         setSourceValue(value: SourceValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._sourceValue = value;
             this._modified = !notModified;
             if(!suppressModelChangeEvent ) {
-                this._fireModelChangeEvent(null, suppressStateChangeEvent);
+                this._fireModelChangeEvent(new FormModelValueChangeDescription(), suppressStateChangeEvent);
             }
         }
 
@@ -63,7 +68,7 @@ module TS.MVP.Form {
                 this._sourceValue[this._key] = value;
                 this._modified = this._modified || !notModified;
                 if( !suppressModelChangeEvent ) {
-                    this._fireModelChangeEvent(undefined, suppressStateChangeEvent);
+                    this._fireModelChangeEvent(new FormModelValueChangeDescription(), suppressStateChangeEvent);
                 }
             }
         }
@@ -76,7 +81,7 @@ module TS.MVP.Form {
             this._modified = false;
             this._sourceError = null;
             this._showErrors = false;
-            this._fireModelChangeEvent(null, true);
+            this._fireModelChangeEvent(new FormModelValueChangeDescription(), true);
         }
 
         exportState() {
@@ -85,6 +90,15 @@ module TS.MVP.Form {
 
         isModified() {
             return this._modified;
+        }
+
+        getDefaultValue() {
+            return this._defaultValue;
+        }
+
+        setDefaultValue(defaultValue: ValueType) {
+            this._defaultValue = defaultValue;
+            this._fireModelChangeEvent(null, true);
         }
 
     }

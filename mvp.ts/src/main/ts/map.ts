@@ -16,4 +16,13 @@ module TS {
         }
         return allProperties;
     }
+
+    export function mapCopy(properties: {[_:string]: any} ) {
+        var result: {[_:string]: any} = {};
+        for( var key in properties ) {
+            var value = properties[key];
+            result[key] = value;
+        }
+        return result;
+    }
 }

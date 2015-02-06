@@ -6,15 +6,26 @@ module TS.MVP.Form {
         private _modified: boolean;
         private _showErrors: boolean;
         public _completionListener: ()=> void;
+        private _subordinateValueChangeListener: IModelChangeListener;
 
         constructor(presenterMap: {[_:string]: IPresenterWithModel<IFormModel<any, any>>}, private _focusModel?: IFormModel<any, any>) {
             super(presenterMap);
+            this._subordinateValueChangeListener = (source: IModel, event: ModelChangeEvent) => {
+                // is it a value change?
+                var description = event.lookup(FormModelValueChangeDescription.CHANGE_TYPE_FORM_VALUE);
+                if( description != null ) {
+                    this._fireModelChangeEvent(description, true);
+                }
+            };
         }
 
         public setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this.setSourceValue(value, notModified, suppressModelChangeEvent, suppressStateChangeEvent);
         }
 
+        public getSourceValue() {
+            return this._value;
+        }
 
         public setSourceValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             this._value = value;
@@ -114,6 +125,29 @@ module TS.MVP.Form {
             }
         }
 
+        _startedListening() {
+            super._startedListening();
+            // proxy changes back
+            var added: IModel[] = [];
+            for( var key in this._presenterMap ) {
+                var presenter = this._presenterMap[key];
+                var model = presenter.getModel();
+                if( !TS.arrayContains(added, model) ) {
+                    model.addChangeListener(this._subordinateValueChangeListener);
+                    added.push(model);
+                }
+            }
+        }
+
+        _stoppedListening() {
+            super._stoppedListening();
+            // stop reporting changes
+            for( var key in this._presenterMap ) {
+                var presenter = this._presenterMap[key];
+                var model = presenter.getModel();
+                model.removeChangeListener(this._subordinateValueChangeListener);
+            }
+        }
     }
 
 }

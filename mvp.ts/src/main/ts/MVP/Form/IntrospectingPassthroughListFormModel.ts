@@ -15,6 +15,10 @@ module TS.MVP.Form {
             super();
         }
 
+        public getSourceValue() {
+            return this._sourceValue;
+        }
+
         public setSourceValue(sourceValue: SourceValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
             // set or create the children as required
             // stop listening for changes on any existing presenters

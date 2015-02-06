@@ -16,6 +16,8 @@ module TS.MVP.Form {
 
         clear(): void;
 
+        getSourceValue(): SourceValueType;
+
         setSourceValue(sourceValue: SourceValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean);
 
         isModified(): boolean;
@@ -24,5 +26,6 @@ module TS.MVP.Form {
 
         // fires a special focus event
         requestFocus();
+
     }
 }

@@ -137,6 +137,8 @@ module TS.IJQuery.History {
                         var previousHistoryItem = this._historyItems[this._historyItemIndex];
                         if( previousHistoryItem ) {
                             operation = previousHistoryItem.getModelStateChange();
+                        } else {
+                            operation = null;
                         }
                     } else {
                         window.history.pushState(stateDescription, null, url);
@@ -202,7 +204,7 @@ module TS.IJQuery.History {
 
         public init(location: Location, onInitialized?:()=>void): void {
             this._model = this._presenter.getModel();
-            var dataString = this._dataStringFromLocation(window.location);
+            var dataString = this._dataStringFromLocation(location);
             var data = this._decode(dataString);
             this._init(data, (changes: TS.MVP.ModelStateChangeEvent[]) => {
                 // pre-populating history may not be a good idea anyway
@@ -224,6 +226,22 @@ module TS.IJQuery.History {
                     }
                 }
                 */
+                // check that the loaded state matches the current state (it might not)
+                var loadedState = this._presenter.getModel().exportState();
+                var loadedStateString = this._encode(loadedState);
+                if( loadedStateString != dataString ) {
+                    // overwrite the current state
+                    var url = this._dataStringToPath(loadedStateString);
+                    if( url == null || url.length == 0 ) {
+                        // empty paths will not be pushed?
+                        url = "/";
+                    }
+                    // ugh, side effect
+                    window.history.replaceState(loadedState, this.getTitle(loadedState), url);
+                    data = loadedState;
+                    dataString = loadedStateString;
+                }
+
                 if( this._historyItemIndex == null ) {
                     this._historyItems.push(new HashHistoryItem(data, dataString, null));
                     this._historyItemIndex = 0;
@@ -244,6 +262,10 @@ module TS.IJQuery.History {
             if (started) {
                 //this._presenter.start();
             }
+        }
+
+        public getTitle(state?: any): string {
+            return undefined;
         }
     }
 
