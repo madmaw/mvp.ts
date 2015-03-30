@@ -12,13 +12,13 @@ module TS.IJQuery.MVP.Composite {
 
         private _inProgress: TS.IJQuery.MVP.Loading.JQueryPromiseLoadingModel<TS.MVP.IPresenter>;
 
-
         constructor(
             private _loadingPresenter: TS.MVP.IPresenterWithModel<TS.MVP.Loading.ILoadingModel>,
             private _failurePresenter?: TS.MVP.IPresenterWithModel<TS.MVP.Error.IErrorModel>,
             private _errorMarshaler?: (arguments:IArguments) => TS.MVP.Error.ErrorModelState,
             public _defaultStateDescription?: any,
-            public _alwaysReturnDefaultStateDescription?: boolean
+            public _alwaysReturnDefaultStateDescription?: boolean,
+            public _overwriteHistory?: boolean
         ) {
             super();
             // assume we want to import it on a refresh, in lieu of anything else being available
@@ -40,6 +40,10 @@ module TS.IJQuery.MVP.Composite {
                     if( this._importing ) {
                         this._importing = false;
                         presenter.getModel().importState(this._importData, this._importCallback);
+                    } else if( this._importCallback ) {
+                        // call it back
+                        this._importCallback([]);
+                        this._importCallback = null;
                     }
                     this._setCurrentPresenter(presenter)
                     this._inProgress = null;
@@ -73,7 +77,11 @@ module TS.IJQuery.MVP.Composite {
         public _setCurrentPresenter(currentPresenter: TS.MVP.IPresenter) {
             this._currentPresenter = currentPresenter;
             this._updateListeningForStateDescriptionChanges();
-            this._fireModelChangeEvent(undefined, this._alwaysReturnDefaultStateDescription);
+            this._fireModelChangeEvent(undefined, this._alwaysReturnDefaultStateDescription || this._overwriteHistory);
+            if( this._overwriteHistory && !this._alwaysReturnDefaultStateDescription ) {
+                //overwrite the history in a separate event
+                this._fireStateChangeEvent(this, new TS.MVP.ModelStateChangeEvent(undefined, true));
+            }
         }
 
         public importState(description: any, importCompletionCallback: TS.MVP.IModelImportStateCallback): void {

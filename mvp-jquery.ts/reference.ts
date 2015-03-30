@@ -1,5 +1,6 @@
 /// <reference path="src/main/ts/MVP/AbstractJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/List/AbstractListJQueryPresenter.ts" />
+/// <reference path="src/main/ts/MVP/Stateful/TemplatingStatefulJQueryPresenter.ts" />
 
 //grunt-start
 /// <reference path="src/main/ts/Animation/IJQueryAnimationFactory.ts" />
@@ -32,8 +33,8 @@
 /// <reference path="src/main/ts/MVP/JQueryViewDescription.ts" />
 /// <reference path="src/main/ts/MVP/List/AbstractListJQueryPresenterItem.ts" />
 /// <reference path="src/main/ts/MVP/Loading/JQueryPromiseLoadingModel.ts" />
+/// <reference path="src/main/ts/MVP/Loading/SmoothJQueryLoadingPresenter.ts" />
 /// <reference path="src/main/ts/MVP/SimpleJQueryView.ts" />
-/// <reference path="src/main/ts/MVP/Stateful/TemplatingStatefulJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/Tab/ITabBarTabJQueryViewDescriptionFactory.ts" />
 /// <reference path="src/main/ts/MVP/Tab/TabBarJQueryPresenter.ts" />
 /// <reference path="src/main/ts/MVP/Tab/TabBarTabJQueryViewDescription.ts" />

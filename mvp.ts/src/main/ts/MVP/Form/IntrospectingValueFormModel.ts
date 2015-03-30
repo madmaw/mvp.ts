@@ -61,11 +61,11 @@ module TS.MVP.Form {
             }
         }
 
-        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean) {
-            var oldValue = this.getValue();
+        setValue(value: ValueType, notModified?: boolean, suppressModelChangeEvent?: boolean, suppressStateChangeEvent?: boolean, key: string = this._key) {
+            var oldValue = this.getValue(key);
             // can force an update by explicitly specifying notModified
             if( oldValue != value || notModified === false ) {
-                this._sourceValue[this._key] = value;
+                this._sourceValue[key] = value;
                 this._modified = this._modified || !notModified;
                 if( !suppressModelChangeEvent ) {
                     this._fireModelChangeEvent(new FormModelValueChangeDescription(), suppressStateChangeEvent);

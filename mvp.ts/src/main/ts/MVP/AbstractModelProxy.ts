@@ -7,16 +7,24 @@ module TS.MVP {
         private _onStateChangeListener: IModelStateChangeListener;
 
         // Constructor
-        constructor(private _model: IModel) {
+        constructor(public _model: IModel) {
             super();
 
             this._onChangeListener = (source: IModel, event: ModelChangeEvent) => {
-                this._fireModelChangeEvent(event, true);
+                this._handleModelChangeEvent(source, event);
             };
 
             this._onStateChangeListener = (source: IModel, event: ModelStateChangeEvent) => {
-                this._fireStateChangeEvent(source, event);
+                this._handleStateChangeEvent(source, event);
             };
+        }
+
+        public _handleModelChangeEvent(source: IModel, event: ModelChangeEvent) {
+            this._fireModelChangeEvent(event, true);
+        }
+
+        public _handleStateChangeEvent(source: IModel, event: ModelStateChangeEvent) {
+            this._fireStateChangeEvent(source, event);
         }
 
         public _startedListening() {

@@ -12,7 +12,7 @@ module TS {
         xhr.send(null);
     }
 
-    export function xmlFrom(o: any, name?: string, filter?: (o: any, propertyName: string) => boolean, indexNames?: { [_: string]: string[] }, tab?: string, indent?: string, index?: string, indexDepth?: number) {
+    export function xmlFrom(o: any, name?: string, isProperty?: boolean, filter?: (o: any, propertyName: string) => boolean, indexNames?: { [_: string]: string[] }, tab?: string, indent?: string, index?: string, indexDepth?: number) {
         if (name == null && o != null) {
             name = className(o);
         }
@@ -35,7 +35,11 @@ module TS {
 
             xml = indent;
             if (encloseInTags) {
-                xml += "<" + name;
+                if( isProperty ) {
+                    xml += "<property name=\""+name+"\"";
+                } else {
+                    xml += "<" + name;
+                }
                 if (index != null) {
                     if (indexNames != null) {
                         var names = indexNames[name];
@@ -68,7 +72,7 @@ module TS {
                             var e = o[i];
                             var s;
                             if (isArray) {
-                                s = xmlFrom(e, name, filter, indexNames, tab, indent + tab, i, indexDepth);
+                                s = xmlFrom(e, name, true, filter, indexNames, tab, indent + tab, i, indexDepth);
                             } else {
                                 // only get the non-prototype properties
                                 if (i != "prototype") {
@@ -77,7 +81,7 @@ module TS {
                                         // remove leading underscore we use for "private" variables
                                         propertyName = propertyName.substring(1);
                                     }
-                                    s = xmlFrom(e, propertyName, filter, indexNames, tab, indent + tab);
+                                    s = xmlFrom(e, propertyName, true, filter, indexNames, tab, indent + tab);
                                 } else {
                                     s = null;
                                 }
@@ -90,7 +94,11 @@ module TS {
                     xml += indent;
                 }
                 if (encloseInTags) {
-                    xml += "</" + name + ">\n";
+                    if( isProperty ) {
+                        xml += "</property>\n";
+                    } else {
+                        xml += "</" + name + ">\n";
+                    }
                 }
             }
         } else {

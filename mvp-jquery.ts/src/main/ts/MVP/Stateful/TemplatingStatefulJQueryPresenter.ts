@@ -17,14 +17,18 @@ module TS.IJQuery.MVP.Stateful {
             return result;
         }
 
-
-        public _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+        public _redraw() {
             // just reload? - this could lead to problems
             var container = this._viewContainer;
             this.stop();
             this.destroy();
             this.init(container, false);
             this.start();
+        }
+
+
+        public _handleModelChangeEvent(event: TS.MVP.ModelChangeEvent) {
+            this._redraw();
         }
 
 

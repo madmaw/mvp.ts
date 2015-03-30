@@ -15,7 +15,7 @@ module TS.IJQuery.MVP.Form {
         _doLoad(model: TS.MVP.Form.IFormFieldModel<ValueType, any>) {
             super._doLoad(model);
             var value = model.getValue();
-            if( value == null || (typeof value == "string") && (<String>value).trim().length == 0 ) {
+            if( value == null || (typeof value == "string") && (<String><any>value).trim().length == 0 ) {
                 value = model.getDefaultValue();
             }
             var formattedValue: any;

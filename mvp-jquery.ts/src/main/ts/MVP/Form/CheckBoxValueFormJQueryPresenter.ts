@@ -1,5 +1,5 @@
 module TS.IJQuery.MVP.Form {
-    export class CheckBoxValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormModel<boolean, any>> {
+    export class CheckBoxValueFormJQueryPresenter extends AbstractFormJQueryPresenter<TS.MVP.Form.IFormFieldModel<boolean, any>> {
 
         private _onChangeCallback: (event: JQueryEventObject) => void;
 
@@ -14,7 +14,8 @@ module TS.IJQuery.MVP.Form {
 
             this._onChangeCallback = () => {
                 var checkBox = this.$(this._checkBoxSelector);
-                var value = "true" == checkBox.prop("checked");
+                var checked = checkBox.prop("checked");
+                var value = "true" == ""+checked;
                 this.getModel().setValue(value);
             };
         }
@@ -40,7 +41,7 @@ module TS.IJQuery.MVP.Form {
             return super._doStop();
         }
 
-        _doLoad(model: TS.MVP.Form.IFormModel<boolean, any>) {
+        _doLoad(model: TS.MVP.Form.IFormFieldModel<boolean, any>) {
             super._doLoad(model);
 
             var value = model.getValue();

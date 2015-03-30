@@ -77,12 +77,15 @@ module TS.IJQuery.MVP {
                 if (this._prepend) {
                     var first = this._container.children().first();
                     if (first && first.length > 0) {
-                        this.$.insertBefore(first);
+                        this.$ = this.$.insertBefore(first);
                     } else {
-                        this._container.append(this.$);
+                        //this._container.append(this.$);
+                        this.$ = this.$.appendTo(this._container);
                     }
                 } else {
-                    this._container.append(this.$);
+                    // the result of appendTo is a clone of the value that goes in!
+                    //this._container.append(this.$);
+                    this.$ = this.$.appendTo(this._container);
                 }
                 this._attached = true;
             }

@@ -35,6 +35,10 @@ module TS.IJQuery.History {
             this._historyItemIndex = undefined;
         }
 
+        public _notifyStateChange(state: string) {
+            // we do nothing, but subclasses may want to override this
+        }
+
         public _consumeBrowserStateChange(state?: any) {
             var description;
             var dataString = this._dataStringFromLocation(window.location);
@@ -72,6 +76,7 @@ module TS.IJQuery.History {
                 change = null;
             }
             if( !skip ) {
+                this._notifyStateChange(dataString);
                 if (change != null) {
                     // try to stop it from scrolling
                     if (back) {
@@ -114,6 +119,13 @@ module TS.IJQuery.History {
                 this._historyItemIndex++;
                 // pretty sure we're better off handling this ourselves than trying to convince the browser to behave
                 //window.history.forward();
+                // pretty sure this doesn't do anything?
+                var url = this._dataStringToPath(s);
+                if( url == null || url.length == 0 ) {
+                    // empty paths will not be pushed?
+                    url = "/";
+                }
+                this._notifyStateChange(url);
             } else {
 
                 if (this._historyItemIndex == null || s != this._historyItems[this._historyItemIndex].getModelStateDataEncoded()) {
@@ -150,6 +162,7 @@ module TS.IJQuery.History {
                     } else {
                         this._historyItems[this._historyItemIndex] = historyItem;
                     }
+                    this._notifyStateChange(url);
                 }
             }
         }

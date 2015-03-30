@@ -25,9 +25,18 @@ module TS.IJQuery.Template.XSLT {
                                 template = standardXsltJQueryNodeTemplate(node, properties);
                             } else {
                                 // treat as a string
+                                var templateString: string;
+                                if( typeof XMLSerializer == 'function' ) {
+                                    var serializer = new XMLSerializer();
+                                    templateString = serializer.serializeToString(node);
+                                } else {
+                                    templateString = node['xml'];
+                                }
+                                /*
                                 var tmp = document.createElement("div");
                                 tmp.appendChild(node);
                                 var templateString = tmp.innerHTML;
+                                */
                                 template = msXSLTJQueryStringTemplateFactory(properties)(templateString);
                             }
                             deferred.resolve(template);
@@ -155,9 +164,13 @@ module TS.IJQuery.Template.XSLT {
 
             template.stylesheet = xslDocument;
             return function (t: T): JQuery {
-                var xmlString = xmlFrom(t);
                 var xmlDocument = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
                 xmlDocument.async = "false";
+                var xmlString = xmlFrom(t);
+                if( xmlString == null ) {
+                    // just make one up
+                    xmlString = "<temp></temp>";
+                }
                 xmlDocument.loadXML(xmlString);
                 var processor = template.createProcessor();
                 for( var key in properties ) {
@@ -166,7 +179,8 @@ module TS.IJQuery.Template.XSLT {
                 }
                 processor.input = xmlDocument;
                 processor.transform();
-                return $($.parseHTML(processor.output));
+                var html = processor.output;
+                return $($.parseHTML(html));
             }
         }
     }
