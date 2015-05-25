@@ -22,7 +22,7 @@ module TS.IJQuery.Template.XSLT {
                             // merge in the extra properties
 
                             if( xsltSupportsStandard() ) {
-                                template = standardXsltJQueryNodeTemplate(node, properties);
+                                template = standardXsltJQueryNodeTemplate(node, properties, path);
                             } else {
                                 // treat as a string
                                 var templateString: string;
@@ -87,7 +87,8 @@ module TS.IJQuery.Template.XSLT {
                         TS.xmlRead(relativePath, (importedStylesheet: Node) => {
                             xsltRewriteIncludes(relativePath, importedStylesheet, imported, params, function () {
                                 // replace the import with this node (minus stylesheet container)
-                                for (var j = 0; j < importedStylesheet.firstChild.childNodes.length; j++) {
+                                for (var j = importedStylesheet.firstChild.childNodes.length; j > 0; ) {
+                                    j--;
                                     var templateNode = <Element>importedStylesheet.firstChild.childNodes.item(j);
                                     if (templateNode.nodeName.indexOf("template") >= 0 || templateNode.nodeName.indexOf("param") >= 0 && !params[templateNode.getAttribute("name")]) {
                                         e.parentNode.insertBefore(templateNode, e);
@@ -119,7 +120,7 @@ module TS.IJQuery.Template.XSLT {
         return result;
     }
 
-    export function standardXsltJQueryNodeTemplate<T>(node: Node, properties: { [_: string]: any } = {}, domParser: DOMParser = new DOMParser(), mimeType: string= "text/xml"): IJQueryTemplate<T> {
+    export function standardXsltJQueryNodeTemplate<T>(node: Node, properties: { [_: string]: any } = {}, path?: string, domParser: DOMParser = new DOMParser(), mimeType: string= "text/xml"): IJQueryTemplate<T> {
         var processor = new XSLTProcessor();
         processor.importStylesheet(node);
         for (var key in properties) {
@@ -133,8 +134,13 @@ module TS.IJQuery.Template.XSLT {
             }
             var xml = domParser.parseFromString(xmlString, mimeType);
             var fragment = processor.transformToFragment(xml, document);
-            // return the child nodes, not the fragment (which isn't a physical node)
-            return $(fragment.childNodes);
+            if( fragment == null ) {
+                var serializer = new XMLSerializer();
+                throw "something wrong with stylesheet "+path + "\n" + serializer.serializeToString(node);
+            } else {
+                // return the child nodes, not the fragment (which isn't a physical node)
+                return $(fragment.childNodes);
+            }
         }
     }
 
@@ -151,7 +157,7 @@ module TS.IJQuery.Template.XSLT {
         var domParser = new DOMParser();
         return function <T>(template: string): IJQueryTemplate<T> {
             var node = domParser.parseFromString(template, mimeType);
-            return standardXsltJQueryNodeTemplate(node, properties, domParser, mimeType);
+            return standardXsltJQueryNodeTemplate(node, properties, template, domParser, mimeType);
         }
     }
 
